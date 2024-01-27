@@ -1,6 +1,14 @@
-import app from './app';
+import createApp from './app';
+import { createDatabase } from './database';
+import config from './config';
 
-app.listen(3000, () => {
-  // eslint-disable-next-line no-console
-  console.log('Server is running at http://localhost:3000');
+const database = createDatabase(config.database);
+
+database.initialize().then(() => {
+  const app = createApp(database);
+
+  app.listen(config.port, () => {
+    // eslint-disable-next-line no-console
+    console.log(`Server is running at http://localhost:${config.port}`);
+  });
 });
