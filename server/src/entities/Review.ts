@@ -1,5 +1,4 @@
 import {
-  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
@@ -11,7 +10,7 @@ import {
 import { User } from './User';
 
 @Entity()
-export class Review extends BaseEntity {
+export class Review {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
@@ -26,6 +25,9 @@ export class Review extends BaseEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @Column('integer')
+  userId: number;
 
   @OneToOne(() => User, (user) => user.review, { onDelete: 'CASCADE' })
   @JoinColumn()

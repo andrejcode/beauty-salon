@@ -1,6 +1,6 @@
 import {
-  BaseEntity,
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -10,12 +10,15 @@ import { User } from './User';
 import { Employee } from './Employee';
 
 @Entity()
-export class Appointment extends BaseEntity {
+export class Appointment {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column('timestamp with time zone')
-  date: Date;
+  @Column('date')
+  date: string;
+
+  @Column('time without time zone')
+  time: string;
 
   @Column('int')
   duration: number; // Duration is in minutes
@@ -23,9 +26,18 @@ export class Appointment extends BaseEntity {
   @Column({ type: 'simple-array', default: [] })
   services: string[];
 
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @Column('integer')
+  userId: number;
+
   @ManyToOne(() => User, (user) => user.appointments, { onDelete: 'CASCADE' })
   @JoinColumn()
   user: User;
+
+  @Column('integer')
+  employeeId: number;
 
   // If the employee is deleted we will set it to null
   // We will add logic to replace the employee if it is deleted

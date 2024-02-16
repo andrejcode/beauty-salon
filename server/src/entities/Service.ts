@@ -1,14 +1,15 @@
 import {
-  BaseEntity,
   BeforeInsert,
   BeforeUpdate,
   Column,
+  CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
-export class Service extends BaseEntity {
+export class Service {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
@@ -21,11 +22,21 @@ export class Service extends BaseEntity {
   @Column('text')
   description: string;
 
-  @Column('money')
-  cost: number;
+  @Column('int')
+  cost: number; // Cost is in cents
 
   @Column('text')
   category: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  getCost(): string {
+    return (this.cost / 100).toFixed(2);
+  }
 
   // Ensure that category is lowercased to avoid name collision
   @BeforeInsert()
