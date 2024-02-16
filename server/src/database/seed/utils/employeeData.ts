@@ -1,11 +1,9 @@
-interface Employee {
-  firstName: string;
-  lastName: string;
-  email: string;
-  description: string;
-}
+import { Employee } from '../../../entities/Employee';
 
-const employeeData: Employee[] = [
+const employeeData: Pick<
+  Employee,
+  'firstName' | 'lastName' | 'email' | 'description'
+>[] = [
   {
     firstName: 'Mikey',
     lastName: 'Mike',

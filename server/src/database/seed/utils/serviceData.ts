@@ -1,18 +1,15 @@
-interface Service {
-  name: string;
-  duration: number;
-  description: string;
-  cost: number;
-  category: string;
-}
+import { Service } from '../../../entities/Service';
 
-const serviceData: Service[] = [
+const serviceData: Pick<
+  Service,
+  'name' | 'duration' | 'description' | 'cost' | 'category'
+>[] = [
   {
     name: 'Classic Facial',
     duration: 60,
     description:
       'A refreshing facial that includes cleansing, exfoliation, extraction, and a relaxing mask to rejuvenate your skin.',
-    cost: 50,
+    cost: 5000,
     category: 'facial',
   },
   {
@@ -20,7 +17,7 @@ const serviceData: Service[] = [
     duration: 75,
     description:
       'Targeting fine lines and wrinkles, this facial incorporates specialized serums and techniques to promote youthful skin.',
-    cost: 60,
+    cost: 6000,
     category: 'facial',
   },
   {
@@ -28,7 +25,7 @@ const serviceData: Service[] = [
     duration: 45,
     description:
       'Deeply moisturizing treatment for dry or dehydrated skin, leaving it supple and radiant.',
-    cost: 45,
+    cost: 4500,
     category: 'facial',
   },
   {
@@ -36,7 +33,7 @@ const serviceData: Service[] = [
     duration: 45,
     description:
       'Professional makeup application for special events, weddings, or a glamorous night out.',
-    cost: 50,
+    cost: 5000,
     category: 'beauty',
   },
   {
@@ -44,7 +41,7 @@ const serviceData: Service[] = [
     duration: 90,
     description:
       'Enhance your natural lashes with individual extensions for a fuller and longer look.',
-    cost: 70,
+    cost: 7000,
     category: 'beauty',
   },
   {
@@ -52,7 +49,7 @@ const serviceData: Service[] = [
     duration: 30,
     description:
       'Sculpt and define your brows with professional shaping and tinting services.',
-    cost: 30,
+    cost: 3000,
     category: 'beauty',
   },
   {
@@ -60,7 +57,7 @@ const serviceData: Service[] = [
     duration: 45,
     description:
       'Nail shaping, cuticle care, massage, and polish application for well-groomed hands.',
-    cost: 25,
+    cost: 2500,
     category: 'nails',
   },
   {
@@ -68,7 +65,7 @@ const serviceData: Service[] = [
     duration: 60,
     description:
       'Relaxing foot soak, nail care, exfoliation, massage, and polished toes for happy feet.',
-    cost: 35,
+    cost: 3500,
     category: 'nails',
   },
   {
@@ -76,7 +73,7 @@ const serviceData: Service[] = [
     duration: 90,
     description:
       'Durable and natural-looking nail extensions with a gel finish for added strength.',
-    cost: 45,
+    cost: 4500,
     category: 'nails',
   },
   {
@@ -84,7 +81,7 @@ const serviceData: Service[] = [
     duration: 60,
     description:
       'A classic full-body massage to relax muscles and improve circulation.',
-    cost: 60,
+    cost: 6000,
     category: 'massage',
   },
   {
@@ -92,7 +89,7 @@ const serviceData: Service[] = [
     duration: 75,
     description:
       'Intense pressure targets knots and tension in deeper muscle layers, providing relief.',
-    cost: 70,
+    cost: 7000,
     category: 'massage',
   },
   {
@@ -100,7 +97,7 @@ const serviceData: Service[] = [
     duration: 90,
     description:
       'Relaxing massage using essential oils to enhance both physical and mental well-being.',
-    cost: 85,
+    cost: 8500,
     category: 'massage',
   },
 ];
