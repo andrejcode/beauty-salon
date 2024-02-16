@@ -1,6 +1,15 @@
+import 'reflect-metadata';
 import createApp from './app';
 import { createDatabase } from './database';
 import config from './config';
+
+declare global {
+  namespace Express {
+    interface Request {
+      userId?: number;
+    }
+  }
+}
 
 const database = createDatabase(config.database);
 
