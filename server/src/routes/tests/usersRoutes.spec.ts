@@ -121,6 +121,6 @@ describe('GET /users/profile', () => {
     await supertest(app)
       .get('/users/profile')
       .set('Authorization', `Bearer invalid-token`)
-      .expect(403);
+      .expect(401);
   });
 });
