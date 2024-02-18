@@ -3,7 +3,7 @@ import supertest from 'supertest';
 import createApp from '../../app';
 import { createTestDatabase } from '../../../tests/utils/createTestDatabase';
 import { Appointment, Employee, Review, User } from '../../entities';
-import { getCurrentDateAsString } from '../../../tests/utils';
+import { getWorkingDayDate } from '../../../tests/utils';
 
 const database = await createTestDatabase();
 const app = createApp(database);
@@ -24,7 +24,7 @@ afterAll(() => {
   database.destroy();
 });
 
-describe('authenticaded user', () => {
+describe('authenticated user', () => {
   it('can create and get appointments', async () => {
     const email = 'test@test.com';
     const signupResponse = await supertest(app)
@@ -48,13 +48,13 @@ describe('authenticaded user', () => {
       description: 'desc',
     });
 
-    const currentDate = getCurrentDateAsString();
+    const currentDate = getWorkingDayDate();
 
     const createResponse = await supertest(app)
       .post('/appointments/')
       .set('Authorization', `Bearer ${token}`)
       .send({
-        userId: user?.id,
+        userId: user!.id,
         employeeId: employee.id,
         date: currentDate,
         time: '15:00:00',
