@@ -1,13 +1,18 @@
 import { Repository } from 'typeorm';
-import { Appointment } from '../entities';
+import { Appointment, Employee, BusinessTime } from '../entities';
 import {
   addMinutes,
   generateTimes,
+  getDayNameFromNumber,
   isDateEqualOrGreater,
   isValidDateFormat,
 } from '../utils/time';
 
-export default (appointmentRepo: Repository<Appointment>) => {
+export default (
+  appointmentRepo: Repository<Appointment>,
+  employeeRepo: Repository<Employee>,
+  businessTimesRepo: Repository<BusinessTime>
+) => {
   async function calculateAvailableTimes(
     employeeId: number,
     date: string,
@@ -26,33 +31,62 @@ export default (appointmentRepo: Repository<Appointment>) => {
 
     const day = newDate.getDay();
 
-    // Salon does not work on Saturday and Sunday
-    if (day === 0 || day === 6) {
+    const businessTimes = await businessTimesRepo.findOne({
+      where: { id: 1 },
+    });
+
+    if (!businessTimes) {
+      throw new Error('Unable to get business times.');
+    }
+
+    // Return empty array if non-working day
+    if (businessTimes.offDays.includes(getDayNameFromNumber(day))) {
       return [];
+    }
+
+    const occupiedTimes = new Set<string>(); // Use Set to avoid duplicate times
+
+    const employee = await employeeRepo.findOne({ where: { id: employeeId } });
+
+    if (employee) {
+      const employeeBreakStartTime = employee.breakStartTime;
+      const employeeBreakEndTime = employee.breakEndTime;
+
+      // Add employee break times to occupied times
+      let currentBreakTime = employeeBreakStartTime;
+      while (currentBreakTime < employeeBreakEndTime) {
+        occupiedTimes.add(currentBreakTime);
+        currentBreakTime = addMinutes(currentBreakTime, 15);
+      }
     }
 
     const appointments = await appointmentRepo.find({
       where: { employeeId, date },
     });
 
-    const occupiedTimes = new Set<string>();
     appointments.forEach((appointment) => {
       // Before and after each appointment there is 15 minutes gap
       // So the employee can prepare for next appointment
-      const startTime = addMinutes(appointment.time, -duration);
-      const endTime = addMinutes(appointment.time, appointment.duration);
+      const startTime = addMinutes(appointment.time, -15);
+      const endTime = addMinutes(
+        appointment.time,
+        appointment.durationInMinutes
+      );
 
-      let currTime = startTime;
-      while (currTime <= endTime) {
-        occupiedTimes.add(currTime);
-        currTime = addMinutes(currTime, 15);
+      let currentTime = startTime;
+      while (currentTime <= endTime) {
+        occupiedTimes.add(currentTime);
+        currentTime = addMinutes(currentTime, 15);
       }
     });
 
     // We are adding 15 minutes to the duration so that the employee
     // Can prepare everything before the end of the shift
-    const businessEndTime = addMinutes('18:00:00', -(duration + 15));
-    const generatedTimes = generateTimes();
+    const businessEndTime = addMinutes(businessTimes.endTime, -(duration + 15));
+    const generatedTimes = generateTimes(
+      businessTimes.startTime,
+      businessTimes.endTime
+    );
     const availableTimes = generatedTimes.filter(
       (time) => time <= businessEndTime && !occupiedTimes.has(time)
     );
@@ -60,5 +94,24 @@ export default (appointmentRepo: Repository<Appointment>) => {
     return availableTimes;
   }
 
-  return { calculateAvailableTimes };
+  async function isEmployeeOnBreak(
+    employeeId: number,
+    appointmentStartTime: string,
+    appointmentDuration: number
+  ): Promise<boolean> {
+    const employee = await employeeRepo.findOne({ where: { id: employeeId } });
+
+    if (employee) {
+      const breakStartTime = new Date(`2000-01-01T${employee?.breakStartTime}`);
+      const appointmentEndTime = new Date(
+        `2000-01-01T${addMinutes(appointmentStartTime, appointmentDuration)}`
+      );
+
+      return breakStartTime < appointmentEndTime;
+    }
+
+    return false;
+  }
+
+  return { calculateAvailableTimes, isEmployeeOnBreak };
 };

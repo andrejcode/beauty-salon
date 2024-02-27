@@ -1,14 +1,24 @@
-// Return current date if day is not Saturday or Sunday
-// If it is return closest working day
-export function getWorkingDayDate(): string {
+// Function that returns first working day date
+export function getWorkingDayDate(offDays: string[]): string {
   const currentDate: Date = new Date();
-  const dayOfWeek: number = currentDate.getDay();
+  let dayOfWeek: number = currentDate.getDay();
 
-  // If it's Saturday (6) or Sunday (0), find the next working day
-  if (dayOfWeek === 6) {
-    currentDate.setDate(currentDate.getDate() + 2);
-  } else if (dayOfWeek === 0) {
+  function isOffDay(day: number): boolean {
+    const dayNames = [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+    ];
+    return offDays.includes(dayNames[day]);
+  }
+
+  while (isOffDay(dayOfWeek)) {
     currentDate.setDate(currentDate.getDate() + 1);
+    dayOfWeek = currentDate.getDay();
   }
 
   const year: number = currentDate.getFullYear();
