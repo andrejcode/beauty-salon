@@ -7,6 +7,12 @@ export class Employee extends Person {
   @Column('text')
   description: string;
 
+  @Column('time without time zone')
+  breakStartTime: string;
+
+  @Column('time without time zone')
+  breakEndTime: string;
+
   @OneToMany(() => Appointment, (appointment) => appointment.employee)
   appointments: Appointment[];
 }
