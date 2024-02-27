@@ -29,6 +29,8 @@ const schema = z
       synchronize: z.preprocess(coerceBoolean, z.boolean().default(isDevTest)),
     }),
     tokenKey: z.string(),
+    adminEmail: z.string(),
+    adminPassword: z.string(),
   })
   .readonly();
 
@@ -48,6 +50,9 @@ const config = schema.parse({
   },
 
   tokenKey: env.TOKEN_KEY,
+
+  adminEmail: env.ADMIN_EMAIL,
+  adminPassword: env.ADMIN_PASSWORD,
 });
 
 export default config;
