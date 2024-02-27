@@ -21,7 +21,10 @@ export class Appointment {
   time: string;
 
   @Column('int')
-  duration: number; // Duration is in minutes
+  durationInMinutes: number;
+
+  @Column('int')
+  priceInCents: number;
 
   @Column({ type: 'simple-array', default: [] })
   services: string[];
