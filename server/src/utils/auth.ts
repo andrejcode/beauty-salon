@@ -1,9 +1,11 @@
 import jwt from 'jsonwebtoken';
+import { Response } from 'express';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { User } from '../entities';
 import config from '../config';
 
-export function jwtSign(id: User['id']) {
-  return jwt.sign({ id }, config.tokenKey, {
+export function jwtSign(id: User['id'], role: string) {
+  return jwt.sign({ id, role }, config.tokenKey, {
     expiresIn: '7d',
   });
 }
@@ -24,4 +26,38 @@ export function isStrongPassword(password: string) {
   return (
     password.length >= minLength && hasUpperCase && hasLowerCase && hasDigit
   );
+}
+
+interface Entity {
+  id: number;
+  userId: number;
+}
+
+// Check if the user is the owner of the entity (review or appointment)
+export async function performActionIfOwner<T extends Entity>(
+  res: Response,
+  userId: number,
+  entityId: number,
+  entityRepo: Repository<T>,
+  actionIfOwner: () => Promise<void>
+) {
+  const entity = await entityRepo.findOne({
+    where: { id: entityId } as FindOptionsWhere<T>,
+  });
+
+  try {
+    if (!entity) {
+      res.status(404).send('Entity not found.');
+      return;
+    }
+
+    if (entity.userId !== userId) {
+      res.status(403).send('User is not the owner of the entity.');
+      return;
+    }
+
+    await actionIfOwner();
+  } catch (e) {
+    res.sendStatus(500);
+  }
 }
