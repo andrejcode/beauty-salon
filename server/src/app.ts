@@ -6,6 +6,7 @@ import servicesRoute from './routes/servicesRoutes';
 import reviewsRoute from './routes/reviewsRoutes';
 import employeesRoutes from './routes/employeesRoutes';
 import appointmentsRoutes from './routes/appointmentsRoutes';
+import businessTimesRoutes from './routes/businessTimesRoutes';
 
 export default function createApp(db: Database) {
   const app = express();
@@ -22,6 +23,7 @@ export default function createApp(db: Database) {
   app.use('/reviews', reviewsRoute(db));
   app.use('/employees', employeesRoutes(db));
   app.use('/appointments', appointmentsRoutes(db));
+  app.use('/business-times', businessTimesRoutes(db));
 
   app.all('*', (_req: Request, res: Response) => {
     res.sendStatus(404);
