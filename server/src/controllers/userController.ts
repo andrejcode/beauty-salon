@@ -15,6 +15,7 @@ export default (db: Database) => {
       select: {
         id: true,
         password: true,
+        isAdmin: true,
       },
       where: { email },
     });
@@ -23,15 +24,16 @@ export default (db: Database) => {
       res
         .status(401)
         .send('We could not find an account with this email address.');
-    } else {
-      const passwordMatch = await bcrypt.compare(password, user.password);
+      return;
+    }
 
-      if (!passwordMatch) {
-        res.status(401).send('Incorrect password. Try again.');
-      } else {
-        const token = jwtSign(user.id);
-        res.json({ token });
-      }
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      res.status(401).send('Incorrect password. Try again.');
+    } else {
+      const token = jwtSign(user.id, user.isAdmin ? 'admin' : 'user');
+      res.json({ token });
     }
   }
 
@@ -40,29 +42,34 @@ export default (db: Database) => {
 
     if (!isValidEmail(email)) {
       res.status(400).send('Invalid email address.');
-    } else if (!isStrongPassword(password)) {
+      return;
+    }
+
+    if (!isStrongPassword(password)) {
       res.status(400).send('Weak password. Please choose a stronger password.');
-    } else {
-      const hash = await bcrypt.hash(password, 15);
+      return;
+    }
 
-      try {
-        const user = await userRepo.save({
-          firstName,
-          lastName,
-          email,
-          password: hash,
-        });
+    const hash = await bcrypt.hash(password, 15);
 
-        const token = jwtSign(user.id);
+    try {
+      const user = await userRepo.save({
+        firstName,
+        lastName,
+        email,
+        password: hash,
+      });
 
-        res.json({ token });
-      } catch (e) {
-        if ((e as Error).message.includes('duplicate key')) {
-          res.status(400).send('User with this email already exists.');
-        } else {
-          res.sendStatus(500);
-        }
+      const token = jwtSign(user.id, user.isAdmin ? 'admin' : 'user');
+
+      res.json({ token });
+    } catch (e) {
+      if ((e as Error).message.includes('duplicate key')) {
+        res.status(400).send('User with this email already exists.');
+        return;
       }
+
+      res.sendStatus(500);
     }
   }
 
@@ -75,6 +82,7 @@ export default (db: Database) => {
           firstName: true,
           lastName: true,
           email: true,
+          createdAt: true,
         },
         where: { id: userId },
       });
