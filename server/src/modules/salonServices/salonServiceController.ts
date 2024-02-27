@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { Repository } from 'typeorm';
-import { Service } from '../entities';
-import { Database } from '../database';
+import { Service } from '../../entities';
+import { Database } from '../../database';
 
 export default (db: Database) => {
   const serviceRepo: Repository<Service> = db.getRepository(Service);

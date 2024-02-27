@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import type { Repository } from 'typeorm';
-import { User } from '../entities';
-import { isStrongPassword, isValidEmail, jwtSign } from '../utils/auth';
-import { Database } from '../database';
+import { User } from '../../entities';
+import { isStrongPassword, isValidEmail, jwtSign } from '../../utils/auth';
+import { Database } from '../../database';
 
 export default (db: Database) => {
   const userRepo: Repository<User> = db.getRepository(User);

@@ -1,12 +1,12 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { Database } from './database';
-import usersRoute from './routes/usersRoutes';
-import servicesRoute from './routes/servicesRoutes';
-import reviewsRoute from './routes/reviewsRoutes';
-import employeesRoutes from './routes/employeesRoutes';
-import appointmentsRoutes from './routes/appointmentsRoutes';
-import businessTimesRoutes from './routes/businessTimesRoutes';
+import usersRoute from './modules/users/usersRoutes';
+import servicesRoute from './modules/salonServices/salonServicesRoutes';
+import reviewsRoute from './modules/reviews/reviewsRoutes';
+import employeesRoutes from './modules/employees/employeesRoutes';
+import appointmentsRoutes from './modules/appointments/appointmentsRoutes';
+import businessTimesRoutes from './modules/businessTimes/businessTimesRoutes';
 
 export default function createApp(db: Database) {
   const app = express();

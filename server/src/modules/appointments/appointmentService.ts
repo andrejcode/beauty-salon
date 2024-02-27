@@ -1,12 +1,12 @@
 import { Repository } from 'typeorm';
-import { Appointment, Employee, BusinessTime } from '../entities';
+import { Appointment, Employee, BusinessTime } from '../../entities';
 import {
   addMinutes,
   generateTimes,
   getDayNameFromNumber,
   isDateEqualOrGreater,
   isValidDateFormat,
-} from '../utils/time';
+} from '../../utils/time';
 
 export default (
   appointmentRepo: Repository<Appointment>,

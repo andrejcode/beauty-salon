@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { Database } from '../database';
-import createReviewController from '../controllers/reviewController';
-import { authenticateToken } from '../middleware/authMiddleware';
+import { Database } from '../../database';
+import createReviewController from './reviewController';
+import { authenticateToken } from '../../middleware/authMiddleware';
 
 export default (db: Database) => {
   const router = Router();

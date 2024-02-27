@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { Database } from '../database';
-import { BusinessTime } from '../entities';
+import { Database } from '../../database';
+import { BusinessTime } from '../../entities';
 
 export default (db: Database) => {
   const businessTimeRepo = db.getRepository(BusinessTime);

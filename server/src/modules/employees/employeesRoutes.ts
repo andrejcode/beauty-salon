@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { Database } from '../database';
-import createEmployeeController from '../controllers/employeeContoller';
+import { Database } from '../../database';
+import createEmployeeController from './employeeContoller';
 
 export default (db: Database) => {
   const router = Router();

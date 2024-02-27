@@ -1,9 +1,9 @@
 import { describe, it, expect, afterAll, afterEach } from 'vitest';
 import supertest from 'supertest';
-import { Service } from '../../entities';
-import { createTestDatabase } from '../../../tests/utils/createTestDatabase';
-import createApp from '../../app';
-import serviceData from '../../database/seed/utils/serviceData';
+import { Service } from '../../../entities';
+import { createTestDatabase } from '../../../../tests/utils/createTestDatabase';
+import createApp from '../../../app';
+import serviceData from '../../../database/seed/utils/serviceData';
 
 const database = await createTestDatabase();
 const app = createApp(database);

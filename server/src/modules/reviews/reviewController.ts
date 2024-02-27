@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import { Repository } from 'typeorm';
-import { Review } from '../entities';
-import { Database } from '../database';
-import { performActionIfOwner } from '../utils/auth';
+import { Review } from '../../entities';
+import { Database } from '../../database';
+import { performActionIfOwner } from '../../utils/auth';
 
 interface RequestQuery {
   limit?: string;

@@ -1,14 +1,14 @@
 import { Request, Response } from 'express';
 import { MoreThanOrEqual } from 'typeorm';
-import { Database } from '../database';
-import { Appointment, Employee, Service, BusinessTime } from '../entities';
-import createAppointmentService from '../services/appointmentService';
+import { Database } from '../../database';
+import { Appointment, Employee, Service, BusinessTime } from '../../entities';
+import createAppointmentService from './appointmentService';
 import {
   formatDate,
   isValidDateFormat,
   isValidTimeFormat,
-} from '../utils/time';
-import { performActionIfOwner } from '../utils/auth';
+} from '../../utils/time';
+import { performActionIfOwner } from '../../utils/auth';
 
 export default (db: Database) => {
   const appointmentRepo = db.getRepository(Appointment);

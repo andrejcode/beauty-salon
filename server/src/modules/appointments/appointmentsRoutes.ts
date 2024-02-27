@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response, Router } from 'express';
-import { Database } from '../database';
-import createAppointmentController from '../controllers/appointmentController';
-import { authenticateToken, isAdmin } from '../middleware/authMiddleware';
+import { Database } from '../../database';
+import createAppointmentController from './appointmentController';
+import { authenticateToken, isAdmin } from '../../middleware/authMiddleware';
 
 export default (db: Database) => {
   const router = Router();
