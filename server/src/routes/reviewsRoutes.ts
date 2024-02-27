@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { Database } from '../database';
 import createReviewController from '../controllers/reviewController';
-import authenticateToken from '../middleware/authMiddleware';
+import { authenticateToken } from '../middleware/authMiddleware';
 
 export default (db: Database) => {
   const router = Router();
@@ -13,9 +13,11 @@ export default (db: Database) => {
     .get(reviewController.getReviews)
     .post(authenticateToken, reviewController.createReview);
 
+  router.route('/user').get(authenticateToken, reviewController.getUserReview);
+
   router
     .route('/:id')
-    .get(reviewController.getReview)
+    .get(reviewController.getReview) // In our front we are not using this route
     .patch(authenticateToken, reviewController.updateReview)
     .delete(authenticateToken, reviewController.deleteReview);
 

@@ -2,56 +2,114 @@ import { Request, Response } from 'express';
 import { Repository } from 'typeorm';
 import { Review } from '../entities';
 import { Database } from '../database';
+import { performActionIfOwner } from '../utils/auth';
+
+interface RequestQuery {
+  limit?: string;
+  stars?: string;
+  skip?: string;
+}
 
 export default (db: Database) => {
   const reviewRepo: Repository<Review> = db.getRepository(Review);
 
   async function getReviews(req: Request, res: Response) {
-    const { limit, rating, skip } = req.body;
+    const { limit, stars, skip }: RequestQuery = req.query;
+
+    const limitValue = !Number.isNaN(parseInt(limit!, 10))
+      ? parseInt(limit!, 10)
+      : null;
+    const starsValue = !Number.isNaN(parseInt(stars!, 10))
+      ? parseInt(stars!, 10)
+      : null;
+
+    let skipValue;
+    if (skip) {
+      skipValue = !Number.isNaN(parseInt(skip!, 10))
+        ? parseInt(skip!, 10)
+        : null;
+    } else {
+      skipValue = undefined;
+    }
 
     if (
-      rating &&
-      limit &&
-      typeof rating === 'number' &&
-      typeof limit === 'number' &&
-      (typeof skip === 'undefined' || typeof skip === 'number')
+      !(
+        typeof limitValue === 'number' &&
+        limitValue > 0 &&
+        typeof starsValue === 'number' &&
+        starsValue > 0 &&
+        starsValue < 6 &&
+        (typeof skipValue === 'undefined' || typeof skipValue === 'number')
+      )
     ) {
-      try {
-        const reviews = await reviewRepo.find({
-          take: limit,
-          skip,
-          where: { stars: rating },
-          relations: {
-            user: true,
-          },
-        });
+      res.status(400).send('Please provide limit, stars and optionally skip.');
+      return;
+    }
 
-        res.json(reviews);
-      } catch (e) {
-        res.status(400).send('Unable to get reviews.');
-      }
-    } else {
-      res.status(400).send('Please provide limit and rating.');
+    try {
+      const reviews = await reviewRepo.find({
+        take: limitValue,
+        skip: skipValue || undefined,
+        where: { stars: starsValue },
+        relations: {
+          user: true,
+        },
+      });
+
+      res.json(reviews);
+    } catch (e) {
+      res
+        .status(400)
+        .send(
+          `Unable to get reviews. ${(e as Error).message ? (e as Error).message : ''}`
+        );
     }
   }
 
   async function getReview(req: Request, res: Response) {
     const id = parseInt(req.params.id, 10);
 
-    if (id && typeof id === 'number') {
-      try {
-        const review = await reviewRepo.findOneBy({ id });
-
-        if (review) {
-          res.json(review);
-        } else {
-          res.status(404).send('Review not found.');
-        }
-      } catch (e) {
-        res.status(400).send('Unable to get review.');
-      }
-    } else {
+    if (!id || typeof id !== 'number') {
       res.status(400).send('Invalid id parameter.');
+      return;
+    }
+
+    try {
+      const review = await reviewRepo.findOneBy({ id });
+
+      if (!review) {
+        res.status(404).send('Review not found.');
+        return;
+      }
+
+      res.json(review);
+    } catch (e) {
+      res
+        .status(400)
+        .send(
+          `Unable to get review. ${(e as Error).message ? (e as Error).message : ''}`
+        );
+    }
+  }
+
+  async function getUserReview(req: Request, res: Response) {
+    const { userId } = req;
+
+    try {
+      const review = await reviewRepo.findOneBy({ userId });
+
+      if (!review) {
+        res.status(404).send('Review not found.');
+        return;
+      }
+
+      res.json(review);
+    } catch (e) {
+      res
+        .status(400)
+        .send(
+          `Unable to get review. ${(e as Error).message ? (e as Error).message : ''}`
+        );
     }
   }
 
@@ -61,55 +119,38 @@ export default (db: Database) => {
 
     try {
       if (
-        stars &&
-        reviewText &&
-        typeof stars === 'number' &&
-        typeof reviewText === 'string' &&
-        (stars >= 1 || stars <= 5)
+        !(
+          stars &&
+          reviewText &&
+          typeof stars === 'number' &&
+          typeof reviewText === 'string' &&
+          (stars >= 1 || stars <= 5)
+        )
       ) {
-        await reviewRepo.save({
-          reviewText,
-          stars,
-          userId,
-        });
-
-        res.status(201).send('Review created successfully.');
-      } else {
-        res.status(400).send('Please provide rating and review.');
+        res.status(400).send('Please provide stars and review.');
+        return;
       }
+
+      const review = await reviewRepo.save({
+        reviewText,
+        stars,
+        userId,
+      });
+
+      res
+        .status(201)
+        .json({ id: review.id, message: 'Review created successfully.' });
     } catch (e) {
       if ((e as Error).message.includes('duplicate key')) {
         res.status(400).send('You have already written a review.');
-      } else {
-        res.sendStatus(500);
+        return;
       }
-    }
-  }
 
-  // Helper function used for updating and deleting reviews
-  // Checks if the user is the owner of the review
-  async function performActionIfOwner(
-    res: Response,
-    userId: number,
-    reviewId: number,
-    actionIfOwner: () => Promise<void>
-  ) {
-    const review = await reviewRepo.findOne({
-      where: { id: reviewId },
-    });
-
-    try {
-      if (review) {
-        if (review.userId === userId) {
-          await actionIfOwner();
-        } else {
-          res.status(403).send('User is not the owner of the review.');
-        }
-      } else {
-        res.status(404).send('Review not found.');
-      }
-    } catch (e) {
-      res.sendStatus(500);
+      res
+        .status(400)
+        .send(
+          `Unable to create review. ${(e as Error).message ? (e as Error).message : ''}`
+        );
     }
   }
 
@@ -117,41 +158,53 @@ export default (db: Database) => {
     const { userId } = req;
     const id = parseInt(req.params.id, 10);
 
-    if (id && typeof id === 'number') {
-      await performActionIfOwner(res, userId!, id, async () => {
-        await reviewRepo.delete({ id });
-        res.status(200).send('Review deleted successfully.');
-      });
-    } else {
+    if (!id || typeof id !== 'number') {
       res.status(400).send('Invalid id parameter.');
+      return;
     }
+
+    await performActionIfOwner(res, userId!, id, reviewRepo, async () => {
+      await reviewRepo.delete({ id });
+      res.status(200).send('Review deleted successfully.');
+    });
   }
 
   async function updateReview(req: Request, res: Response) {
     const { userId } = req;
     const id = parseInt(req.params.id, 10);
 
-    if (id && typeof id === 'number') {
-      const { stars, reviewText } = req.body;
+    if (!id || typeof id !== 'number') {
+      res.status(400).send('Invalid id parameter.');
+      return;
+    }
 
-      if (
+    const { stars, reviewText } = req.body;
+
+    if (
+      !(
         stars &&
         reviewText &&
         typeof stars === 'number' &&
         typeof reviewText === 'string' &&
         (stars >= 1 || stars <= 5)
-      ) {
-        await performActionIfOwner(res, userId!, id, async () => {
-          await reviewRepo.update(id, { reviewText, stars });
-          res.status(200).send('Review updated successfully.');
-        });
-      } else {
-        res.status(400).send('Please provide rating and review.');
-      }
-    } else {
-      res.status(400).send('Invalid id parameter.');
+      )
+    ) {
+      res.status(400).send('Please provide stars and review.');
+      return;
     }
+
+    await performActionIfOwner(res, userId!, id, reviewRepo, async () => {
+      await reviewRepo.update(id, { reviewText, stars });
+      res.status(200).send('Review updated successfully.');
+    });
   }
 
-  return { getReviews, getReview, createReview, updateReview, deleteReview };
+  return {
+    getReviews,
+    getReview,
+    getUserReview,
+    createReview,
+    updateReview,
+    deleteReview,
+  };
 };

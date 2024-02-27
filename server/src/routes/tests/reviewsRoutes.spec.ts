@@ -20,16 +20,17 @@ afterAll(() => {
 });
 
 describe('/reviews', () => {
-  it('should return 400 when rating and limit are not provided', async () => {
+  it('should return 400 when stars and limit are not provided', async () => {
     const response = await supertest(app).get('/reviews').expect(400);
 
-    expect(response.text).toEqual('Please provide limit and rating.');
+    expect(response.text).toEqual(
+      'Please provide limit, stars and optionally skip.'
+    );
   });
 
   it('should return empty array when no reviews', async () => {
     const response = await supertest(app)
-      .get('/reviews')
-      .send({ limit: 10, rating: 5 })
+      .get('/reviews?limit=10&stars=5')
       .expect(200);
 
     expect(response.body).toEqual([]);
@@ -59,8 +60,7 @@ describe('/reviews', () => {
     ]);
 
     const resposne = await supertest(app)
-      .get('/reviews')
-      .send({ rating: 5, limit: 2, skip: 1 })
+      .get('/reviews?limit=2&stars=5&skip=1')
       .expect(200);
 
     expect(resposne.body.length).toEqual(1);
@@ -103,7 +103,7 @@ describe('authenticated user', () => {
       .send({ stars: 5, reviewText: 'Awesome review' })
       .expect(201);
 
-    expect(createResponse.text).toEqual('Review created successfully.');
+    expect(createResponse.body.message).toEqual('Review created successfully.');
 
     // Find review
     const review = await reviewRepo.findOne({
