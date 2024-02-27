@@ -1,8 +1,7 @@
 import { Router } from 'express';
 import createUserController from '../controllers/userController';
 import { Database } from '../database';
-
-import authenticateToken from '../middleware/authMiddleware';
+import { authenticateToken } from '../middleware/authMiddleware';
 
 export default (db: Database) => {
   const router = Router();
