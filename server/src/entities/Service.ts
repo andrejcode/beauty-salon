@@ -17,13 +17,13 @@ export class Service {
   name: string;
 
   @Column('int')
-  duration: number; // Duration is in minutes
+  durationInMinutes: number;
 
   @Column('text')
   description: string;
 
   @Column('int')
-  cost: number; // Cost is in cents
+  costInCents: number;
 
   @Column('text')
   category: string;
@@ -33,10 +33,6 @@ export class Service {
 
   @UpdateDateColumn()
   updatedAt: Date;
-
-  getCost(): string {
-    return (this.cost / 100).toFixed(2);
-  }
 
   // Ensure that category is lowercased to avoid name collision
   @BeforeInsert()
