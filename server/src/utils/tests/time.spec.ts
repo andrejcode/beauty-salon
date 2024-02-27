@@ -19,7 +19,7 @@ describe('addMinutes', () => {
 
 describe('generateTimes', () => {
   it('should generate time from 10 to 18', () => {
-    expect(generateTimes().length).toBe(33);
+    expect(generateTimes('10:00:00', '18:00:00').length).toBe(33);
   });
 });
 

@@ -1,17 +1,20 @@
 export function addMinutes(time: string, minutes: number): string {
   const [hours, mins, secs] = time.split(':').map(Number);
-  const totalSeconds = hours * 3600 + mins * 60 + secs + minutes * 60;
-  const newHours = Math.floor(totalSeconds / 3600);
-  const remainingSeconds = totalSeconds % 3600;
-  const newMins = Math.floor(remainingSeconds / 60);
-  const newSecs = remainingSeconds % 60;
-  return `${String(newHours).padStart(2, '0')}:${String(newMins).padStart(2, '0')}:${String(newSecs).padStart(2, '0')}`;
+  const date = new Date();
+  date.setHours(hours);
+  date.setMinutes(mins);
+  date.setSeconds(secs);
+  date.setMinutes(date.getMinutes() + minutes);
+
+  const newHours = String(date.getHours()).padStart(2, '0');
+  const newMins = String(date.getMinutes()).padStart(2, '0');
+  const newSecs = String(date.getSeconds()).padStart(2, '0');
+
+  return `${newHours}:${newMins}:${newSecs}`;
 }
 
-export function generateTimes() {
+export function generateTimes(startTime: string, endTime: string) {
   const times: string[] = [];
-  const startTime = '10:00:00';
-  const endTime = '18:00:00';
 
   let currentTime = startTime;
   while (currentTime <= endTime) {
@@ -59,4 +62,26 @@ export function isDateEqualOrGreater(dateToCheck: Date, today: Date): boolean {
     return true;
   }
   return false;
+}
+
+// Format date to 'yyyy-mm-dd' format
+export function formatDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+export function getDayNameFromNumber(dayNumber: number) {
+  const daysOfWeek = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
+
+  return daysOfWeek[dayNumber];
 }
