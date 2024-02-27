@@ -8,6 +8,9 @@ export class User extends Person {
   @Column('text', { select: false })
   password: string;
 
+  @Column('boolean', { default: false, select: false })
+  isAdmin: boolean;
+
   @OneToOne(() => Review, (review) => review.user)
   review: Review;
 
