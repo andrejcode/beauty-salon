@@ -1,27 +1,99 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --main-color: #fee6e5;
+  --dark-pink-color: #e75480;
 }
 
-body {
+* {
+  font-family: 'Philosopher', sans-serif;
+  font-size: 16px;
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.navbar-brand {
+  font-size: 2em !important;
+  font-family: 'Sacramento', cursive;
+}
+
+.main-color {
+  background-color: var(--main-color) !important;
+  color: #000 !important;
+  border-color: var(--main-color) !important;
+}
+
+.background-image-container {
+  background-size: cover;
+  background-position: center;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 85%, 0% 100%);
+}
+
+.initial-height {
+  min-height: calc(100vh - 90px);
+}
+
+.active-pill {
+  border: 1px solid #212529 !important;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.nav-tabs .nav-link {
+  color: #000 !important;
+}
+
+.nav-tabs .nav-link.active {
+  color: var(--dark-pink-color) !important;
+}
+
+input[type='checkbox']:checked {
+  background-color: var(--dark-pink-color);
+  border-color: var(--dark-pink-color);
+}
+
+input[type='checkbox']:focus {
+  outline: 4px solid var(--main-color) !important;
+  border-color: var(--dark-pink-color) !important;
+}
+
+#times-dropdown {
+  background-color: var(--main-color);
+  color: #000;
+  border-color: var(--main-color);
+}
+
+.react-datepicker__calendar-icon {
+  margin-top: 3px;
+}
+
+.appointment-card {
+  position: relative;
+}
+
+.appointment-delete-button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-right: 12px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeInAnimation 0.5s ease-in forwards;
+}
+
+@keyframes fadeInAnimation {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
