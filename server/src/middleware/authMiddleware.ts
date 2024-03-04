@@ -43,7 +43,10 @@ export async function isAdmin(
 
   const userRepo = db.getRepository(User);
 
-  const user = await userRepo.findOne({ where: { id: userId } });
+  const user = await userRepo.findOne({
+    where: { id: userId },
+    select: { isAdmin: true },
+  });
 
   if (user && user.isAdmin) {
     next();
