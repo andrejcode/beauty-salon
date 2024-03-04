@@ -18,11 +18,32 @@ module.exports = {
   },
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh'],
+  plugins: ['react', 'react-refresh'],
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
   rules: {
-    'react-refresh/only-export-components': [
-      'warn',
-      { allowConstantExport: true },
+    'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+    'no-restricted-imports': [
+      'error',
+      {
+        patterns: [
+          {
+            group: [
+              'app',
+              'config',
+              'database',
+              'entities',
+              'middleware',
+              'modules',
+              'utils',
+            ].flatMap((path) => [`@server/${path}`]),
+            message: 'Please only import from @server/shared.',
+          },
+        ],
+      },
     ],
   },
 };
