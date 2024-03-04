@@ -1,16 +1,24 @@
 import { Request, Response } from 'express';
 import { Database } from '../../database';
 import { BusinessTime } from '../../entities';
+import { mapBusinessTimeToDto } from './BusinessTimeDto';
 
 export default (db: Database) => {
   const businessTimeRepo = db.getRepository(BusinessTime);
 
-  async function getBusinessTime(req: Request, res: Response) {
+  async function getBusinessTime(_req: Request, res: Response) {
     try {
-      const businessTimes = await businessTimeRepo.findOne({
+      const businessTime = await businessTimeRepo.findOne({
         where: { id: 1 },
       });
-      res.json(businessTimes);
+
+      if (!businessTime) {
+        res.status(404).send('Business time not found.');
+        return;
+      }
+
+      const businessTimeDto = mapBusinessTimeToDto(businessTime);
+      res.json(businessTimeDto);
     } catch (e) {
       res
         .status(400)
