@@ -4,6 +4,7 @@ import type { Repository } from 'typeorm';
 import { User } from '../../entities';
 import { isStrongPassword, isValidEmail, jwtSign } from '../../utils/auth';
 import { Database } from '../../database';
+import { mapUserToDto } from './UserDto';
 
 export default (db: Database) => {
   const userRepo: Repository<User> = db.getRepository(User);
@@ -77,19 +78,17 @@ export default (db: Database) => {
     const { userId } = req;
 
     try {
-      const user = await userRepo.findOne({
-        select: {
-          firstName: true,
-          lastName: true,
-          email: true,
-          createdAt: true,
-        },
-        where: { id: userId },
-      });
+      const user = await userRepo.findOne({ where: { id: userId } });
 
-      res.json(user);
+      if (!user) {
+        res.send(404).send('User not found');
+        return;
+      }
+
+      const userDto = mapUserToDto(user);
+      res.json(userDto);
     } catch (e) {
-      res.status(404).send('User not found.');
+      res.status(400).send('Unable to get user profile.');
     }
   }
 
