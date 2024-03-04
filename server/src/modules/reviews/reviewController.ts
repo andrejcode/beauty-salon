@@ -3,6 +3,7 @@ import { Repository } from 'typeorm';
 import { Review } from '../../entities';
 import { Database } from '../../database';
 import { performActionIfOwner } from '../../utils/auth';
+import { mapReviewToDto } from './ReviewDto';
 
 interface RequestQuery {
   limit?: string;
@@ -56,38 +57,13 @@ export default (db: Database) => {
         },
       });
 
-      res.json(reviews);
+      const reviewsDto = reviews.map((review) => mapReviewToDto(review));
+      res.json(reviewsDto);
     } catch (e) {
       res
         .status(400)
         .send(
           `Unable to get reviews. ${(e as Error).message ? (e as Error).message : ''}`
-        );
-    }
-  }
-
-  async function getReview(req: Request, res: Response) {
-    const id = parseInt(req.params.id, 10);
-
-    if (!id || typeof id !== 'number') {
-      res.status(400).send('Invalid id parameter.');
-      return;
-    }
-
-    try {
-      const review = await reviewRepo.findOneBy({ id });
-
-      if (!review) {
-        res.status(404).send('Review not found.');
-        return;
-      }
-
-      res.json(review);
-    } catch (e) {
-      res
-        .status(400)
-        .send(
-          `Unable to get review. ${(e as Error).message ? (e as Error).message : ''}`
         );
     }
   }
@@ -103,7 +79,8 @@ export default (db: Database) => {
         return;
       }
 
-      res.json(review);
+      const reviewDto = mapReviewToDto(review);
+      res.json(reviewDto);
     } catch (e) {
       res
         .status(400)
@@ -195,13 +172,12 @@ export default (db: Database) => {
 
     await performActionIfOwner(res, userId!, id, reviewRepo, async () => {
       await reviewRepo.update(id, { reviewText, stars });
-      res.status(200).send('Review updated successfully.');
+      res.status(200).json({ id, message: 'Review updated successfully.' });
     });
   }
 
   return {
     getReviews,
-    getReview,
     getUserReview,
     createReview,
     updateReview,

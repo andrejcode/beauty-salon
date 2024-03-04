@@ -17,7 +17,6 @@ export default (db: Database) => {
 
   router
     .route('/:id')
-    .get(reviewController.getReview) // In our front we are not using this route
     .patch(authenticateToken, reviewController.updateReview)
     .delete(authenticateToken, reviewController.deleteReview);
 

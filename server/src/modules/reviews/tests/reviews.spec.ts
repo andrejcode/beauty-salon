@@ -67,22 +67,8 @@ describe('/reviews', () => {
   });
 });
 
-describe('/reviews/:id', () => {
-  it('GET should return 404 if the review is not found', async () => {
-    const response = await supertest(app).get('/reviews/1').expect(404);
-
-    expect(response.text).toEqual('Review not found.');
-  });
-
-  it('should return 400 when id paramater is invalid', async () => {
-    const response = await supertest(app).get('/reviews/a').expect(400);
-
-    expect(response.text).toEqual('Invalid id parameter.');
-  });
-});
-
 describe('authenticated user', () => {
-  it('should be able to create, update and delete the review', async () => {
+  it('can create, read, update and delete the review', async () => {
     // Signup user
     const signupResponse = await supertest(app)
       .post('/users/signup')
@@ -105,24 +91,25 @@ describe('authenticated user', () => {
 
     expect(createResponse.body.message).toEqual('Review created successfully.');
 
-    // Find review
-    const review = await reviewRepo.findOne({
-      where: { reviewText: 'Awesome review' },
-    });
-
-    expect(review).not.toBeNull();
+    // Read review
+    const reviewResponse = await supertest(app)
+      .get('/reviews/user')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
+    expect(reviewResponse).not.toBeNull();
 
     // Update review
     const updateRespone = await supertest(app)
-      .patch(`/reviews/${review!.id}`)
+      .patch(`/reviews/${createResponse.body.id}`)
       .set('Authorization', `Bearer ${token}`)
       .send({ stars: 1, reviewText: 'Bad review' })
       .expect(200);
 
-    expect(updateRespone.text).toEqual('Review updated successfully.');
+    expect(updateRespone.body.message).toEqual('Review updated successfully.');
 
+    // Delete review
     const deleteResponse = await supertest(app)
-      .delete(`/reviews/${review!.id}`)
+      .delete(`/reviews/${createResponse.body.id}`)
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
 
