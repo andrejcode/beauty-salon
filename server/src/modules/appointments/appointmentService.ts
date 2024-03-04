@@ -52,6 +52,16 @@ export default (
       const employeeBreakStartTime = employee.breakStartTime;
       const employeeBreakEndTime = employee.breakEndTime;
 
+      // Add time before employee break to occupied times
+      // This is done to prevent appointment time to overlap
+      // with the employee's scheduled break
+      let currentDuration = duration;
+      while (currentDuration > 0) {
+        const timeToAdd = addMinutes(employeeBreakStartTime, -currentDuration);
+        occupiedTimes.add(timeToAdd);
+        currentDuration -= 15;
+      }
+
       // Add employee break times to occupied times
       let currentBreakTime = employeeBreakStartTime;
       while (currentBreakTime < employeeBreakEndTime) {
@@ -94,24 +104,5 @@ export default (
     return availableTimes;
   }
 
-  async function isEmployeeOnBreak(
-    employeeId: number,
-    appointmentStartTime: string,
-    appointmentDuration: number
-  ): Promise<boolean> {
-    const employee = await employeeRepo.findOne({ where: { id: employeeId } });
-
-    if (employee) {
-      const breakStartTime = new Date(`2000-01-01T${employee?.breakStartTime}`);
-      const appointmentEndTime = new Date(
-        `2000-01-01T${addMinutes(appointmentStartTime, appointmentDuration)}`
-      );
-
-      return breakStartTime < appointmentEndTime;
-    }
-
-    return false;
-  }
-
-  return { calculateAvailableTimes, isEmployeeOnBreak };
+  return { calculateAvailableTimes };
 };

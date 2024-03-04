@@ -9,6 +9,13 @@ import {
   isValidTimeFormat,
 } from '../../utils/time';
 import { performActionIfOwner } from '../../utils/auth';
+import { mapAppointmentToDto } from './AppointmentDto';
+
+interface RequestQuery {
+  employeeId?: string;
+  date?: string;
+  duration?: string;
+}
 
 export default (db: Database) => {
   const appointmentRepo = db.getRepository(Appointment);
@@ -27,14 +34,16 @@ export default (db: Database) => {
       const formattedCurrentDate = formatDate(currentDate);
 
       const upcomingAppointments = await appointmentRepo.find({
-        relations: {
-          user: true,
-        },
-        order: { date: 'DESC' },
+        relations: { user: true, employee: true },
+        order: { date: 'ASC' },
         where: { date: MoreThanOrEqual(formattedCurrentDate) },
       });
 
-      res.json(upcomingAppointments);
+      const appointmentsDto = upcomingAppointments.map((appointment) =>
+        mapAppointmentToDto(appointment)
+      );
+
+      res.json(appointmentsDto);
     } catch (e) {
       res
         .status(400)
@@ -53,7 +62,11 @@ export default (db: Database) => {
         order: { date: 'DESC' },
       });
 
-      res.json(appointments);
+      const appointmentsDto = appointments.map((appointment) =>
+        mapAppointmentToDto(appointment)
+      );
+
+      res.json(appointmentsDto);
     } catch (e) {
       res
         .status(400)
@@ -88,18 +101,6 @@ export default (db: Database) => {
 
       if (!availableTimes.includes(time)) {
         res.status(400).send('Time is not available.');
-        return;
-      }
-
-      const isEmployeeOnBreak = await appointmentService.isEmployeeOnBreak(
-        employeeId,
-        time,
-        duration
-      );
-      if (isEmployeeOnBreak) {
-        res
-          .status(400)
-          .send("Time coincides with the employee's scheduled break.");
         return;
       }
 
@@ -153,13 +154,20 @@ export default (db: Database) => {
   }
 
   async function getAvailableTimes(req: Request, res: Response) {
-    const { employeeId, date, duration } = req.body;
+    const { employeeId, date, duration }: RequestQuery = req.query;
+
+    const employeeIdValue = !Number.isNaN(parseInt(employeeId!, 10))
+      ? parseInt(employeeId!, 10)
+      : null;
+    const durationValue = !Number.isNaN(parseInt(duration!, 10))
+      ? parseInt(duration!, 10)
+      : null;
 
     if (
-      typeof employeeId !== 'number' ||
+      typeof employeeIdValue !== 'number' ||
       typeof date !== 'string' ||
       !isValidDateFormat(date) ||
-      typeof duration !== 'number'
+      typeof durationValue !== 'number'
     ) {
       res.status(400).send('Invalid payload.');
       return;
@@ -167,9 +175,9 @@ export default (db: Database) => {
 
     try {
       const availableTimes = await appointmentService.calculateAvailableTimes(
-        employeeId,
+        employeeIdValue,
         date,
-        duration
+        durationValue
       );
       res.json(availableTimes);
     } catch (e) {

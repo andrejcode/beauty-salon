@@ -82,13 +82,10 @@ describe('authenticated user', () => {
     expect(createResponse.text).toEqual('Appointment successfully created.');
 
     const availableTimesResponse = await supertest(app)
-      .get('/appointments/available')
+      .get(
+        `/appointments/available?employeeId=${employee.id}&duration=30&date=${currentDate}`
+      )
       .set('Authorization', `Bearer ${token}`)
-      .send({
-        employeeId: employee.id,
-        date: currentDate,
-        duration: 30,
-      })
       .expect(200);
 
     // We created appointment at 12:00 that is 30 mins long
@@ -97,12 +94,13 @@ describe('authenticated user', () => {
     expect(availableTimesResponse.body).not.toContain('12:00:00');
     expect(availableTimesResponse.body).not.toContain('12:30:00');
 
+    // Read appointments
     const appointmentsResponse = await supertest(app)
-      .get('/appointments/')
+      .get('/appointments')
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
 
-    expect(appointmentsResponse.body).not.toBeNull();
+    expect(appointmentsResponse.body).toBeDefined();
 
     // Delete appointment
     const appointmentId = appointmentsResponse.body[0].id;
