@@ -15,7 +15,7 @@
     "test:mem": "DB_TYPE=pg-mem vitest",
     "coverage": "DB_TYPE=pg-mem vitest run --coverage",
     "migration:run": "npm run typeorm -- migration:run -d ./src/database/dataSource.ts",
-    "typecheck": "tsc --noEmit",
+    "type-check": "tsc --noEmit",
     "typeorm": "typeorm-ts-node-commonjs"
   },
   "keywords": [],
