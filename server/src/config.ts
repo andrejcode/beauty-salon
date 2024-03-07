@@ -28,9 +28,27 @@ const schema = z
       logging: z.preprocess(coerceBoolean, z.boolean().default(isDevTest)),
       synchronize: z.preprocess(coerceBoolean, z.boolean().default(isDevTest)),
     }),
-    tokenKey: z.string(),
-    adminEmail: z.string(),
-    adminPassword: z.string(),
+    tokenKey: z.string().default(() => {
+      if (isDevTest) {
+        return '';
+      }
+
+      throw new Error('You must provide a token key in production env!');
+    }),
+    adminEmail: z.string().default(() => {
+      if (isDevTest) {
+        return 'admin@admin.com';
+      }
+
+      throw new Error('You must provide an admin email in production env!');
+    }),
+    adminPassword: z.string().default(() => {
+      if (isDevTest) {
+        return 'Admin123';
+      }
+
+      throw new Error('You must provide an admin password in production env!');
+    }),
   })
   .readonly();
 
