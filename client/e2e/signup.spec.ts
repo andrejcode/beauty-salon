@@ -1,7 +1,7 @@
 import { test, expect, Page } from '@playwright/test';
 
 test('signup', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('/');
   await page.getByRole('link', { name: 'Login' }).click();
   await page.getByRole('link', { name: "Don't have an account?" }).click();
   await page.getByPlaceholder('Enter first name').click();
@@ -19,7 +19,7 @@ test('signup', async ({ page }) => {
 });
 
 test('cannot signup with same email twice', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('/');
   await page.getByRole('link', { name: 'Login' }).click();
   await page.getByRole('link', { name: "Don't have an account?" }).click();
 
@@ -41,7 +41,7 @@ async function fillInSignupForm(page: Page) {
   await page.getByPlaceholder('Enter last name').click();
   await page.getByPlaceholder('Enter last name').fill('Test');
   await page.getByPlaceholder('Enter email').click();
-  await page.getByPlaceholder('Enter email').fill('test@test.com');
+  await page.getByPlaceholder('Enter email').fill('test1@test.com');
   await page.getByPlaceholder('Enter password', { exact: true }).click();
   await page.getByPlaceholder('Enter password', { exact: true }).fill('Test1234');
   await page.getByPlaceholder('Enter password again').click();

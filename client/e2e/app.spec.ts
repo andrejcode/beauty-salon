@@ -1,12 +1,12 @@
 import { test, expect } from '@playwright/test';
 
 test('visit the home page', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('/');
   expect(page.getByRole('heading', { name: 'Welcome to the Beauty Salon' })).toBeTruthy();
 });
 
 test('navigate to the reviews', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('/');
   await page.getByRole('link', { name: 'Reviews' }).click();
   await expect(page.getByRole('button', { name: 'One Star' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Two Stars' })).toBeVisible();
