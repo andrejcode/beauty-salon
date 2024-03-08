@@ -30,7 +30,7 @@ const schema = z
     }),
     tokenKey: z.string().default(() => {
       if (isDevTest) {
-        return '';
+        return 'tokenkey';
       }
 
       throw new Error('You must provide a token key in production env!');
