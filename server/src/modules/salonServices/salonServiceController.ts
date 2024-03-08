@@ -2,7 +2,8 @@ import { Request, Response } from 'express';
 import { Repository } from 'typeorm';
 import { Service } from '../../entities';
 import { Database } from '../../database';
-import SalonServiceDto, { mapServiceToDto } from './SalonServiceDto';
+import SalonServiceDto from './SalonServiceDto';
+import { mapServiceToDto } from '../../utils/entityMappers';
 
 export default (db: Database) => {
   const serviceRepo: Repository<Service> = db.getRepository(Service);

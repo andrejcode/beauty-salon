@@ -1,5 +1,4 @@
-import { Review, User } from '../../entities';
-import UserDto, { mapUserToDto } from '../users/UserDto';
+import UserDto from '../users/UserDto';
 
 export default class ReviewDto {
   id: number;
@@ -17,7 +16,7 @@ export default class ReviewDto {
     reviewText: string,
     stars: number,
     updateAt: Date,
-    user?: User
+    user?: any
   ) {
     this.id = id;
     this.reviewText = reviewText;
@@ -25,17 +24,7 @@ export default class ReviewDto {
     this.updatedAt = updateAt;
 
     if (user) {
-      this.user = mapUserToDto(user);
+      this.user = user;
     }
   }
-}
-
-export function mapReviewToDto(review: Review): ReviewDto {
-  return new ReviewDto(
-    review.id,
-    review.reviewText,
-    review.stars,
-    review.updatedAt,
-    review.user
-  );
 }

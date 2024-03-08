@@ -4,7 +4,7 @@ import type { Repository } from 'typeorm';
 import { User } from '../../entities';
 import { isStrongPassword, isValidEmail, jwtSign } from '../../utils/auth';
 import { Database } from '../../database';
-import { mapUserToDto } from './UserDto';
+import { mapUserToDto } from '../../utils/entityMappers';
 
 export default (db: Database) => {
   const userRepo: Repository<User> = db.getRepository(User);

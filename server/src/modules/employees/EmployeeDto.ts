@@ -1,5 +1,3 @@
-import { Employee } from '../../entities';
-
 export default class EmployeeDto {
   id: number;
 
@@ -35,25 +33,4 @@ export default class EmployeeDto {
     this.breakStartTime = breakStartTime;
     this.breakEndTime = breakEndTime;
   }
-}
-
-export function mapEmployeeToDto(employee: Employee): EmployeeDto {
-  const {
-    id,
-    firstName,
-    lastName,
-    email,
-    description,
-    breakStartTime,
-    breakEndTime,
-  } = employee;
-  return new EmployeeDto(
-    id,
-    firstName,
-    lastName,
-    email,
-    description,
-    breakStartTime,
-    breakEndTime
-  );
 }

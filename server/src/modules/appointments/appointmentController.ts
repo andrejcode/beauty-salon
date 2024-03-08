@@ -9,7 +9,7 @@ import {
   isValidTimeFormat,
 } from '../../utils/time';
 import { performActionIfOwner } from '../../utils/auth';
-import { mapAppointmentToDto } from './AppointmentDto';
+import { mapAppointmentToDto } from '../../utils/entityMappers';
 
 interface RequestQuery {
   employeeId?: string;

@@ -1,6 +1,5 @@
-import { Appointment, Employee, User } from '../../entities';
-import EmployeeDto, { mapEmployeeToDto } from '../employees/EmployeeDto';
-import UserDto, { mapUserToDto } from '../users/UserDto';
+import EmployeeDto from '../employees/EmployeeDto';
+import UserDto from '../users/UserDto';
 
 export default class AppointmentDto {
   id: number;
@@ -32,8 +31,8 @@ export default class AppointmentDto {
     services: string[],
     userId: number,
     employeeId: number,
-    user?: User,
-    employee?: Employee
+    user?: UserDto,
+    employee?: EmployeeDto
   ) {
     this.id = id;
     this.date = date;
@@ -45,38 +44,11 @@ export default class AppointmentDto {
     this.employeeId = employeeId;
 
     if (user) {
-      this.user = mapUserToDto(user);
+      this.user = user;
     }
 
     if (employee) {
-      this.employee = mapEmployeeToDto(employee);
+      this.employee = employee;
     }
   }
-}
-
-export function mapAppointmentToDto(appointment: Appointment): AppointmentDto {
-  const {
-    id,
-    date,
-    time,
-    durationInMinutes,
-    priceInCents,
-    services,
-    userId,
-    employeeId,
-    user,
-    employee,
-  } = appointment;
-  return new AppointmentDto(
-    id,
-    date,
-    time,
-    durationInMinutes,
-    priceInCents,
-    services,
-    userId,
-    employeeId,
-    user,
-    employee
-  );
 }

@@ -1,5 +1,3 @@
-import { BusinessTime } from '../../entities';
-
 export default class BusinessTimeDto {
   id: number;
 
@@ -20,15 +18,4 @@ export default class BusinessTimeDto {
     this.endTime = endTime;
     this.offDays = offDays;
   }
-}
-
-export function mapBusinessTimeToDto(
-  businessTime: BusinessTime
-): BusinessTimeDto {
-  return new BusinessTimeDto(
-    businessTime.id,
-    businessTime.startTime,
-    businessTime.endTime,
-    businessTime.offDays
-  );
 }

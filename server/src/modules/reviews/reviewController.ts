@@ -3,7 +3,7 @@ import { Repository } from 'typeorm';
 import { Review } from '../../entities';
 import { Database } from '../../database';
 import { performActionIfOwner } from '../../utils/auth';
-import { mapReviewToDto } from './ReviewDto';
+import { mapReviewToDto } from '../../utils/entityMappers';
 
 interface RequestQuery {
   limit?: string;

@@ -1,5 +1,3 @@
-import { User } from '../../entities';
-
 export default class UserDto {
   id: number;
 
@@ -27,14 +25,4 @@ export default class UserDto {
     this.email = email;
     this.memberSince = createdAt;
   }
-}
-
-export function mapUserToDto(user: User): UserDto {
-  return new UserDto(
-    user.id,
-    user.firstName,
-    user.lastName,
-    user.email,
-    user.createdAt
-  );
 }
