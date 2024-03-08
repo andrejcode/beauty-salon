@@ -49,7 +49,7 @@ jobs:
       - name: Start server for E2E tests
         run: npm run dev -w=server &
         env:
-          DB_USER: test
+          DB_USERNAME: test
           DB_PASSWORD: test
           DB_NAME: testdb
           DB_HOST: localhost
@@ -59,11 +59,11 @@ jobs:
         run: npm run build -w=client
 
       - name: Wait for server to startup
-        uses: Jtalk/url-health-check-action@v4
+        uses: jtalk/url-health-check-action@v4
         with:
+          url: http://localhost:3000/health
           max-attempts: 5
           retry-delay: 5s
-          url: http://localhost:3000/health
 
       - name: Test client E2E
         run: npm run test:e2e -w=client
