@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "tsx watch src",
     "dev:mem": "DB_TYPE=pg-mem tsx watch src",
-    "build": "npx tsc",
+    "build": "tsc",
     "start": "node ./dist/index.js",
+    "start:tsx": "tsx src",
     "seed": "tsx src/database/seed/index.ts",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx",
