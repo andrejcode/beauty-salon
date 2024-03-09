@@ -77,7 +77,7 @@ export default (
     appointments.forEach((appointment) => {
       // Before and after each appointment there is 15 minutes gap
       // So the employee can prepare for next appointment
-      const startTime = addMinutes(appointment.time, -15);
+      const startTime = addMinutes(appointment.time, -duration);
       const endTime = addMinutes(
         appointment.time,
         appointment.durationInMinutes
