@@ -13,7 +13,7 @@ export default (db: Database) => {
       });
 
       if (!businessTime) {
-        res.status(404).send('Business time not found.');
+        res.sendStatus(204);
         return;
       }
 

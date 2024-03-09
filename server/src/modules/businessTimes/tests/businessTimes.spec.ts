@@ -19,9 +19,8 @@ afterAll(() => {
 });
 
 describe('/business-times', () => {
-  it('should return 404 when there is not business time', async () => {
-    const response = await supertest(app).get('/business-times').expect(404);
-    expect(response.text).toEqual('Business time not found.');
+  it('should return 204 when there is no business times', async () => {
+    await supertest(app).get('/business-times').expect(204);
   });
 
   it('should return business time', async () => {

@@ -75,7 +75,7 @@ export default (db: Database) => {
       const review = await reviewRepo.findOneBy({ userId });
 
       if (!review) {
-        res.status(404).send('Review not found.');
+        res.sendStatus(204);
         return;
       }
 
