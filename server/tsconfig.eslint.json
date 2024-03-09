@@ -1,4 +1,4 @@
 {
   "exclude": ["**/*.js"],
-  "include": ["**/*.ts", ".eslintrc.cjs", "vitest.config.mts"]
+  "include": ["**/*.ts", ".eslintrc.cjs", "vitest.config.js"]
 }
