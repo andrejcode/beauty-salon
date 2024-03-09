@@ -11,7 +11,7 @@ import businessTimesRoutes from './modules/businessTimes/businessTimesRoutes';
 export default function createApp(db: Database) {
   const app = express();
 
-  app.use(cors({ origin: 'http://localhost:5173' }));
+  app.use(cors());
   app.use(express.json());
 
   app.use('/health', (_req: Request, res: Response) => {
