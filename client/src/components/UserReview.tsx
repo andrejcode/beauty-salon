@@ -33,7 +33,7 @@ export default function UserReview() {
           },
         });
 
-        if (response.ok) {
+        if (response.status === 200) {
           const reviewDto = (await response.json()) as ReviewDto;
           setReview(reviewDto);
         }

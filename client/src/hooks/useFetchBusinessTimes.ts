@@ -12,9 +12,11 @@ export default function useFetchBusinessTimes() {
 
         const resposne = await fetch('http://localhost:3000/business-times');
 
-        if (resposne.ok) {
+        if (resposne.status === 200) {
           const businessTimesDto = (await resposne.json()) as BusinessTimeDto;
           setTimes(businessTimesDto);
+        } else {
+          setTimes(null);
         }
       } catch (e) {
         setTimes(null);
