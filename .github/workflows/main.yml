@@ -55,6 +55,9 @@ jobs:
           DB_HOST: localhost
           PORT: 3000
 
+      - name: Seed the database
+        run: npm run seed -w=server
+
       - name: Build front end for E2E tests
         run: npm run build -w=client
 
