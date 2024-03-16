@@ -123,8 +123,6 @@ jobs:
         run: >-
           docker build
           -t $CLIENT_IMAGE_TAG
-          --build-arg API_HOST=$API_HOST
-          --build-arg API_PORT=$API_PORT
           -f ./client/Dockerfile .
 
       - name: Push server image
@@ -170,6 +168,7 @@ jobs:
               },
               "environment": {
                 "NODE_ENV": "production",
+                "PORT": "3000",
                 "DB_SSL": "true",
                 "DB_HOST": "${{ secrets.PROD_DB_HOST }}",
                 "DB_NAME": "${{ secrets.PROD_DB_NAME }}",
