@@ -17,9 +17,7 @@ const schema = z
       .default('development'),
     port: z.coerce.number().default(3000),
     database: z.object({
-      type: z
-        .enum(['postgres', 'mysql', 'better-sqlite3', 'pg-mem'])
-        .default('postgres'),
+      type: z.enum(['postgres', 'pg-mem']).default('postgres'),
       host: z.string().default('localhost'),
       port: z.coerce.number().default(5432),
       database: isInMemory ? z.string().optional() : z.string(),
@@ -27,6 +25,10 @@ const schema = z
       password: isInMemory ? z.string().optional() : z.string(),
       logging: z.preprocess(coerceBoolean, z.boolean().default(isDevTest)),
       synchronize: z.preprocess(coerceBoolean, z.boolean().default(isDevTest)),
+      extra: z.object({
+        sslmode: z.string().default('require'),
+        ssl: z.preprocess(coerceBoolean, z.boolean().default(!isDevTest)),
+      }),
     }),
     tokenKey: z.string().default(() => {
       if (isDevTest) {
@@ -65,6 +67,7 @@ const config = schema.parse({
     password: env.DB_PASSWORD,
     logging: env.DB_LOGGING,
     synchronize: env.DB_SYNC,
+    extra: { ssl: env.DB_SSL },
   },
 
   tokenKey: env.TOKEN_KEY,
