@@ -1,6 +1,7 @@
 // Function that returns first working day date
 export function getWorkingDayDate(offDays: string[]): string {
   const currentDate: Date = new Date();
+  const nextDay: Date = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000);
   let dayOfWeek: number = currentDate.getDay();
 
   function isOffDay(day: number): boolean {
@@ -17,13 +18,13 @@ export function getWorkingDayDate(offDays: string[]): string {
   }
 
   while (isOffDay(dayOfWeek)) {
-    currentDate.setDate(currentDate.getDate() + 1);
-    dayOfWeek = currentDate.getDay();
+    nextDay.setDate(nextDay.getDate() + 1);
+    dayOfWeek = nextDay.getDay();
   }
 
-  const year: number = currentDate.getFullYear();
-  const month: number = currentDate.getMonth() + 1;
-  const day: number = currentDate.getDate();
+  const year: number = nextDay.getFullYear();
+  const month: number = nextDay.getMonth() + 1;
+  const day: number = nextDay.getDate();
 
   const formattedMonth: string = month < 10 ? `0${month}` : `${month}`;
   const formattedDay: string = day < 10 ? `0${day}` : `${day}`;

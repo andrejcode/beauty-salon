@@ -42,7 +42,7 @@ export default function Appointments() {
           const past: AppointmentDto[] = [];
 
           appointmentsDto.forEach((appointment) => {
-            const appointmentDate = new Date(appointment.date);
+            const appointmentDate = new Date(`${appointment.date}T${appointment.time}`);
 
             if (appointmentDate >= today) {
               upcoming.push(appointment);

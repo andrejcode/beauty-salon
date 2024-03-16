@@ -13,6 +13,16 @@ export function addMinutes(time: string, minutes: number): string {
   return `${newHours}:${newMins}:${newSecs}`;
 }
 
+export function getCurrentTimeAsString(): string {
+  const currentTime = new Date();
+
+  const hours = currentTime.getHours().toString().padStart(2, '0');
+  const minutes = currentTime.getMinutes().toString().padStart(2, '0');
+  const seconds = currentTime.getSeconds().toString().padStart(2, '0');
+
+  return `${hours}:${minutes}:${seconds}`;
+}
+
 export function generateTimes(startTime: string, endTime: string) {
   const times: string[] = [];
 
@@ -37,11 +47,33 @@ export function isValidTimeFormat(timeString: string): boolean {
   return timeRegex.test(timeString);
 }
 
-export function isDateEqualOrGreater(dateToCheck: Date, today: Date): boolean {
+export function isDateToday(dateToCheck: Date): boolean {
   // Extract year, month, and day from the dates
   const yearToCheck = dateToCheck.getFullYear();
   const monthToCheck = dateToCheck.getMonth();
   const dayToCheck = dateToCheck.getDate();
+
+  const today = new Date();
+
+  const yearToday = today.getFullYear();
+  const monthToday = today.getMonth();
+  const dayToday = today.getDate();
+
+  // Compare year, month, and day
+  return (
+    yearToCheck === yearToday &&
+    monthToCheck === monthToday &&
+    dayToCheck === dayToday
+  );
+}
+
+export function isDateTodayOrLater(dateToCheck: Date): boolean {
+  // Extract year, month, and day from the dates
+  const yearToCheck = dateToCheck.getFullYear();
+  const monthToCheck = dateToCheck.getMonth();
+  const dayToCheck = dateToCheck.getDate();
+
+  const today = new Date();
 
   const yearToday = today.getFullYear();
   const monthToday = today.getMonth();

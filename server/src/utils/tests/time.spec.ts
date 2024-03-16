@@ -1,10 +1,11 @@
 import { describe, it, expect } from 'vitest';
 import {
   addMinutes,
-  isDateEqualOrGreater,
+  isDateTodayOrLater,
   generateTimes,
   isValidDateFormat,
   isValidTimeFormat,
+  isDateToday,
 } from '../time';
 
 describe('addMinutes', () => {
@@ -45,16 +46,21 @@ describe('isValidTimeFormat', () => {
   });
 });
 
-describe('isDateEqualOrGreater', () => {
+describe('isDateTodayOrLater', () => {
   it('should return true when date is equal', () => {
-    const date1 = new Date();
-    const date2 = new Date();
-    expect(isDateEqualOrGreater(date1, date2)).toEqual(true);
+    const date = new Date();
+    expect(isDateTodayOrLater(date)).toEqual(true);
   });
 
   it('should return false when date is less then todays date', () => {
-    const date1 = new Date('1999-01-01');
-    const date2 = new Date();
-    expect(isDateEqualOrGreater(date1, date2)).toEqual(false);
+    const date = new Date('1999-01-01');
+    expect(isDateTodayOrLater(date)).toEqual(false);
+  });
+
+  describe('isDateToday', () => {
+    it('should return true if date is today', () => {
+      const date = new Date();
+      expect(isDateToday(date)).toEqual(true);
+    });
   });
 });

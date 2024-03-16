@@ -107,7 +107,7 @@ export default function BookAppointment() {
         const formattedDate = formatDate(selectedDate!);
 
         const response = await fetch(
-          `/api/appointments/available?employeeId=${1}&date=${formattedDate}&duration=${appointmentDuration}`,
+          `/api/appointments/available?employeeId=${chosenEmployee}&date=${formattedDate}&duration=${appointmentDuration}`,
           {
             method: 'GET',
             headers: {

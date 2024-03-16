@@ -65,7 +65,7 @@ describe('authenticated user', () => {
       offDays: ['Saturday', 'Sunday'],
     });
 
-    const currentDate = getWorkingDayDate(businessTime.offDays);
+    const workingDate = getWorkingDayDate(businessTime.offDays);
 
     const createResponse = await supertest(app)
       .post('/appointments/')
@@ -73,7 +73,7 @@ describe('authenticated user', () => {
       .send({
         userId: user!.id,
         employeeId: employee.id,
-        date: currentDate,
+        date: workingDate,
         time: '12:00:00',
         duration: 30,
         services: ['service 1'],
@@ -83,7 +83,7 @@ describe('authenticated user', () => {
 
     const availableTimesResponse = await supertest(app)
       .get(
-        `/appointments/available?employeeId=${employee.id}&duration=30&date=${currentDate}`
+        `/appointments/available?employeeId=${employee.id}&duration=30&date=${workingDate}`
       )
       .set('Authorization', `Bearer ${token}`)
       .expect(200);

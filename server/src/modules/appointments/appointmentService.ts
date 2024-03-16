@@ -3,8 +3,10 @@ import { Appointment, Employee, BusinessTime } from '../../entities';
 import {
   addMinutes,
   generateTimes,
+  getCurrentTimeAsString,
   getDayNameFromNumber,
-  isDateEqualOrGreater,
+  isDateTodayOrLater,
+  isDateToday,
   isValidDateFormat,
 } from '../../utils/time';
 
@@ -23,9 +25,8 @@ export default (
     }
 
     const newDate = new Date(date);
-    const today = new Date();
 
-    if (!isDateEqualOrGreater(newDate, today)) {
+    if (!isDateTodayOrLater(newDate)) {
       throw new Error('Date must be greater then or equal to todays date.');
     }
 
@@ -97,8 +98,15 @@ export default (
       businessTimes.startTime,
       businessTimes.endTime
     );
+
+    // We don't want user to be able to pick times before now
+    const timeNow = getCurrentTimeAsString();
+
     const availableTimes = generatedTimes.filter(
-      (time) => time <= businessEndTime && !occupiedTimes.has(time)
+      (time) =>
+        time <= businessEndTime &&
+        !occupiedTimes.has(time) &&
+        (isDateToday(newDate) ? time >= timeNow : true)
     );
 
     return availableTimes;
