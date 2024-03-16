@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16.1-alpine
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: salon
+    ports:
+      - '5432:5432'
+    volumes:
+      - salon-db:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: .
+      dockerfile: ./server/Dockerfile
+    # env_file:
+    #   - ./server/.env
+    environment:
+      DB_HOST: postgres
+      DB_USERNAME: test
+      DB_PASSWORD: test
+      DB_NAME: salon
+      PORT: 3000
+    ports:
+      - '3000:3000'
+    depends_on:
+      - postgres
+
+  client:
+    build:
+      context: .
+      dockerfile: ./client/Dockerfile
+    environment:
+      API_HOST: api
+      API_PORT: 3000
+    ports:
+      - '3001:80'
+    depends_on:
+      - api
+
+volumes:
+  salon-db:
