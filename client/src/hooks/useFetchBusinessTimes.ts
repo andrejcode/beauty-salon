@@ -10,7 +10,7 @@ export default function useFetchBusinessTimes() {
       try {
         setIsLoadingTimes(true);
 
-        const resposne = await fetch('http://localhost:3000/business-times');
+        const resposne = await fetch('/api/business-times');
 
         if (resposne.status === 200) {
           const businessTimesDto = (await resposne.json()) as BusinessTimeDto;

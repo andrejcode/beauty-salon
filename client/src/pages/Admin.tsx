@@ -19,7 +19,7 @@ export default function Admin() {
       try {
         setIsLoading(true);
 
-        const response = await fetch('http://localhost:3000/appointments/all', {
+        const response = await fetch('/api/appointments/all', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

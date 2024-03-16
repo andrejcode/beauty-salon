@@ -20,9 +20,7 @@ export default function Reviews() {
         setIsLoading(true);
 
         const stars = calculateStarsByIndex(activeButtonIndex);
-        const response = await fetch(
-          `http://localhost:3000/reviews?limit=10&stars=${stars}&skip=${skip}`
-        );
+        const response = await fetch(`/api/reviews?limit=10&stars=${stars}&skip=${skip}`);
 
         if (response.ok) {
           const reviewsDto = (await response.json()) as ReviewDto[];

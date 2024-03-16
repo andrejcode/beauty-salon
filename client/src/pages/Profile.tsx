@@ -20,7 +20,7 @@ export default function Profile() {
       try {
         setIsLoading(true);
 
-        const response = await fetch('http://localhost:3000/users/profile', {
+        const response = await fetch('/api/users/profile', {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${getUserToken()}`,

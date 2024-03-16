@@ -50,7 +50,7 @@ export default function BookAppointment() {
     async function fetchServices() {
       try {
         setIsLoadingServices(true);
-        const response = await fetch('http://localhost:3000/services');
+        const response = await fetch('/api/services');
 
         if (response.ok) {
           const servicesDto = (await response.json()) as SalonServiceDto[];
@@ -71,7 +71,7 @@ export default function BookAppointment() {
       try {
         setIsLoadingEmployees(true);
 
-        const response = await fetch('http://localhost:3000/employees');
+        const response = await fetch('/api/employees');
 
         if (response.ok) {
           const employeesDto = (await response.json()) as EmployeeDto[];
@@ -107,7 +107,7 @@ export default function BookAppointment() {
         const formattedDate = formatDate(selectedDate!);
 
         const response = await fetch(
-          `http://localhost:3000/appointments/available?employeeId=${1}&date=${formattedDate}&duration=${appointmentDuration}`,
+          `/api/appointments/available?employeeId=${1}&date=${formattedDate}&duration=${appointmentDuration}`,
           {
             method: 'GET',
             headers: {
@@ -171,7 +171,7 @@ export default function BookAppointment() {
         })
         .filter((name) => name !== null);
 
-      const response = await fetch('http://localhost:3000/appointments', {
+      const response = await fetch('/api/appointments', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

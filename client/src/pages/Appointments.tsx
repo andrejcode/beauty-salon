@@ -25,7 +25,7 @@ export default function Appointments() {
       try {
         setIsLoading(true);
 
-        const response = await fetch('http://localhost:3000/appointments', {
+        const response = await fetch('/api/appointments', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -75,16 +75,13 @@ export default function Appointments() {
     }
 
     try {
-      const response = await fetch(
-        `http://localhost:3000/appointments${'/' + selectedAppointmentId}`,
-        {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${getUserToken()}`,
-          },
-        }
-      );
+      const response = await fetch(`/api/appointments${'/' + selectedAppointmentId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getUserToken()}`,
+        },
+      });
 
       if (response.ok) {
         // Remove the deleted appointment from the state

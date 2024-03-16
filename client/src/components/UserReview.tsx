@@ -26,7 +26,7 @@ export default function UserReview() {
       try {
         setIsLoading(true);
 
-        const response = await fetch(`http://localhost:3000/reviews/user`, {
+        const response = await fetch('/api/reviews/user', {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${getUserToken()}`,
@@ -62,17 +62,14 @@ export default function UserReview() {
     try {
       setIsLoading(true);
 
-      const response = await fetch(
-        `http://localhost:3000/reviews${review.id !== -1 ? '/' + review.id : ''}`,
-        {
-          method: `${review.id !== -1 ? 'PATCH' : 'POST'}`,
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${getUserToken()}`,
-          },
-          body: JSON.stringify({ reviewText: review.reviewText, stars: review.stars }),
-        }
-      );
+      const response = await fetch(`/api/reviews${review.id !== -1 ? '/' + review.id : ''}`, {
+        method: `${review.id !== -1 ? 'PATCH' : 'POST'}`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getUserToken()}`,
+        },
+        body: JSON.stringify({ reviewText: review.reviewText, stars: review.stars }),
+      });
 
       if (response.ok) {
         setErrorMessage('');
@@ -98,7 +95,7 @@ export default function UserReview() {
 
   async function handleDelete() {
     try {
-      const response = await fetch(`http://localhost:3000/reviews${'/' + review.id}`, {
+      const response = await fetch(`/api/reviews${'/' + review.id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
