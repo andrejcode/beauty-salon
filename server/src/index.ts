@@ -18,6 +18,6 @@ database.initialize().then(() => {
 
   app.listen(config.port, () => {
     // eslint-disable-next-line no-console
-    console.log(`Server is listening on ${config.port}`);
+    console.log(`Server is listening on port ${config.port}`);
   });
 });
