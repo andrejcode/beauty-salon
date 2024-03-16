@@ -34,6 +34,7 @@ Welcome to the Beauty Salon! This project is a monorepo containing both the clie
   - Programming language: TypeScript
   - Framework: React
   - Build tool: Vite
+  - Testing: Playwright
   - Linting/formatting: ESLint, Prettier
 
 ## Getting Started
@@ -41,6 +42,7 @@ Welcome to the Beauty Salon! This project is a monorepo containing both the clie
 ### Prerequisites:
 
 - Node.js and npm installed
+- If you want to use Docker you must also install it
 
 ### Instructions:
 
@@ -59,3 +61,28 @@ Welcome to the Beauty Salon! This project is a monorepo containing both the clie
 - **Client**:
   - `cd client` - navigate to client folder
   - `npm run dev` - run the development server
+
+## Docker
+
+To start the application run:
+
+`docker compose up`
+
+Make sure to seed the database:
+
+`docker compose exec api npm run seed`
+
+If something goes wrong, you can rebuild the images with `docker compose build` and try `docker compose up` again. You can also perform both operations with `docker compose up --build`.
+
+Visit http://localhost:3001 in your browser.
+
+## Live preview
+
+You can find the live preview [here](https://beauty-salon.97f1q21mphfe2.eu-central-1.cs.amazonlightsail.com/).
+
+## Inspiration
+
+The web app is inspired by the features and design elements found in the following two websites:
+
+1. [Palast of Beauty](https://palast-of-beauty.de/)
+2. [Salonized Booking Widget](https://salonized.com/en/features/booking-widget)
