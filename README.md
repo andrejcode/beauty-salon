@@ -76,10 +76,6 @@ If something goes wrong, you can rebuild the images with `docker compose build` 
 
 Visit http://localhost:3001 in your browser.
 
-## Live preview
-
-You can find the live preview [here](https://beauty-salon.97f1q21mphfe2.eu-central-1.cs.amazonlightsail.com/).
-
 ## Inspiration
 
 The web app is inspired by the features and design elements found in the following two websites:

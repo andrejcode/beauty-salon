@@ -106,7 +106,7 @@ export default (
       (time) =>
         time <= businessEndTime &&
         !occupiedTimes.has(time) &&
-        (isDateToday(newDate) ? time >= timeNow : true)
+        (isDateToday(newDate) ? time > timeNow : true)
     );
 
     return availableTimes;
