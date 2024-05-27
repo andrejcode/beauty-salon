@@ -59,7 +59,7 @@ export default (db: Database) => {
     try {
       const appointments = await appointmentRepo.find({
         where: { userId },
-        order: { date: 'DESC' },
+        order: { date: 'ASC' },
       });
 
       const appointmentsDto = appointments.map((appointment) =>
