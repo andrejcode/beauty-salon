@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
-import { getUserToken } from '../utils/auth';
-import { Alert, Col, Container, Row } from 'react-bootstrap';
-import { formatDateGerman } from '../utils/time';
-import { CgProfile } from 'react-icons/cg';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Alert from 'react-bootstrap/Alert';
+import { FaRegUserCircle } from 'react-icons/fa';
 import LoadingSpinner from '../components/LoadingSpinner';
 import UserReview from '../components/UserReview';
-import { UserDto } from '@server/shared/dtos';
 import useTokenExpiration from '../hooks/useTokenExpiration';
+import { getUserToken } from '../utils/auth';
+import { formatDateGerman } from '../utils/time';
+import { type UserDto } from '@server/shared/dtos';
 
 export default function Profile() {
   const { handleFetchResponse } = useTokenExpiration();
@@ -41,8 +44,7 @@ export default function Profile() {
     }
 
     void fetchUserInfo();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [handleFetchResponse]);
 
   return (
     <Container className="initial-height my-4">
@@ -58,7 +60,7 @@ export default function Profile() {
           <h2>My Profile</h2>
           <Row className="my-3">
             <Col>
-              <CgProfile size={'10em'} />
+              <FaRegUserCircle size={'10em'} />
             </Col>
             <Col xs={10} style={{ lineHeight: '1.1' }} className="mt-3">
               <p style={{ fontSize: '1.2em', fontWeight: 'bold' }}>{userInfo.fullName}</p>
