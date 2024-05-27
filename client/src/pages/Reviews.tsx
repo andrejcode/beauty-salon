@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Alert, Card, CardBody, CardText, CardTitle, Col, Container, Row } from 'react-bootstrap';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Card from 'react-bootstrap/Card';
+import Alert from 'react-bootstrap/Alert';
 import Button from '../components/Button';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { formatDateGerman } from '../utils/time';
 import Stars from '../components/Stars';
 import { calculateStarsByIndex } from '../utils/stars';
-import type { ReviewDto } from '@server/shared/dtos';
+import { formatDateGerman } from '../utils/time';
+import { type ReviewDto } from '@server/shared/dtos';
 
 export default function Reviews() {
   const [activeButtonIndex, setActiveButtonIndex] = useState<number>(4);
@@ -78,17 +82,17 @@ export default function Reviews() {
               {reviews.map((review) => (
                 <Col key={review.id} xs={12} sm={6} md={4} lg={3} className="mb-3">
                   <Card>
-                    <CardBody>
-                      <CardTitle>{Stars({ numberOfFullStars: review.stars })}</CardTitle>
-                      <CardText>{formatDateGerman(review.updatedAt.toString())}</CardText>
-                      <CardText style={{ fontSize: '1.4em' }}>
+                    <Card.Body>
+                      <Card.Title>{Stars({ numberOfFullStars: review.stars })}</Card.Title>
+                      <Card.Text>{formatDateGerman(review.updatedAt.toString())}</Card.Text>
+                      <Card.Text style={{ fontSize: '1.4em' }}>
                         &quot;{review.reviewText}&quot;
-                      </CardText>
-                      <CardText>- {review.user!.fullName}</CardText>
-                    </CardBody>
+                      </Card.Text>
+                      <Card.Text>- {review.user!.fullName}</Card.Text>
+                    </Card.Body>
                   </Card>
                 </Col>
-              ))}{' '}
+              ))}
             </Row>
           ) : (
             <p className="my-3">There are no reviews yet.</p>
