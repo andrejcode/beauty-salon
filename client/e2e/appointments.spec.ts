@@ -31,7 +31,7 @@ test('user can signup, create and delete appointment', async ({ page }) => {
   // Expect that appointment is created
   await expect(page.getByText('Appointment on')).toBeVisible();
 
-  await page.getByRole('main').locator('path').nth(1).click();
+  await page.getByRole('button').nth(1).click();
   await page.getByRole('button', { name: 'Yes' }).click();
 
   // Expect that appointment is deleted
