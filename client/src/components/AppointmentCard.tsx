@@ -1,11 +1,14 @@
-import { Card, CardBody, CardText, CardTitle } from 'react-bootstrap';
-import { MdDelete } from 'react-icons/md';
+import Card from 'react-bootstrap/Card';
+import CardBody from 'react-bootstrap/CardBody';
+import CardText from 'react-bootstrap/CardText';
+import CardTitle from 'react-bootstrap/CardTitle';
+import { FaTrash } from 'react-icons/fa';
 
 interface AppointmentCardProps {
   date: string;
   durationInMinutes: number;
   price: string;
-  handleClick?: () => void;
+  handleDeleteClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
   showIcon?: boolean;
   user?: string;
   employee?: string;
@@ -17,7 +20,7 @@ export default function AppointmentCard({
   durationInMinutes,
   price,
   showIcon = true,
-  handleClick,
+  handleDeleteClick,
   user,
   employee,
   services,
@@ -36,9 +39,9 @@ export default function AppointmentCard({
         {services && <CardText>Services: {services}</CardText>}
       </CardBody>
       {showIcon && (
-        <div className="appointment-delete-button" onClick={handleClick}>
-          <MdDelete size="2em" />
-        </div>
+        <button className="appointment-delete-button clickable" onClick={handleDeleteClick}>
+          <FaTrash size="2em" />
+        </button>
       )}
     </Card>
   );

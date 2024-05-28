@@ -76,6 +76,7 @@ input[type='checkbox']:focus {
 }
 
 .appointment-delete-button {
+  all: unset;
   position: absolute;
   bottom: 0;
   right: 0;

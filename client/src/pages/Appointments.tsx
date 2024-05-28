@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
-import { getUserToken } from '../utils/auth';
-import { Alert, Col, Container, Row } from 'react-bootstrap';
-import { AppointmentDto } from '@server/shared/dtos';
-import useTokenExpiration from '../hooks/useTokenExpiration';
+import Alert from 'react-bootstrap/Alert';
+import Container from 'react-bootstrap/Container';
+import AppointmentList from '../components/AppointmentList';
 import BookButton from '../components/BookButton';
-import { formatDateGerman } from '../utils/time';
-import AppointmentCard from '../components/AppointmentCard';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ModalComponent from '../components/ModalComponent';
+import useTokenExpiration from '../hooks/useTokenExpiration';
+import { getUserToken } from '../utils/auth';
+import { AppointmentDto } from '@server/shared/dtos';
 
 export default function Appointments() {
   const [upcomingAppointments, setUpcomingAppointments] = useState<AppointmentDto[]>([]);
@@ -65,8 +65,7 @@ export default function Appointments() {
     }
 
     void fetchAppointments();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [handleFetchResponse]);
 
   async function handleDelete() {
     if (!selectedAppointmentId) {
@@ -85,11 +84,11 @@ export default function Appointments() {
 
       if (response.ok) {
         // Remove the deleted appointment from the state
-        setUpcomingAppointments(
-          upcomingAppointments.filter((appointment) => appointment.id !== selectedAppointmentId)
+        setUpcomingAppointments((prevAppointments) =>
+          prevAppointments.filter((appointment) => appointment.id !== selectedAppointmentId)
         );
-        setPastAppointments(
-          pastAppointments.filter((appointment) => appointment.id !== selectedAppointmentId)
+        setPastAppointments((prevAppointments) =>
+          prevAppointments.filter((appointment) => appointment.id !== selectedAppointmentId)
         );
 
         setSuccessMessage('Appointment successfully deleted.');
@@ -101,6 +100,11 @@ export default function Appointments() {
     } catch (e) {
       setErrorMessage('An unknown error occured.');
     }
+  }
+
+  function handleDeleteClick(appointmentId: number) {
+    setSelectedAppointmentId(appointmentId);
+    setShowModal(true);
   }
 
   return (
@@ -128,46 +132,21 @@ export default function Appointments() {
           </div>
         ) : (
           <>
-            <h2>Upcoming appointments</h2>
-            {upcomingAppointments.length > 0 ? (
-              <Row className="my-3">
-                {upcomingAppointments.map((appointment) => (
-                  <Col key={appointment.id} xs={12} sm={6} md={4} lg={3} className="mb-3">
-                    <AppointmentCard
-                      date={formatDateGerman(`${appointment.date}T${appointment.time}`)}
-                      durationInMinutes={appointment.durationInMinutes}
-                      price={(appointment.priceInCents / 100).toFixed(2)}
-                      handleClick={() => {
-                        setSelectedAppointmentId(appointment.id);
-                        setShowModal(true);
-                      }}
-                    />
-                  </Col>
-                ))}
-              </Row>
-            ) : (
+            <AppointmentList
+              title="Upcoming appointments"
+              appointments={upcomingAppointments}
+              handleDeleteClick={handleDeleteClick}
+            />
+            {upcomingAppointments.length <= 0 && (
               <p className="my-3">There are no upcoming appointments.</p>
             )}
 
             {pastAppointments.length > 0 && (
-              <div className="mb-3">
-                <h2>Past appointments</h2>
-                <Row className="my-3">
-                  {pastAppointments.map((appointment) => (
-                    <Col key={appointment.id} xs={12} sm={6} md={4} lg={3} className="mb-3">
-                      <AppointmentCard
-                        date={formatDateGerman(`${appointment.date}T${appointment.time}`)}
-                        durationInMinutes={appointment.durationInMinutes}
-                        price={(appointment.priceInCents / 100).toFixed(2)}
-                        handleClick={() => {
-                          setSelectedAppointmentId(appointment.id);
-                          setShowModal(true);
-                        }}
-                      />
-                    </Col>
-                  ))}
-                </Row>
-              </div>
+              <AppointmentList
+                title="Past appointments"
+                appointments={pastAppointments}
+                handleDeleteClick={handleDeleteClick}
+              />
             )}
           </>
         )}
