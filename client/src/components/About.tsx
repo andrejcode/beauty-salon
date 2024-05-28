@@ -1,4 +1,7 @@
-import { Image, Container, Col, Row } from 'react-bootstrap';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Image from 'react-bootstrap/Image';
 import BeautySalonImage from '../assets/beauty-salon.jpeg';
 
 export default function About() {

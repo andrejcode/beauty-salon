@@ -1,13 +1,14 @@
-import Stars from './Stars';
-import { calculateStarsByIndex } from '../utils/stars';
 import { useEffect, useState } from 'react';
-import { Alert, Form } from 'react-bootstrap';
+import Alert from 'react-bootstrap/Alert';
+import Form from 'react-bootstrap/Form';
 import Button from './Button';
-import LoadingSpinner from './LoadingSpinner';
-import { getUserToken } from '../utils/auth';
+import Stars from './Stars';
 import ModalComponent from './ModalComponent';
-import { ReviewDto } from '@server/shared/dtos';
+import LoadingSpinner from './LoadingSpinner';
 import useTokenExpiration from '../hooks/useTokenExpiration';
+import { calculateStarsByIndex } from '../utils/stars';
+import { getUserToken } from '../utils/auth';
+import { type ReviewDto } from '@server/shared/dtos';
 
 const emptyDate = new Date(0);
 const initialState: ReviewDto = { id: -1, reviewText: '', stars: 0, updatedAt: emptyDate };

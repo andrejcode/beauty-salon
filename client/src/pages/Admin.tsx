@@ -1,11 +1,14 @@
-import { AppointmentDto } from '@server/shared/dtos';
 import { useEffect, useState } from 'react';
-import { Alert, Col, Container, Row } from 'react-bootstrap';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Alert from 'react-bootstrap/Alert';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { getUserToken } from '../utils/auth';
-import useTokenExpiration from '../hooks/useTokenExpiration';
 import AppointmentCard from '../components/AppointmentCard';
+import useTokenExpiration from '../hooks/useTokenExpiration';
 import { formatDateGerman } from '../utils/time';
+import { getUserToken } from '../utils/auth';
+import { type AppointmentDto } from '@server/shared/dtos';
 
 export default function Admin() {
   const [upcomingAppointments, setUpcomingAppointments] = useState<AppointmentDto[]>([]);
@@ -42,8 +45,7 @@ export default function Admin() {
     }
 
     void fetchUpcomingAppointments();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [handleFetchResponse]);
 
   return (
     <Container className="mt-3 initial-height">

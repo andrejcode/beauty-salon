@@ -1,4 +1,4 @@
-import { Button as BButton } from 'react-bootstrap';
+import BButton from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Button from './Button';
 
