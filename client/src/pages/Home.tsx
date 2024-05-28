@@ -1,4 +1,4 @@
-import { Container } from 'react-bootstrap';
+import Container from 'react-bootstrap/Container';
 import BeautyFaceImage from '../assets/beauty-face.jpeg';
 import About from '../components/About';
 import BookButton from '../components/BookButton';

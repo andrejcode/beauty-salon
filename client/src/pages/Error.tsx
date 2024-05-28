@@ -1,4 +1,4 @@
-import { Container } from 'react-bootstrap';
+import Container from 'react-bootstrap/Container';
 import { useRouteError, isRouteErrorResponse, useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 
