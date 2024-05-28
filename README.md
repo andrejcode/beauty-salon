@@ -82,3 +82,7 @@ The web app is inspired by the features and design elements found in the followi
 
 1. [Palast of Beauty](https://palast-of-beauty.de/)
 2. [Salonized Booking Widget](https://salonized.com/en/features/booking-widget)
+
+## Screenshots
+
+<img src="screenshots/screenshot1.png" alt="Beauty Salon Homepage" width="600px" height="auto" />
