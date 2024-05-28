@@ -1,16 +1,9 @@
-import { Col, Container, Row } from 'react-bootstrap';
-import LoadingSpinner from './LoadingSpinner';
-
-import useFetchBusinessTimes from '../hooks/useFetchBusinessTimes';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import OpeningHours from './OpeningHours';
 
 export default function Footer() {
-  const { times, isLoadingTimes } = useFetchBusinessTimes();
-
-  function removeSeconds(time: string): string {
-    const parts: string[] = time.split(':');
-    return parts.slice(0, 2).join(':');
-  }
-
   return (
     <footer className="main-color mt-5">
       <Container>
@@ -22,23 +15,7 @@ export default function Footer() {
             <p className="mb-0">12345 Duisburg</p>
             <p>+49 12 3456789</p>
           </Col>
-          {times && (
-            <Col xs={12} md={6} className="mt-3">
-              <>
-                <h3>Opening Hours</h3>
-                {isLoadingTimes ? (
-                  <LoadingSpinner />
-                ) : (
-                  <>
-                    <p className="mb-0">
-                      {removeSeconds(times.startTime)}-{removeSeconds(times.endTime)}
-                    </p>
-                    <p>Closed on: {times.offDays.join(', ')}</p>
-                  </>
-                )}
-              </>
-            </Col>
-          )}
+          <OpeningHours />
           <p className="text-center mt-2">
             Copyright &copy; {new Date().getFullYear()} Beauty Salon
           </p>
