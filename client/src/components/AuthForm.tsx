@@ -116,7 +116,7 @@ export default function AuthForm({
 
           <Button
             type="submit"
-            title={isLoading ? 'Loading' : isLoading ? 'Login' : 'Signup'}
+            title={isLoading ? 'Loading' : isLogin ? 'Login' : 'Signup'}
             disabled={isLoading}
           />
         </Form>
