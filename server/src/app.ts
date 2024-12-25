@@ -1,6 +1,6 @@
-import express, { Request, Response } from 'express';
+import express, { type Request, type Response } from 'express';
 import cors from 'cors';
-import { Database } from './database';
+import { type Database } from './database';
 import usersRoute from './modules/users/usersRoutes';
 import servicesRoute from './modules/salonServices/salonServicesRoutes';
 import reviewsRoute from './modules/reviews/reviewsRoutes';

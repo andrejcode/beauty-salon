@@ -1,7 +1,7 @@
-import { Request, Response, NextFunction } from 'express';
-import jwt, { JwtPayload, VerifyErrors } from 'jsonwebtoken';
+import type { Request, Response, NextFunction } from 'express';
+import jwt, { type JwtPayload, type VerifyErrors } from 'jsonwebtoken';
 import config from '../config';
-import { Database } from '../database';
+import { type Database } from '../database';
 import { User } from '../entities';
 
 export function authenticateToken(

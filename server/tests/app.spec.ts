@@ -1,6 +1,6 @@
 import supertest from 'supertest';
 import { it, afterAll, describe } from 'vitest';
-import createApp from '../src/app';
+import createApp from '@/app';
 import { createTestDatabase } from './utils/createTestDatabase';
 
 const database = await createTestDatabase();

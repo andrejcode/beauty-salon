@@ -1,4 +1,4 @@
-import { Service } from '../../../entities/Service';
+import { Service } from '@/entities/Service';
 
 const serviceData: Pick<
   Service,

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
-import { Employee, Review, Service, User, BusinessTime } from '../../entities';
-import config from '../../config';
+import { Employee, Review, Service, User, BusinessTime } from '@/entities';
+import config from '@/config';
 import { createDatabase } from '..';
 import employeeData from './utils/employeeData';
 import serviceData from './utils/serviceData';

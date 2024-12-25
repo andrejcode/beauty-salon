@@ -1,15 +1,9 @@
 import { describe, it, expect, afterAll, afterEach } from 'vitest';
 import supertest from 'supertest';
-import createApp from '../../../app';
-import { createTestDatabase } from '../../../../tests/utils/createTestDatabase';
-import {
-  Appointment,
-  BusinessTime,
-  Employee,
-  Review,
-  User,
-} from '../../../entities';
-import { getWorkingDayDate } from '../../../../tests/utils';
+import { createTestDatabase } from '@tests/utils/createTestDatabase';
+import { getWorkingDayDate } from '@tests/utils';
+import createApp from '@/app';
+import { Appointment, BusinessTime, Employee, Review, User } from '@/entities';
 
 const database = await createTestDatabase();
 const app = createApp(database);

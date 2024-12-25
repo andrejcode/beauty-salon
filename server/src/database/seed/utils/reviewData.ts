@@ -1,4 +1,4 @@
-import { Review } from '../../../entities';
+import { Review } from '@/entities';
 
 const reviewData: Pick<Review, 'reviewText' | 'stars' | 'userId'>[] = [
   {

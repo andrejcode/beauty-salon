@@ -1,4 +1,4 @@
-import path from 'path';
+import { resolve } from 'path';
 import { defineConfig } from 'vite';
 
 // https://vitejs.dev/config/
@@ -8,12 +8,14 @@ export default defineConfig({
     globals: true,
     coverage: {
       provider: 'v8',
+      include: ['**/src/**/*.ts'],
+      exclude: ['**/src/database/**', '**/src/entities/**'],
     },
   },
   resolve: {
     alias: {
-      '@server': path.resolve(__dirname, './src'),
-      '@tests': path.resolve(__dirname, './tests'),
+      '@': resolve(__dirname, './src'),
+      '@tests': resolve(__dirname, './tests'),
     },
   },
 });

@@ -1,10 +1,10 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import type { Repository } from 'typeorm';
-import { User } from '../../entities';
-import { isStrongPassword, isValidEmail, jwtSign } from '../../utils/auth';
-import { Database } from '../../database';
-import { mapUserToDto } from '../../utils/entityMappers';
+import { User } from '@/entities';
+import { isStrongPassword, isValidEmail, jwtSign } from '@/utils/auth';
+import type { Database } from '@/database';
+import { mapUserToDto } from '@/utils/entityMappers';
 
 export default (db: Database) => {
   const userRepo: Repository<User> = db.getRepository(User);

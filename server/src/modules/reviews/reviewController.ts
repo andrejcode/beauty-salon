@@ -1,9 +1,9 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { Repository } from 'typeorm';
-import { Review } from '../../entities';
-import { Database } from '../../database';
-import { performActionIfOwner } from '../../utils/auth';
-import { mapReviewToDto } from '../../utils/entityMappers';
+import { Review } from '@/entities';
+import type { Database } from '@/database';
+import { performActionIfOwner } from '@/utils/auth';
+import { mapReviewToDto } from '@/utils/entityMappers';
 
 interface RequestQuery {
   limit?: string;

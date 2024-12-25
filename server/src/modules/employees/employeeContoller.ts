@@ -1,8 +1,8 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { Repository } from 'typeorm';
-import { Employee } from '../../entities';
-import { Database } from '../../database';
-import { mapEmployeeToDto } from '../../utils/entityMappers';
+import { Employee } from '@/entities';
+import type { Database } from '@/database';
+import { mapEmployeeToDto } from '@/utils/entityMappers';
 
 export default (db: Database) => {
   const employeeRepo: Repository<Employee> = db.getRepository(Employee);

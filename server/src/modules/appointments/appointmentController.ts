@@ -1,15 +1,11 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { MoreThanOrEqual } from 'typeorm';
-import { Database } from '../../database';
-import { Appointment, Employee, Service, BusinessTime } from '../../entities';
+import type { Database } from '@/database';
+import { Appointment, Employee, Service, BusinessTime } from '@/entities';
 import createAppointmentService from './appointmentService';
-import {
-  formatDate,
-  isValidDateFormat,
-  isValidTimeFormat,
-} from '../../utils/time';
-import { performActionIfOwner } from '../../utils/auth';
-import { mapAppointmentToDto } from '../../utils/entityMappers';
+import { formatDate, isValidDateFormat, isValidTimeFormat } from '@/utils/time';
+import { performActionIfOwner } from '@/utils/auth';
+import { mapAppointmentToDto } from '@/utils/entityMappers';
 
 interface RequestQuery {
   employeeId?: string;

@@ -1,7 +1,7 @@
-import { Request, Response } from 'express';
-import { Database } from '../../database';
-import { BusinessTime } from '../../entities';
-import { mapBusinessTimeToDto } from '../../utils/entityMappers';
+import type { Request, Response } from 'express';
+import type { Database } from '@/database';
+import { BusinessTime } from '@/entities';
+import { mapBusinessTimeToDto } from '@/utils/entityMappers';
 
 export default (db: Database) => {
   const businessTimeRepo = db.getRepository(BusinessTime);

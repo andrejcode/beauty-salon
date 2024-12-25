@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
-import { User } from '../../../entities';
-import config from '../../../config';
+import { User } from '@/entities';
+import config from '@/config';
 
 async function hashPassword(password: string) {
   const encryptedPassword = await bcrypt.hash(password, 15);

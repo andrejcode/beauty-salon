@@ -1,5 +1,5 @@
-import config from '../../../src/config';
-import { createDatabase } from '../../../src/database';
+import config from '@/config';
+import { createDatabase } from '@/database';
 
 export async function createTestDatabase() {
   const db = createDatabase(config.database);

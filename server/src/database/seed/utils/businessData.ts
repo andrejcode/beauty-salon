@@ -1,4 +1,4 @@
-import { BusinessTime } from '../../../entities/BusinessTime';
+import { BusinessTime } from '@/entities/BusinessTime';
 
 const businessData: Omit<BusinessTime, 'createdAt' | 'updatedAt'> = {
   id: 1,

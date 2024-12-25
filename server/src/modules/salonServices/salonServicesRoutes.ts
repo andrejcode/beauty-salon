@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { Database } from '../../database';
+import type { Database } from '@/database';
 import createServiceController from './salonServiceController';
 
 export default (db: Database) => {

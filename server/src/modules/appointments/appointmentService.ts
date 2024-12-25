@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm';
-import { Appointment, Employee, BusinessTime } from '../../entities';
+import { Appointment, Employee, BusinessTime } from '@/entities';
 import {
   addMinutes,
   generateTimes,
@@ -8,7 +8,7 @@ import {
   isDateTodayOrLater,
   isDateToday,
   isValidDateFormat,
-} from '../../utils/time';
+} from '@/utils/time';
 
 export default (
   appointmentRepo: Repository<Appointment>,

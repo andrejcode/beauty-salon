@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
-import { Response } from 'express';
-import { FindOptionsWhere, Repository } from 'typeorm';
+import type { Response } from 'express';
+import { type FindOptionsWhere, Repository } from 'typeorm';
 import { User } from '../entities';
 import config from '../config';
 
