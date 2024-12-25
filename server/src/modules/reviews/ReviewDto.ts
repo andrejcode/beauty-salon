@@ -2,13 +2,9 @@ import UserDto from '../users/UserDto';
 
 export default class ReviewDto {
   id: number;
-
   reviewText: string;
-
   stars: number;
-
   updatedAt: Date;
-
   user?: UserDto;
 
   constructor(

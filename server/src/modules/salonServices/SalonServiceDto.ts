@@ -1,14 +1,9 @@
 export default class SalonServiceDto {
   id: number;
-
   name: string;
-
   durationInMinutes: number;
-
   description: string;
-
   costInCents: number;
-
   category: string;
 
   constructor(

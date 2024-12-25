@@ -3,23 +3,14 @@ import UserDto from '../users/UserDto';
 
 export default class AppointmentDto {
   id: number;
-
   date: string;
-
   time: string;
-
   durationInMinutes: number;
-
   priceInCents: number;
-
   services: string[];
-
   userId: number;
-
   user?: UserDto;
-
   employeeId: number;
-
   employee?: EmployeeDto;
 
   constructor(

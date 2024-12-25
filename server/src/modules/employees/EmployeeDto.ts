@@ -1,18 +1,11 @@
 export default class EmployeeDto {
   id: number;
-
   firstName: string;
-
   lastName: string;
-
   fullName: string;
-
   email: string;
-
   description: string;
-
   breakStartTime: string;
-
   breakEndTime: string;
 
   constructor(

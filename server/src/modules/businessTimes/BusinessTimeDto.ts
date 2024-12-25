@@ -1,10 +1,7 @@
 export default class BusinessTimeDto {
   id: number;
-
   startTime: string;
-
   endTime: string;
-
   offDays: string[];
 
   constructor(
