@@ -24,7 +24,9 @@ export default function Reviews() {
         setIsLoading(true);
 
         const stars = calculateStarsByIndex(activeButtonIndex);
-        const response = await fetch(`/api/reviews?limit=10&stars=${stars}&skip=${skip}`);
+        const response = await fetch(
+          `/api/reviews?limit=10&stars=${stars}&skip=${skip}`,
+        );
 
         if (response.ok) {
           const reviewsDto = (await response.json()) as ReviewDto[];
@@ -32,7 +34,7 @@ export default function Reviews() {
           if (skip === 0) {
             setReviews(reviewsDto);
           } else {
-            setReviews((prevReviews) => [...prevReviews, ...reviewsDto]);
+            setReviews(prevReviews => [...prevReviews, ...reviewsDto]);
           }
 
           setErrorMessage('');
@@ -49,7 +51,13 @@ export default function Reviews() {
     void fetchReviews();
   }, [activeButtonIndex, skip]);
 
-  const buttonTitles = ['One Star', 'Two Stars', 'Three Stars', 'Four Stars', 'Five Stars'];
+  const buttonTitles = [
+    'One Star',
+    'Two Stars',
+    'Three Stars',
+    'Four Stars',
+    'Five Stars',
+  ];
 
   function handleClick(index: number) {
     setActiveButtonIndex(index);
@@ -79,12 +87,23 @@ export default function Reviews() {
         <>
           {reviews.length > 0 ? (
             <Row className="my-3">
-              {reviews.map((review) => (
-                <Col key={review.id} xs={12} sm={6} md={4} lg={3} className="mb-3">
+              {reviews.map(review => (
+                <Col
+                  key={review.id}
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  lg={3}
+                  className="mb-3"
+                >
                   <Card>
                     <Card.Body>
-                      <Card.Title>{Stars({ numberOfFullStars: review.stars })}</Card.Title>
-                      <Card.Text>{formatDateGerman(review.updatedAt.toString())}</Card.Text>
+                      <Card.Title>
+                        {Stars({ numberOfFullStars: review.stars })}
+                      </Card.Title>
+                      <Card.Text>
+                        {formatDateGerman(review.updatedAt.toString())}
+                      </Card.Text>
                       <Card.Text style={{ fontSize: '1.4em' }}>
                         &quot;{review.reviewText}&quot;
                       </Card.Text>
@@ -105,7 +124,7 @@ export default function Reviews() {
                 title="See More"
                 className="me-3 mb-3"
                 onClick={() => {
-                  setSkip((prevSkip) => prevSkip + 10);
+                  setSkip(prevSkip => prevSkip + 10);
                 }}
                 disabled={isLoading}
               />

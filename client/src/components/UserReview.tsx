@@ -11,7 +11,12 @@ import { getUserToken } from '../utils/auth';
 import { type ReviewDto } from '@server/shared/dtos';
 
 const emptyDate = new Date(0);
-const initialState: ReviewDto = { id: -1, reviewText: '', stars: 0, updatedAt: emptyDate };
+const initialState: ReviewDto = {
+  id: -1,
+  reviewText: '',
+  stars: 0,
+  updatedAt: emptyDate,
+};
 
 export default function UserReview() {
   const { handleFetchResponse } = useTokenExpiration();
@@ -49,7 +54,10 @@ export default function UserReview() {
   }, []);
 
   function handleStarClick(index: number) {
-    setReview((prevReview) => ({ ...prevReview, stars: calculateStarsByIndex(index) }));
+    setReview(prevReview => ({
+      ...prevReview,
+      stars: calculateStarsByIndex(index),
+    }));
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -63,27 +71,37 @@ export default function UserReview() {
     try {
       setIsLoading(true);
 
-      const response = await fetch(`/api/reviews${review.id !== -1 ? '/' + review.id : ''}`, {
-        method: `${review.id !== -1 ? 'PATCH' : 'POST'}`,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${getUserToken()}`,
+      const response = await fetch(
+        `/api/reviews${review.id !== -1 ? '/' + review.id : ''}`,
+        {
+          method: `${review.id !== -1 ? 'PATCH' : 'POST'}`,
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getUserToken()}`,
+          },
+          body: JSON.stringify({
+            reviewText: review.reviewText,
+            stars: review.stars,
+          }),
         },
-        body: JSON.stringify({ reviewText: review.reviewText, stars: review.stars }),
-      });
+      );
 
       if (response.ok) {
         setErrorMessage('');
-        setSuccessMessage(`Review successfully ${review.id !== -1 ? 'updated' : 'created'}.`);
+        setSuccessMessage(
+          `Review successfully ${review.id !== -1 ? 'updated' : 'created'}.`,
+        );
 
         if (review.id === -1) {
           const { id } = (await response.json()) as { id: number };
-          setReview((prevReview) => ({ ...prevReview, id }));
+          setReview(prevReview => ({ ...prevReview, id }));
         }
       } else {
         await handleFetchResponse(response);
 
-        setErrorMessage(`Unable to ${review.id !== -1 ? 'update' : 'create'} review.`);
+        setErrorMessage(
+          `Unable to ${review.id !== -1 ? 'update' : 'create'} review.`,
+        );
         setSuccessMessage('');
       }
     } catch (e) {
@@ -138,8 +156,12 @@ export default function UserReview() {
           <LoadingSpinner />
         </div>
       )}
-      <Form onSubmit={(event) => void handleSubmit(event)} className="my-3">
-        <Stars size={'2.5em'} numberOfFullStars={review.stars} onStarClick={handleStarClick} />
+      <Form onSubmit={event => void handleSubmit(event)} className="my-3">
+        <Stars
+          size={'2.5em'}
+          numberOfFullStars={review.stars}
+          onStarClick={handleStarClick}
+        />
         <Form.Group className="mb-3" controlId="reviewText">
           <Form.Control
             placeholder="Enter your review"
@@ -148,9 +170,12 @@ export default function UserReview() {
             className="mt-3"
             style={{ width: '100%', maxWidth: '400px', resize: 'none' }}
             value={review.reviewText}
-            onChange={(event) => {
+            onChange={event => {
               event.preventDefault();
-              setReview((prevReview) => ({ ...prevReview, reviewText: event.target.value }));
+              setReview(prevReview => ({
+                ...prevReview,
+                reviewText: event.target.value,
+              }));
             }}
           />
         </Form.Group>

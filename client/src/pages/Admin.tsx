@@ -11,7 +11,9 @@ import { getUserToken } from '../utils/auth';
 import { type AppointmentDto } from '@server/shared/dtos';
 
 export default function Admin() {
-  const [upcomingAppointments, setUpcomingAppointments] = useState<AppointmentDto[]>([]);
+  const [upcomingAppointments, setUpcomingAppointments] = useState<
+    AppointmentDto[]
+  >([]);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -57,10 +59,19 @@ export default function Admin() {
         </div>
       ) : upcomingAppointments.length > 0 ? (
         <Row className="my-3">
-          {upcomingAppointments.map((appointment) => (
-            <Col key={appointment.id} xs={12} sm={6} md={4} lg={3} className="mb-3">
+          {upcomingAppointments.map(appointment => (
+            <Col
+              key={appointment.id}
+              xs={12}
+              sm={6}
+              md={4}
+              lg={3}
+              className="mb-3"
+            >
               <AppointmentCard
-                date={formatDateGerman(`${appointment.date}T${appointment.time}`)}
+                date={formatDateGerman(
+                  `${appointment.date}T${appointment.time}`,
+                )}
                 durationInMinutes={appointment.durationInMinutes}
                 price={(appointment.priceInCents / 100).toFixed(2)}
                 showIcon={false}

@@ -10,13 +10,19 @@ import { getUserToken } from '../utils/auth';
 import { AppointmentDto } from '@server/shared/dtos';
 
 export default function Appointments() {
-  const [upcomingAppointments, setUpcomingAppointments] = useState<AppointmentDto[]>([]);
-  const [pastAppointments, setPastAppointments] = useState<AppointmentDto[]>([]);
+  const [upcomingAppointments, setUpcomingAppointments] = useState<
+    AppointmentDto[]
+  >([]);
+  const [pastAppointments, setPastAppointments] = useState<AppointmentDto[]>(
+    [],
+  );
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [successMessage, setSuccessMessage] = useState<string>('');
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [selectedAppointmentId, setSelectedAppointmentId] = useState<number | null>(null);
+  const [selectedAppointmentId, setSelectedAppointmentId] = useState<
+    number | null
+  >(null);
 
   const { handleFetchResponse } = useTokenExpiration();
 
@@ -41,8 +47,10 @@ export default function Appointments() {
           const upcoming: AppointmentDto[] = [];
           const past: AppointmentDto[] = [];
 
-          appointmentsDto.forEach((appointment) => {
-            const appointmentDate = new Date(`${appointment.date}T${appointment.time}`);
+          appointmentsDto.forEach(appointment => {
+            const appointmentDate = new Date(
+              `${appointment.date}T${appointment.time}`,
+            );
 
             if (appointmentDate >= today) {
               upcoming.push(appointment);
@@ -74,21 +82,28 @@ export default function Appointments() {
     }
 
     try {
-      const response = await fetch(`/api/appointments${'/' + selectedAppointmentId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${getUserToken()}`,
+      const response = await fetch(
+        `/api/appointments${'/' + selectedAppointmentId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getUserToken()}`,
+          },
         },
-      });
+      );
 
       if (response.ok) {
         // Remove the deleted appointment from the state
-        setUpcomingAppointments((prevAppointments) =>
-          prevAppointments.filter((appointment) => appointment.id !== selectedAppointmentId)
+        setUpcomingAppointments(prevAppointments =>
+          prevAppointments.filter(
+            appointment => appointment.id !== selectedAppointmentId,
+          ),
         );
-        setPastAppointments((prevAppointments) =>
-          prevAppointments.filter((appointment) => appointment.id !== selectedAppointmentId)
+        setPastAppointments(prevAppointments =>
+          prevAppointments.filter(
+            appointment => appointment.id !== selectedAppointmentId,
+          ),
         );
 
         setSuccessMessage('Appointment successfully deleted.');

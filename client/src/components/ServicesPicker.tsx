@@ -7,7 +7,10 @@ interface ServicesPickerProps {
   services: SalonServiceDto[];
   categories: string[];
   checkedServices: SalonServiceDto[];
-  onCheckboxChange: (event: React.ChangeEvent<HTMLInputElement>, service: SalonServiceDto) => void;
+  onCheckboxChange: (
+    event: React.ChangeEvent<HTMLInputElement>,
+    service: SalonServiceDto,
+  ) => void;
 }
 
 export default function ServicesPicker({
@@ -17,8 +20,12 @@ export default function ServicesPicker({
   onCheckboxChange,
 }: ServicesPickerProps) {
   return (
-    <Tabs className="my-4 fade-in" defaultActiveKey={categories[0]} id="services-tabs">
-      {categories.map((category) => {
+    <Tabs
+      className="my-4 fade-in"
+      defaultActiveKey={categories[0]}
+      id="services-tabs"
+    >
+      {categories.map(category => {
         return (
           <Tab
             key={category}
@@ -27,8 +34,8 @@ export default function ServicesPicker({
             className="fade-in"
           >
             {services
-              .filter((service) => service.category === category)
-              .map((service) => (
+              .filter(service => service.category === category)
+              .map(service => (
                 <Form.Check
                   key={service.id}
                   type="checkbox"
@@ -37,15 +44,19 @@ export default function ServicesPicker({
                 >
                   <Form.Check.Input
                     type="checkbox"
-                    onChange={(event) => onCheckboxChange(event, service)}
+                    onChange={event => onCheckboxChange(event, service)}
                     checked={checkedServices.includes(service)}
                     className="clickable"
                   />
-                  <Form.Check.Label style={{ fontSize: '1.2em' }}>{service.name}</Form.Check.Label>
+                  <Form.Check.Label style={{ fontSize: '1.2em' }}>
+                    {service.name}
+                  </Form.Check.Label>
                   <br />
                   <Form.Check.Label>{service.description}</Form.Check.Label>
                   <br />
-                  <Form.Check.Label>{service.durationInMinutes} minutes</Form.Check.Label>
+                  <Form.Check.Label>
+                    {service.durationInMinutes} minutes
+                  </Form.Check.Label>
                   <br />
                   <Form.Check.Label>
                     {(service.costInCents / 100).toFixed(2)}&euro;

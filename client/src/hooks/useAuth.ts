@@ -12,7 +12,10 @@ export default function useAuth() {
 
   const navigate = useNavigate();
 
-  async function authenticate(url: string, formData: LoginFormData | SignupFormData) {
+  async function authenticate(
+    url: string,
+    formData: LoginFormData | SignupFormData,
+  ) {
     try {
       setIsLoading(true);
 

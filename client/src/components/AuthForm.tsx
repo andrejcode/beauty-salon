@@ -5,7 +5,12 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import Button from './Button';
-import { LoginFormData, LoginFormErrors, SignupFormData, SignupFormErrors } from '../types';
+import {
+  LoginFormData,
+  LoginFormErrors,
+  SignupFormData,
+  SignupFormErrors,
+} from '../types';
 
 interface AuthFormProps {
   isLogin: boolean;
@@ -29,7 +34,7 @@ export default function AuthForm({
   return (
     <Row className="justify-content-center align-items-center vh-100 vw-100">
       <Col xs={8} md={4}>
-        <Form onSubmit={(event) => void handleSubmit(event)} className="mb-3">
+        <Form onSubmit={event => void handleSubmit(event)} className="mb-3">
           <h1 className="mb-3">{isLogin ? 'Login' : 'Signup'}</h1>
           {errorMessage && (
             <Alert variant="danger" className="mb-3">
@@ -81,7 +86,9 @@ export default function AuthForm({
               onChange={handleChange}
               isInvalid={!!formErrors.email}
             />
-            <Form.Control.Feedback type="invalid">{formErrors.email}</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {formErrors.email}
+            </Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="password">
@@ -94,7 +101,9 @@ export default function AuthForm({
               onChange={handleChange}
               isInvalid={!!formErrors.password}
             />
-            <Form.Control.Feedback type="invalid">{formErrors.password}</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {formErrors.password}
+            </Form.Control.Feedback>
           </Form.Group>
 
           {!isLogin && (

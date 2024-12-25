@@ -29,7 +29,8 @@ export default function TimePicker({
   resetChosenTime,
 }: TimePickerProps) {
   const [availableTimes, setAvailableTimes] = useState<string[]>([]);
-  const [isLoadingAvailableTimes, setIsLoadingAvailableTimes] = useState<boolean>(false);
+  const [isLoadingAvailableTimes, setIsLoadingAvailableTimes] =
+    useState<boolean>(false);
 
   const { handleFetchResponse } = useTokenExpiration();
 
@@ -50,7 +51,7 @@ export default function TimePicker({
               'Content-Type': 'application/json',
               Authorization: `Bearer ${getUserToken()}`,
             },
-          }
+          },
         );
 
         if (response.ok) {
@@ -88,7 +89,11 @@ export default function TimePicker({
       {availableTimes.length > 0 ? (
         <Row className="fade-in">
           <Col xs={12} sm={6} md={4}>
-            <DropdownButton id="times-dropdown" title={chosenTime || 'Select Time'} drop="up">
+            <DropdownButton
+              id="times-dropdown"
+              title={chosenTime || 'Select Time'}
+              drop="up"
+            >
               {availableTimes.map((time, index) => (
                 <Dropdown.Item key={index} onClick={() => onSelectTime(time)}>
                   {time}
@@ -98,7 +103,9 @@ export default function TimePicker({
           </Col>
         </Row>
       ) : (
-        <p className="fade-in">There are no available times. Please choose another date.</p>
+        <p className="fade-in">
+          There are no available times. Please choose another date.
+        </p>
       )}
     </>
   );

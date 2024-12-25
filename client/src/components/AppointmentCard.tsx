@@ -39,7 +39,10 @@ export default function AppointmentCard({
         {services && <CardText>Services: {services}</CardText>}
       </CardBody>
       {showIcon && (
-        <button className="appointment-delete-button clickable" onClick={handleDeleteClick}>
+        <button
+          className="appointment-delete-button clickable"
+          onClick={handleDeleteClick}
+        >
           <FaTrash size="2em" />
         </button>
       )}

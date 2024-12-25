@@ -63,9 +63,14 @@ export default function Profile() {
               <FaRegUserCircle size={'10em'} />
             </Col>
             <Col xs={10} style={{ lineHeight: '1.1' }} className="mt-3">
-              <p style={{ fontSize: '1.2em', fontWeight: 'bold' }}>{userInfo.fullName}</p>
+              <p style={{ fontSize: '1.2em', fontWeight: 'bold' }}>
+                {userInfo.fullName}
+              </p>
               <p>{userInfo.email}</p>
-              <p>Account created on {formatDateGerman(userInfo.memberSince.toString())}</p>
+              <p>
+                Account created on{' '}
+                {formatDateGerman(userInfo.memberSince.toString())}
+              </p>
             </Col>
           </Row>
           <UserReview />

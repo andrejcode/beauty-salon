@@ -18,8 +18,8 @@ export default function Home() {
         <Container className="text-white mt-5">
           <h1>Welcome to the Beauty Salon</h1>
           <p>
-            Since 1999 in the heart of Duisburg, we have been offering our customers first-class
-            treatments in various areas.
+            Since 1999 in the heart of Duisburg, we have been offering our
+            customers first-class treatments in various areas.
           </p>
           <BookButton />
         </Container>

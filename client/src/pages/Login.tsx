@@ -44,7 +44,10 @@ export default function Login() {
   function validateForm(): LoginFormErrors {
     const errors: LoginFormErrors = {};
 
-    if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    if (
+      !formData.email.trim() ||
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
+    ) {
       errors.email = 'Please enter a valid email address.';
     }
     if (!formData.password.trim()) {

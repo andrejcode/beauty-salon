@@ -8,7 +8,13 @@ interface ButtonProps {
   className?: string;
 }
 
-export default function Button({ title, type, onClick, disabled, className }: ButtonProps) {
+export default function Button({
+  title,
+  type,
+  onClick,
+  disabled,
+  className,
+}: ButtonProps) {
   return (
     <BootstrapButton
       type={type}

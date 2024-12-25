@@ -31,7 +31,9 @@ export default function BookAppointment() {
   const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
 
   useEffect(() => {
-    const uniqueCategoriesSet = new Set(services.map((service) => service.category));
+    const uniqueCategoriesSet = new Set(
+      services.map(service => service.category),
+    );
     const uniqueCategoriesArray = Array.from(uniqueCategoriesSet);
     setCategories(uniqueCategoriesArray);
   }, [services]);
@@ -64,14 +66,16 @@ export default function BookAppointment() {
 
   function handleCheckboxChange(
     event: React.ChangeEvent<HTMLInputElement>,
-    service: SalonServiceDto
+    service: SalonServiceDto,
   ) {
     const isChecked = event.target.checked;
     if (isChecked) {
       setCheckedServices([...checkedServices, service]);
     } else {
       setCheckedServices(
-        checkedServices.filter((checkedService) => checkedService.id !== service.id)
+        checkedServices.filter(
+          checkedService => checkedService.id !== service.id,
+        ),
       );
     }
   }
@@ -93,9 +97,12 @@ export default function BookAppointment() {
   }, []);
 
   const calculateAppointmentDuration = useCallback(() => {
-    const appointmentDuration = checkedServices.reduce((total, checkedService) => {
-      return total + (checkedService ? checkedService.durationInMinutes : 0);
-    }, 0);
+    const appointmentDuration = checkedServices.reduce(
+      (total, checkedService) => {
+        return total + (checkedService ? checkedService.durationInMinutes : 0);
+      },
+      0,
+    );
 
     return appointmentDuration;
   }, [checkedServices]);
@@ -109,10 +116,10 @@ export default function BookAppointment() {
       const appointmentDuration = calculateAppointmentDuration();
 
       const appointmentServices = checkedServices
-        .map((checkedService) => {
+        .map(checkedService => {
           return checkedService ? checkedService.name : null;
         })
-        .filter((name) => name !== null);
+        .filter(name => name !== null);
 
       const response = await fetch('/api/appointments', {
         method: 'POST',
@@ -156,8 +163,11 @@ export default function BookAppointment() {
       {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
       {successMessage && <Alert variant="success">{successMessage}</Alert>}
       <h1>Book an appointment</h1>
-      <Form onSubmit={(event) => void handleSubmit(event)}>
-        <DatePicker selectedDate={selectedDate} onDateChange={handleDateChange} />
+      <Form onSubmit={event => void handleSubmit(event)}>
+        <DatePicker
+          selectedDate={selectedDate}
+          onDateChange={handleDateChange}
+        />
 
         {selectedDate &&
           categories.length > 0 &&
@@ -192,14 +202,17 @@ export default function BookAppointment() {
           />
         )}
 
-        {selectedDate && checkedServices.length > 0 && chosenEmployeeId && chosenTime && (
-          <Button
-            type="submit"
-            title={isLoadingSubmit ? 'Loading' : 'Book Appointment'}
-            className="mt-4"
-            disabled={isLoadingSubmit}
-          />
-        )}
+        {selectedDate &&
+          checkedServices.length > 0 &&
+          chosenEmployeeId &&
+          chosenTime && (
+            <Button
+              type="submit"
+              title={isLoadingSubmit ? 'Loading' : 'Book Appointment'}
+              className="mt-4"
+              disabled={isLoadingSubmit}
+            />
+          )}
       </Form>
     </Container>
   );

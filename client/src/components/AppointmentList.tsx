@@ -20,10 +20,19 @@ export default function AppointmentList({
       <h2>{title}</h2>
       {appointments.length > 0 && (
         <Row className="my-3">
-          {appointments.map((appointment) => (
-            <Col key={appointment.id} xs={12} sm={6} md={4} lg={3} className="mb-3">
+          {appointments.map(appointment => (
+            <Col
+              key={appointment.id}
+              xs={12}
+              sm={6}
+              md={4}
+              lg={3}
+              className="mb-3"
+            >
               <AppointmentCard
-                date={formatDateGerman(`${appointment.date}T${appointment.time}`)}
+                date={formatDateGerman(
+                  `${appointment.date}T${appointment.time}`,
+                )}
                 durationInMinutes={appointment.durationInMinutes}
                 price={(appointment.priceInCents / 100).toFixed(2)}
                 handleDeleteClick={() => handleDeleteClick(appointment.id)}

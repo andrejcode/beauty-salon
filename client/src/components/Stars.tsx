@@ -7,7 +7,11 @@ interface StarsProps {
   isUpdatable?: boolean;
 }
 
-export default function Stars({ size, numberOfFullStars, onStarClick }: StarsProps) {
+export default function Stars({
+  size,
+  numberOfFullStars,
+  onStarClick,
+}: StarsProps) {
   const starIcons = [];
 
   function handleClick(index: number) {
@@ -27,7 +31,7 @@ export default function Stars({ size, numberOfFullStars, onStarClick }: StarsPro
             handleClick(i);
           }}
           className={onStarClick ? 'clickable' : ''}
-        />
+        />,
       );
       numberOfFullStars--;
     } else {
@@ -37,7 +41,7 @@ export default function Stars({ size, numberOfFullStars, onStarClick }: StarsPro
           key={i}
           onClick={() => handleClick(i)}
           className={onStarClick ? 'clickable' : ''}
-        />
+        />,
       );
     }
   }

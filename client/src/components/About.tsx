@@ -15,16 +15,17 @@ export default function About() {
         <Col xs={12} md={6} className="mt-3">
           <h3>Beauty Salon</h3>
           <p>
-            Since 1999 in the heart of Duisburg, we have been offering our customers first-class
-            treatments in various areas.
+            Since 1999 in the heart of Duisburg, we have been offering our
+            customers first-class treatments in various areas.
           </p>
           <p>
-            Treat yourself to a break in a pleasant atmosphere and let us pamper you. The
-            satisfaction and well-being of our customers is our top priority.
+            Treat yourself to a break in a pleasant atmosphere and let us pamper
+            you. The satisfaction and well-being of our customers is our top
+            priority.
           </p>
           <p>
-            We use high-quality branded products for our customers. We not only offer treatments,
-            but also various training courses.
+            We use high-quality branded products for our customers. We not only
+            offer treatments, but also various training courses.
           </p>
           <p>We are looking forward to your visit.</p>
         </Col>

@@ -2,7 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { RouterProvider, createBrowserRouter, redirect } from 'react-router-dom';
+import {
+  RouterProvider,
+  createBrowserRouter,
+  redirect,
+} from 'react-router-dom';
 import { getUserRoleFromToken, getUserToken } from '../src/utils/auth.ts';
 import { UserProvider } from './store/UserContext.tsx';
 import App from './App.tsx';
@@ -92,5 +96,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <UserProvider>
       <RouterProvider router={router} />
     </UserProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

@@ -56,7 +56,10 @@ export default function Signup() {
     if (formData.firstName.length > 30 || formData.lastName.length > 30) {
       errors.firstName = 'Name cannot be longer than 30 letters.';
     }
-    if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    if (
+      !formData.email.trim() ||
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
+    ) {
       errors.email = 'Please enter a valid email address.';
     }
     if (!formData.password.trim()) {
@@ -74,7 +77,10 @@ export default function Signup() {
     if (!/\d/.test(formData.password)) {
       errors.password = 'Password must contain a number.';
     }
-    if (!formData.confirmPassword.trim() || formData.password !== formData.confirmPassword) {
+    if (
+      !formData.confirmPassword.trim() ||
+      formData.password !== formData.confirmPassword
+    ) {
       errors.confirmPassword = 'Passwords does not match.';
     }
 

@@ -21,7 +21,7 @@ export default function useTokenExpiration() {
         navigate('/');
       }
     },
-    [handleTokenExpiration, navigate]
+    [handleTokenExpiration, navigate],
   );
 
   return { handleFetchResponse };

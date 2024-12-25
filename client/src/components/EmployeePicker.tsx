@@ -49,14 +49,17 @@ export default function EmployeePicker({
     <>
       <Form.Label className="mt-3 fade-in">Select employee:</Form.Label>
       <Row xs={1} md={2} lg={4} className="g-4 fade-in">
-        {employees.map((employee) => (
+        {employees.map(employee => (
           <Col key={employee.id}>
             <Card
               onClick={() => onCardClick(employee.id)}
               className="clickable"
               style={{
                 width: '100%',
-                backgroundColor: chosenEmployeeId === employee.id ? 'var(--main-color)' : 'white',
+                backgroundColor:
+                  chosenEmployeeId === employee.id
+                    ? 'var(--main-color)'
+                    : 'white',
               }}
             >
               <Card.Body>
