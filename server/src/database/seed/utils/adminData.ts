@@ -13,16 +13,14 @@ const adminData = async () => {
   const data: Pick<
     User,
     'id' | 'firstName' | 'lastName' | 'email' | 'password' | 'isAdmin'
-  >[] = [
-    {
-      id: 1,
-      firstName: 'admin',
-      lastName: 'admin',
-      email: config.adminEmail,
-      password,
-      isAdmin: true,
-    },
-  ];
+  > = {
+    id: 1,
+    firstName: 'admin',
+    lastName: 'admin',
+    email: config.adminEmail,
+    password,
+    isAdmin: true,
+  };
 
   return data;
 };

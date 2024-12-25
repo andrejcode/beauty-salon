@@ -11,7 +11,9 @@ test('signup', async ({ page }) => {
   await page.getByPlaceholder('Enter email').click();
   await page.getByPlaceholder('Enter email').fill('test@test.com');
   await page.getByPlaceholder('Enter password', { exact: true }).click();
-  await page.getByPlaceholder('Enter password', { exact: true }).fill('Test1234');
+  await page
+    .getByPlaceholder('Enter password', { exact: true })
+    .fill('Test1234');
   await page.getByPlaceholder('Enter password again').click();
   await page.getByPlaceholder('Enter password again').fill('Test1234');
   await page.getByRole('button', { name: 'Signup' }).click();
@@ -43,7 +45,9 @@ async function fillInSignupForm(page: Page) {
   await page.getByPlaceholder('Enter email').click();
   await page.getByPlaceholder('Enter email').fill('test1@test.com');
   await page.getByPlaceholder('Enter password', { exact: true }).click();
-  await page.getByPlaceholder('Enter password', { exact: true }).fill('Test1234');
+  await page
+    .getByPlaceholder('Enter password', { exact: true })
+    .fill('Test1234');
   await page.getByPlaceholder('Enter password again').click();
   await page.getByPlaceholder('Enter password again').fill('Test1234');
   await page.getByRole('button', { name: 'Signup' }).click();

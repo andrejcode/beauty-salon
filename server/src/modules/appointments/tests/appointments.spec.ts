@@ -3,19 +3,17 @@ import supertest from 'supertest';
 import { createTestDatabase } from '@tests/utils/createTestDatabase';
 import { getWorkingDayDate } from '@tests/utils';
 import createApp from '@/app';
-import { Appointment, BusinessTime, Employee, Review, User } from '@/entities';
+import { Appointment, BusinessTime, Employee, User } from '@/entities';
 
 const database = await createTestDatabase();
 const app = createApp(database);
 
-const reviewRepo = database.getRepository(Review);
 const userRepo = database.getRepository(User);
 const appointmentRepo = database.getRepository(Appointment);
 const employeeRepo = database.getRepository(Employee);
 const businessTimeRepo = database.getRepository(BusinessTime);
 
 afterEach(() => {
-  reviewRepo.delete({});
   userRepo.delete({});
   appointmentRepo.delete({});
   employeeRepo.delete({});

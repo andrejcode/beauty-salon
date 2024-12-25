@@ -26,9 +26,6 @@ export default function NabvarLinks() {
           <LinkContainer to="/">
             <Nav.Link>Home</Nav.Link>
           </LinkContainer>
-          <LinkContainer to="/reviews">
-            <Nav.Link>Reviews</Nav.Link>
-          </LinkContainer>
 
           {userId ? (
             <NavDropdown

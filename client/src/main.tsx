@@ -19,7 +19,6 @@ import ProtectedRoute from './components/ProtectedRoute.tsx';
 import Profile from './pages/Profile.tsx';
 import Appointments from './pages/Appointments.tsx';
 import Admin from './pages/Admin.tsx';
-import Reviews from './pages/Reviews.tsx';
 
 function authLoader() {
   const token = getUserToken();
@@ -52,10 +51,6 @@ const router = createBrowserRouter([
     errorElement: <Error />,
     children: [
       { index: true, element: <Home /> },
-      {
-        path: '/reviews',
-        element: <Reviews />,
-      },
       {
         path: '/profile',
         element: (

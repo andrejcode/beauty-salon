@@ -2,7 +2,6 @@ import {
   Appointment,
   BusinessTime,
   Employee,
-  Review,
   Service,
   User,
 } from '../entities';
@@ -10,7 +9,6 @@ import {
   AppointmentDto,
   BusinessTimeDto,
   EmployeeDto,
-  ReviewDto,
   SalonServiceDto,
   UserDto,
 } from '../shared/dtos';
@@ -81,16 +79,6 @@ export function mapAppointmentToDto(appointment: Appointment): AppointmentDto {
     employeeId,
     user && mapUserToDto(user),
     employee && mapEmployeeToDto(employee)
-  );
-}
-
-export function mapReviewToDto(review: Review): ReviewDto {
-  return new ReviewDto(
-    review.id,
-    review.reviewText,
-    review.stars,
-    review.updatedAt,
-    review.user && mapUserToDto(review.user)
   );
 }
 
