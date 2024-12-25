@@ -33,24 +33,21 @@ export function authenticateToken(
   }
 }
 
-export async function isAdmin(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-  db: Database
-) {
-  const { userId } = req;
+export function isAdmin(db: Database) {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    const { userId } = req;
 
-  const userRepo = db.getRepository(User);
+    const userRepo = db.getRepository(User);
 
-  const user = await userRepo.findOne({
-    where: { id: userId },
-    select: { isAdmin: true },
-  });
+    const user = await userRepo.findOne({
+      where: { id: userId },
+      select: { isAdmin: true },
+    });
 
-  if (user && user.isAdmin) {
-    next();
-  } else {
-    res.sendStatus(403);
-  }
+    if (user && user.isAdmin) {
+      next();
+    } else {
+      res.sendStatus(403);
+    }
+  };
 }
