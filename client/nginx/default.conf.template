@@ -4,6 +4,17 @@ upstream api {
 
 server {
   listen 80;
+  listen [::]:80;
+
+  # Allow file uploads up to 20 MB
+  # Larger files will be rejected.
+  client_max_body_size 20M;
+
+  # Allow gzip compression
+  gzip on;
+
+  # Do not show nginx version
+  server_tokens off;
 
   location /api {
     rewrite /api/(.*) /$1 break;
