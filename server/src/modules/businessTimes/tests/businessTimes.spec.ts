@@ -26,6 +26,6 @@ describe('/business-times', () => {
   it('should return business time', async () => {
     await businessTimeRepo.save(businessData);
     const response = await supertest(app).get('/business-times').expect(200);
-    expect(response.body.id).toEqual(1);
+    expect(response.body.id).toBe(1);
   });
 });
