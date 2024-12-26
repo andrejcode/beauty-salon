@@ -39,7 +39,6 @@ interface Entity {
   userId: number;
 }
 
-// Check if the user is the owner of the entity (review or appointment)
 export async function performActionIfOwner<T extends Entity>(
   res: Response,
   userId: number,
@@ -63,7 +62,7 @@ export async function performActionIfOwner<T extends Entity>(
     }
 
     await actionIfOwner();
-  } catch (e) {
+  } catch {
     res.sendStatus(500);
   }
 }
