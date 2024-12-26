@@ -14,7 +14,7 @@ export default (db: Database) => {
         mapEmployeeToDto(employee)
       );
       res.json(employeesDto);
-    } catch (e) {
+    } catch {
       res.status(400).send('Unable to get employees.');
     }
   }
