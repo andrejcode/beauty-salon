@@ -42,7 +42,7 @@ describe('POST /users/signup', () => {
         password: 'Password123',
       })
       .expect(400);
-    expect(response.text).toEqual('Invalid email address.');
+    expect(response.text).toBe('Invalid email address.');
   });
 
   it('should return 400 if password is weak', async () => {
@@ -55,7 +55,7 @@ describe('POST /users/signup', () => {
         password: 'weak',
       })
       .expect(400);
-    expect(response.text).toEqual(
+    expect(response.text).toBe(
       'Weak password. Please choose a stronger password.'
     );
   });
@@ -78,7 +78,7 @@ describe('POST /users/signup', () => {
         password: 'Password123',
       })
       .expect(400);
-    expect(response.text).toEqual('User with this email already exists.');
+    expect(response.text).toBe('User with this email already exists.');
   });
 });
 
@@ -91,7 +91,7 @@ describe('POST /login', () => {
         password: 'Password123',
       })
       .expect(401);
-    expect(respone.text).toEqual(
+    expect(respone.text).toBe(
       'We could not find an account with this email address.'
     );
   });
@@ -112,7 +112,7 @@ describe('POST /login', () => {
         password: 'WrongPassword123',
       })
       .expect(401);
-    expect(respone.text).toEqual('Incorrect password. Try again.');
+    expect(respone.text).toBe('Incorrect password. Try again.');
   });
 });
 
