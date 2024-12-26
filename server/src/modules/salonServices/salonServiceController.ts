@@ -12,7 +12,7 @@ export default (db: Database) => {
       const services = await serviceRepo.find();
       const servicesDto = services.map((service) => mapServiceToDto(service));
       res.json(servicesDto);
-    } catch (e) {
+    } catch {
       res.status(400).send('Unable to get services.');
     }
   }
