@@ -2,7 +2,12 @@ import type { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import type { Repository } from 'typeorm';
 import { User } from '@/entities';
-import { isStrongPassword, isValidEmail, jwtSign } from '@/utils/auth';
+import {
+  hashPassword,
+  isStrongPassword,
+  isValidEmail,
+  jwtSign,
+} from '@/utils/auth';
 import type { Database } from '@/database';
 import { mapUserToDto } from '@/utils/entityMappers';
 
@@ -51,7 +56,7 @@ export default (db: Database) => {
       return;
     }
 
-    const hash = await bcrypt.hash(password, 15);
+    const hash = await hashPassword(password);
 
     try {
       const user = await userRepo.save({

@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 import type { Response } from 'express';
 import { type FindOptionsWhere, Repository } from 'typeorm';
 import { User } from '../entities';
@@ -8,6 +9,11 @@ export function jwtSign(id: User['id'], role: string) {
   return jwt.sign({ id, role }, config.tokenKey, {
     expiresIn: '7d',
   });
+}
+
+export async function hashPassword(password: string) {
+  const encryptedPassword = await bcrypt.hash(password, 15);
+  return encryptedPassword;
 }
 
 export function isValidEmail(email: string) {

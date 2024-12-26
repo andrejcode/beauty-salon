@@ -1,11 +1,6 @@
-import bcrypt from 'bcrypt';
 import { User } from '@/entities';
 import config from '@/config';
-
-async function hashPassword(password: string) {
-  const encryptedPassword = await bcrypt.hash(password, 15);
-  return encryptedPassword;
-}
+import { hashPassword } from '@/utils/auth';
 
 const adminData = async () => {
   const password = await hashPassword(config.adminPassword);
