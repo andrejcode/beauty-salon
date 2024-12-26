@@ -1,8 +1,9 @@
 {
   "name": "@beauty-salon/server",
   "version": "1.0.0",
-  "description": "",
+  "private": true,
   "main": "dist/index.js",
+  "type": "module",
   "scripts": {
     "dev": "tsx watch src",
     "dev:mem": "DB_TYPE=pg-mem tsx watch src",
