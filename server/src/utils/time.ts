@@ -36,9 +36,13 @@ export function generateTimes(startTime: string, endTime: string) {
 }
 
 export function isValidDateFormat(dateString: string): boolean {
-  // Regular expression for YYYY-MM-DD format
+  // Regular expression for yyyy-mm-dd format
   const dateFormatRegex: RegExp = /^\d{4}-\d{2}-\d{2}$/;
-  return dateFormatRegex.test(dateString);
+
+  if (!dateFormatRegex.test(dateString)) return false;
+
+  const date = new Date(dateString);
+  return !Number.isNaN(date.getTime()) && dateString === formatDate(date);
 }
 
 export function isValidTimeFormat(timeString: string): boolean {
@@ -48,52 +52,18 @@ export function isValidTimeFormat(timeString: string): boolean {
 }
 
 export function isDateToday(dateToCheck: Date): boolean {
-  // Extract year, month, and day from the dates
-  const yearToCheck = dateToCheck.getFullYear();
-  const monthToCheck = dateToCheck.getMonth();
-  const dayToCheck = dateToCheck.getDate();
-
   const today = new Date();
-
-  const yearToday = today.getFullYear();
-  const monthToday = today.getMonth();
-  const dayToday = today.getDate();
-
-  // Compare year, month, and day
-  return (
-    yearToCheck === yearToday &&
-    monthToCheck === monthToday &&
-    dayToCheck === dayToday
-  );
+  return dateToCheck.toDateString() === today.toDateString();
 }
 
 export function isDateTodayOrLater(dateToCheck: Date): boolean {
-  // Extract year, month, and day from the dates
-  const yearToCheck = dateToCheck.getFullYear();
-  const monthToCheck = dateToCheck.getMonth();
-  const dayToCheck = dateToCheck.getDate();
-
   const today = new Date();
 
-  const yearToday = today.getFullYear();
-  const monthToday = today.getMonth();
-  const dayToday = today.getDate();
+  // Set the time of both dates to midnight (00:00:00) to compare only the dates
+  today.setHours(0, 0, 0, 0);
+  dateToCheck.setHours(0, 0, 0, 0);
 
-  // Compare year, month, and day
-  if (yearToCheck > yearToday) {
-    return true;
-  }
-  if (yearToCheck === yearToday && monthToCheck > monthToday) {
-    return true;
-  }
-  if (
-    yearToCheck === yearToday &&
-    monthToCheck === monthToday &&
-    dayToCheck >= dayToday
-  ) {
-    return true;
-  }
-  return false;
+  return dateToCheck.getTime() >= today.getTime();
 }
 
 // Format date to 'yyyy-mm-dd' format
@@ -105,15 +75,7 @@ export function formatDate(date: Date): string {
 }
 
 export function getDayNameFromNumber(dayNumber: number) {
-  const daysOfWeek = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-  ];
-
-  return daysOfWeek[dayNumber];
+  const date = new Date();
+  date.setDate(date.getDate() - date.getDay() + dayNumber);
+  return date.toLocaleDateString('en-US', { weekday: 'long' });
 }
