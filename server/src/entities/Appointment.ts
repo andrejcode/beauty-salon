@@ -5,11 +5,13 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  Unique,
 } from 'typeorm';
 import { User } from './User';
 import { Employee } from './Employee';
 
 @Entity()
+@Unique(['date', 'time', 'employeeId'])
 export class Appointment {
   @PrimaryGeneratedColumn('increment')
   id: number;

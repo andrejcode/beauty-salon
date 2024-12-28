@@ -7,7 +7,9 @@ import {
   getDayNameFromNumber,
   isDateTodayOrLater,
   isDateToday,
+  formatDate,
   isValidDateFormat,
+  isDateLessThanOneYearFromNow,
 } from '@/utils/time';
 
 export default (
@@ -17,20 +19,30 @@ export default (
 ) => {
   async function calculateAvailableTimes(
     employeeId: number,
-    date: string,
+    dateString: string,
     duration: number
   ): Promise<string[]> {
-    if (!isValidDateFormat(date) || typeof date !== 'string') {
+    if (typeof duration !== 'number' || duration <= 0) {
+      throw new Error('Invalid duration.');
+    }
+
+    if (typeof employeeId !== 'number' || employeeId <= 0) {
+      throw new Error('Invalid employee id.');
+    }
+
+    if (typeof dateString !== 'string' || !isValidDateFormat(dateString)) {
       throw new Error('Invalid date.');
     }
 
-    const newDate = new Date(date);
+    const date = new Date(dateString);
 
-    if (!isDateTodayOrLater(newDate)) {
+    if (!isDateTodayOrLater(date)) {
       throw new Error('Date must be greater then or equal to todays date.');
     }
 
-    const day = newDate.getDay();
+    if (!isDateLessThanOneYearFromNow(date)) {
+      throw new Error('Date must be less than one year from now.');
+    }
 
     const businessTimes = await businessTimesRepo.findOne({
       where: { id: 1 },
@@ -40,7 +52,7 @@ export default (
       throw new Error('Unable to get business times.');
     }
 
-    // Return empty array if non-working day
+    const day = date.getDay();
     if (businessTimes.offDays.includes(getDayNameFromNumber(day))) {
       return [];
     }
@@ -69,10 +81,12 @@ export default (
         occupiedTimes.add(currentBreakTime);
         currentBreakTime = addMinutes(currentBreakTime, 15);
       }
+    } else {
+      throw new Error('Employee not found.');
     }
 
     const appointments = await appointmentRepo.find({
-      where: { employeeId, date },
+      where: { employeeId, date: formatDate(date) },
     });
 
     appointments.forEach((appointment) => {
@@ -106,7 +120,7 @@ export default (
       (time) =>
         time <= businessEndTime &&
         !occupiedTimes.has(time) &&
-        (isDateToday(newDate) ? time > timeNow : true)
+        (isDateToday(date) ? time > timeNow : true)
     );
 
     return availableTimes;

@@ -3,15 +3,11 @@ import { MoreThanOrEqual } from 'typeorm';
 import type { Database } from '@/database';
 import { Appointment, Employee, Service, BusinessTime } from '@/entities';
 import createAppointmentService from './appointmentService';
-import { formatDate, isValidDateFormat, isValidTimeFormat } from '@/utils/time';
+import { formatDate, isValidTimeFormat } from '@/utils/time';
 import { performActionIfOwner } from '@/utils/auth';
 import { mapAppointmentToDto } from '@/utils/entityMappers';
 
-interface RequestQuery {
-  employeeId?: string;
-  date?: string;
-  duration?: string;
-}
+const TIME_NOT_AVAILABLE = 'TIME_NOT_AVAILABLE';
 
 export default (db: Database) => {
   const appointmentRepo = db.getRepository(Appointment);
@@ -76,16 +72,8 @@ export default (db: Database) => {
     const { userId } = req;
     const { date, time, duration, services, employeeId } = req.body;
 
-    if (
-      typeof date !== 'string' ||
-      typeof time !== 'string' ||
-      !isValidDateFormat(date) ||
-      !isValidTimeFormat(time) ||
-      typeof duration !== 'number' ||
-      typeof employeeId !== 'number'
-    ) {
-      res.status(400).send('Invalid payload.');
-      return;
+    if (typeof time !== 'string' || !isValidTimeFormat(time)) {
+      res.status(400).send('Invalid time format.');
     }
 
     try {
@@ -96,8 +84,7 @@ export default (db: Database) => {
       );
 
       if (!availableTimes.includes(time)) {
-        res.status(400).send('Time is not available.');
-        return;
+        throw new Error(TIME_NOT_AVAILABLE);
       }
 
       // Extra step to calculate total price so it cannot be tampered with
@@ -125,12 +112,34 @@ export default (db: Database) => {
       });
 
       res.status(201).send('Appointment successfully created.');
-    } catch (e) {
-      res
-        .status(400)
-        .send(
-          `Unable to create appointment. ${(e as Error).message ? (e as Error).message : ''}`
-        );
+    } catch (e: unknown) {
+      if (typeof e === 'object' && e !== null && 'code' in e) {
+        const error = e as { code: string; message?: string };
+
+        if (error.code === '23505') {
+          // Handle unique constraint violation
+          res
+            .status(409)
+            .send(
+              'The selected time slot has just been taken. Please choose another slot.'
+            );
+          return;
+        }
+      }
+
+      if (e instanceof Error && e.message === TIME_NOT_AVAILABLE) {
+        res.status(400).send('Time is not available.');
+        return;
+      }
+
+      if (e instanceof Error && e.message) {
+        res.status(400).send(e.message);
+        return;
+      }
+
+      // eslint-disable-next-line no-console
+      console.error('Unexpected error creating appointment:', e);
+      res.status(500).send('Internal server error.');
     }
   }
 
@@ -150,31 +159,21 @@ export default (db: Database) => {
   }
 
   async function getAvailableTimes(req: Request, res: Response) {
-    const { employeeId, date, duration }: RequestQuery = req.query;
-
-    const employeeIdValue = !Number.isNaN(parseInt(employeeId!, 10))
-      ? parseInt(employeeId!, 10)
-      : null;
-    const durationValue = !Number.isNaN(parseInt(duration!, 10))
-      ? parseInt(duration!, 10)
-      : null;
-
-    if (
-      typeof employeeIdValue !== 'number' ||
-      typeof date !== 'string' ||
-      !isValidDateFormat(date) ||
-      typeof durationValue !== 'number'
-    ) {
-      res.status(400).send('Invalid payload.');
-      return;
-    }
+    const {
+      employeeId: employeeIdStr,
+      date,
+      duration: durationStr,
+    } = req.query;
+    const employeeId = parseInt(employeeIdStr as string, 10);
+    const duration = parseInt(durationStr as string, 10);
 
     try {
       const availableTimes = await appointmentService.calculateAvailableTimes(
-        employeeIdValue,
-        date,
-        durationValue
+        employeeId,
+        date as string,
+        duration
       );
+
       res.json(availableTimes);
     } catch (e) {
       res

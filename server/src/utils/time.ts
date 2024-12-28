@@ -66,6 +66,15 @@ export function isDateTodayOrLater(dateToCheck: Date): boolean {
   return dateToCheck.getTime() >= today.getTime();
 }
 
+export function isDateLessThanOneYearFromNow(date: Date): boolean {
+  const currentDate = new Date();
+
+  const oneYearFromNow = new Date();
+  oneYearFromNow.setFullYear(currentDate.getFullYear() + 1);
+
+  return date <= oneYearFromNow;
+}
+
 // Format date to 'yyyy-mm-dd' format
 export function formatDate(date: Date): string {
   const year = date.getFullYear();

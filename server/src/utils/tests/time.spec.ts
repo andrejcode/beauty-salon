@@ -8,6 +8,7 @@ import {
   isDateToday,
   getDayNameFromNumber,
   formatDate,
+  isDateLessThanOneYearFromNow,
 } from '../time';
 
 describe('addMinutes', () => {
@@ -78,6 +79,20 @@ describe('isDateTodayOrLater', () => {
   it('should return false when date is less then todays date', () => {
     const date = new Date('1999-01-01');
     expect(isDateTodayOrLater(date)).toBe(false);
+  });
+});
+
+describe('isDateLessThanOneYearFromNow', () => {
+  it('should return true when date is less than one year from now', () => {
+    const date = new Date();
+    date.setFullYear(date.getFullYear() + 1);
+    expect(isDateLessThanOneYearFromNow(date)).toBe(true);
+  });
+
+  it('should return false when date is more than one year from now', () => {
+    const date = new Date();
+    date.setFullYear(date.getFullYear() + 2);
+    expect(isDateLessThanOneYearFromNow(date)).toBe(false);
   });
 });
 

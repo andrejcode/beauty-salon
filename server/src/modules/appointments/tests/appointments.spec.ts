@@ -71,7 +71,7 @@ describe('authenticated user', () => {
         services: ['service 1'],
       });
 
-    expect(createResponse.text).toEqual('Appointment successfully created.');
+    expect(createResponse.text).toBe('Appointment successfully created.');
 
     const availableTimesResponse = await supertest(app)
       .get(
@@ -101,6 +101,6 @@ describe('authenticated user', () => {
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
 
-    expect(deleteResponse.text).toEqual('Appointment deleted successfully.');
+    expect(deleteResponse.text).toBe('Appointment deleted successfully.');
   }, 10000);
 });
