@@ -1,4 +1,4 @@
-import { describe, it, expect, afterAll, afterEach } from 'vitest';
+import { describe, it, expect, afterAll } from 'vitest';
 import supertest from 'supertest';
 import { createTestDatabase } from '@tests/utils/createTestDatabase';
 import { getWorkingDayDate } from '@tests/utils';
@@ -13,69 +13,70 @@ const appointmentRepo = database.getRepository(Appointment);
 const employeeRepo = database.getRepository(Employee);
 const businessTimeRepo = database.getRepository(BusinessTime);
 
-afterEach(() => {
+let token: string;
+let employeeId: number;
+let workingDate: string;
+
+beforeAll(async () => {
+  const email = 'test@test.com';
+  const signupResponse = await supertest(app)
+    .post('/users/signup')
+    .send({
+      firstName: 'test',
+      lastName: 'test',
+      email,
+      password: 'TestTest123',
+    })
+    .expect(200);
+  token = signupResponse.body.token;
+
+  await userRepo.findOne({ where: { email } });
+
+  const employee = await employeeRepo.save({
+    firstName: 'Mikey',
+    lastName: 'Mike',
+    email: 'mikey.mike@gmail.com',
+    description: 'desc',
+    breakStartTime: '14:00:00',
+    breakEndTime: '14:30:00',
+  });
+  employeeId = employee.id;
+
+  const businessTime = await businessTimeRepo.save({
+    startTime: '09:30:00',
+    endTime: '18:00:00',
+    offDays: ['Saturday', 'Sunday'],
+  });
+  workingDate = getWorkingDayDate(businessTime.offDays);
+});
+
+afterAll(() => {
   userRepo.delete({});
   appointmentRepo.delete({});
   employeeRepo.delete({});
   businessTimeRepo.delete({});
-});
 
-afterAll(() => {
   database.destroy();
 });
 
-describe('authenticated user', () => {
-  it('can create, read and delete appointments', async () => {
-    const email = 'test@test.com';
-    const signupResponse = await supertest(app)
-      .post('/users/signup')
-      .send({
-        firstName: 'test',
-        lastName: 'test',
-        email,
-        password: 'TestTest123',
-      })
-      .expect(200);
-
-    const { token } = signupResponse.body;
-
-    const user = await userRepo.findOne({ where: { email } });
-
-    const employee = await employeeRepo.save({
-      firstName: 'Mikey',
-      lastName: 'Mike',
-      email: 'mikey.mike@gmail.com',
-      description: 'desc',
-      breakStartTime: '14:00:00',
-      breakEndTime: '14:30:00',
-    });
-
-    const businessTime = await businessTimeRepo.save({
-      id: 1,
-      startTime: '09:30:00',
-      endTime: '18:00:00',
-      offDays: ['Saturday', 'Sunday'],
-    });
-
-    const workingDate = getWorkingDayDate(businessTime.offDays);
-
+describe('appointments', () => {
+  it('user can create, read and delete appointments', async () => {
     const createResponse = await supertest(app)
       .post('/appointments/')
       .set('Authorization', `Bearer ${token}`)
       .send({
-        userId: user!.id,
-        employeeId: employee.id,
+        employeeId,
         date: workingDate,
         time: '12:00:00',
         duration: 30,
         services: ['service 1'],
       });
-
+    expect(createResponse.status).toBe(201);
     expect(createResponse.text).toBe('Appointment successfully created.');
 
     const availableTimesResponse = await supertest(app)
       .get(
-        `/appointments/available?employeeId=${employee.id}&duration=30&date=${workingDate}`
+        `/appointments/available?employeeId=${employeeId}&duration=30&date=${workingDate}`
       )
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
@@ -86,21 +87,44 @@ describe('authenticated user', () => {
     expect(availableTimesResponse.body).not.toContain('12:00:00');
     expect(availableTimesResponse.body).not.toContain('12:30:00');
 
-    // Read appointments
     const appointmentsResponse = await supertest(app)
       .get('/appointments')
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
-
     expect(appointmentsResponse.body).toBeDefined();
 
-    // Delete appointment
     const appointmentId = appointmentsResponse.body[0].id;
     const deleteResponse = await supertest(app)
       .delete(`/appointments/${appointmentId}`)
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
-
     expect(deleteResponse.text).toBe('Appointment deleted successfully.');
-  }, 10000);
+  });
+
+  it('user cannot create an appointment because of unique constraint', async () => {
+    await appointmentRepo.save({
+      date: workingDate,
+      time: '16:00:00',
+      durationInMinutes: 30,
+      priceInCents: 1000,
+      services: ['service 1'],
+      userId: 1,
+      employeeId,
+    });
+
+    const createResponse = await supertest(app)
+      .post('/appointments/')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        employeeId,
+        date: workingDate,
+        time: '16:00:00',
+        duration: 30,
+        services: ['service 1'],
+      });
+    expect(createResponse.status).toBe(400);
+    expect(createResponse.text).toBe(
+      'The selected time is no longer available. Please choose another slot.'
+    );
+  });
 });

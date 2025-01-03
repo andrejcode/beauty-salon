@@ -7,8 +7,6 @@ import { formatDate, isValidTimeFormat } from '@/utils/time';
 import { performActionIfOwner } from '@/utils/auth';
 import { mapAppointmentToDto } from '@/utils/entityMappers';
 
-const TIME_NOT_AVAILABLE = 'TIME_NOT_AVAILABLE';
-
 export default (db: Database) => {
   const appointmentRepo = db.getRepository(Appointment);
   const employeeRepo = db.getRepository(Employee);
@@ -74,6 +72,7 @@ export default (db: Database) => {
 
     if (typeof time !== 'string' || !isValidTimeFormat(time)) {
       res.status(400).send('Invalid time format.');
+      return;
     }
 
     try {
@@ -84,7 +83,12 @@ export default (db: Database) => {
       );
 
       if (!availableTimes.includes(time)) {
-        throw new Error(TIME_NOT_AVAILABLE);
+        res
+          .status(400)
+          .send(
+            'The selected time is no longer available. Please choose another slot.'
+          );
+        return;
       }
 
       // Extra step to calculate total price so it cannot be tampered with
@@ -113,25 +117,6 @@ export default (db: Database) => {
 
       res.status(201).send('Appointment successfully created.');
     } catch (e: unknown) {
-      if (typeof e === 'object' && e !== null && 'code' in e) {
-        const error = e as { code: string; message?: string };
-
-        if (error.code === '23505') {
-          // Handle unique constraint violation
-          res
-            .status(409)
-            .send(
-              'The selected time slot has just been taken. Please choose another slot.'
-            );
-          return;
-        }
-      }
-
-      if (e instanceof Error && e.message === TIME_NOT_AVAILABLE) {
-        res.status(400).send('Time is not available.');
-        return;
-      }
-
       if (e instanceof Error && e.message) {
         res.status(400).send(e.message);
         return;
