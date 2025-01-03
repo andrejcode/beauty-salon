@@ -6,7 +6,7 @@ export default function useFetchBusinessTimes() {
   const [isLoadingTimes, setIsLoadingTimes] = useState<boolean>(false);
 
   useEffect(() => {
-    async function fetchTimes() {
+    const fetchTimes = async () => {
       try {
         setIsLoadingTimes(true);
 
@@ -18,12 +18,12 @@ export default function useFetchBusinessTimes() {
         } else {
           setTimes(null);
         }
-      } catch (e) {
+      } catch {
         setTimes(null);
       } finally {
         setIsLoadingTimes(false);
       }
-    }
+    };
 
     void fetchTimes();
   }, []);
