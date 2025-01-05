@@ -3,7 +3,7 @@ import Alert from 'react-bootstrap/Alert';
 import Container from 'react-bootstrap/Container';
 import AppointmentList from '../components/AppointmentList';
 import BookButton from '../components/BookButton';
-import LoadingSpinner from '../components/LoadingSpinner';
+import LoadingSpinner from '../components/ui/LoadingSpinner';
 import ModalComponent from '../components/ModalComponent';
 import useTokenExpiration from '../hooks/useTokenExpiration';
 import { getUserToken } from '../utils/auth';

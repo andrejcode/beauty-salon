@@ -1,21 +1,24 @@
-import { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../store/UserContext';
-import { getUserIdFromToken, saveUserToken } from '../utils/auth';
-import { LoginFormData, SignupFormData } from '../types';
+import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { getUserIdFromToken, saveUserToken } from '@/utils/auth';
+import type { LoginFormData, SignupFormData } from '@/types';
+import useUserContext from './useUserContext';
 
 export default function useAuth() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
-  const { saveUser } = useContext(UserContext);
+  const { saveUser } = useUserContext();
 
   const navigate = useNavigate();
+  const location = useLocation();
 
-  async function authenticate(
+  const from = location?.state?.from?.pathname || '/';
+
+  const authenticate = async (
     url: string,
     formData: LoginFormData | SignupFormData,
-  ) {
+  ) => {
     try {
       setIsLoading(true);
 
@@ -35,17 +38,17 @@ export default function useAuth() {
         const userId = getUserIdFromToken(token);
         saveUser(userId);
 
-        navigate('/');
+        navigate(from, { replace: true });
       } else {
         const errorMessage = await response.text();
         setErrorMessage(errorMessage);
       }
-    } catch (e) {
+    } catch {
       setErrorMessage('An unknown error occurred.');
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   return { isLoading, errorMessage, authenticate };
 }

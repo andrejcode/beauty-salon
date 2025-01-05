@@ -3,7 +3,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Alert from 'react-bootstrap/Alert';
-import LoadingSpinner from '../components/LoadingSpinner';
+import LoadingSpinner from '../components/ui/LoadingSpinner';
 import AppointmentCard from '../components/AppointmentCard';
 import useTokenExpiration from '../hooks/useTokenExpiration';
 import { formatDateGerman } from '../utils/time';
@@ -50,7 +50,7 @@ export default function Admin() {
   }, [handleFetchResponse]);
 
   return (
-    <Container className="mt-3 initial-height">
+    <Container className="initial-height mt-3">
       {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
       <h1>Upcoming Appointments</h1>
       {isLoading ? (

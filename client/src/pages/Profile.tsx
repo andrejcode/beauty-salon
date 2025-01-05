@@ -4,7 +4,7 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Alert from 'react-bootstrap/Alert';
 import { FaRegUserCircle } from 'react-icons/fa';
-import LoadingSpinner from '../components/LoadingSpinner';
+import LoadingSpinner from '../components/ui/LoadingSpinner';
 import useTokenExpiration from '../hooks/useTokenExpiration';
 import { getUserToken } from '../utils/auth';
 import { formatDateGerman } from '../utils/time';

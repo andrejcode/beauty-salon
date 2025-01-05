@@ -1,20 +1,18 @@
 import { useEffect, useState } from 'react';
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Card from 'react-bootstrap/Card';
-import LoadingSpinner from './LoadingSpinner';
 import { type EmployeeDto } from '@server/shared/dtos';
+import LoadingSpinner from './ui/LoadingSpinner';
+import Card from './ui/Card';
+import { FacebookIcon, InstagramIcon } from './SocialIcons';
 
 interface EmployeePickerProps {
-  chosenEmployeeId: number | null;
-  onCardClick: (id: number) => void;
+  selectedEmployeeId: number | null;
+  updateEmployeeId: (id: number) => void;
   updateErrorMessage: (errorMessage: string) => void;
 }
 
 export default function EmployeePicker({
-  chosenEmployeeId,
-  onCardClick,
+  selectedEmployeeId,
+  updateEmployeeId,
   updateErrorMessage,
 }: EmployeePickerProps) {
   const [isLoadingEmployees, setIsLoadingEmployees] = useState<boolean>(false);
@@ -30,10 +28,14 @@ export default function EmployeePicker({
         if (response.ok) {
           const employeesDto = (await response.json()) as EmployeeDto[];
           setEmployees(employeesDto);
+
+          if (employeesDto.length > 0) {
+            updateEmployeeId(employeesDto[0].id);
+          }
         } else {
           updateErrorMessage('Unable to get employees.');
         }
-      } catch (e) {
+      } catch {
         updateErrorMessage('An unknown error occurred.');
       } finally {
         setIsLoadingEmployees(false);
@@ -41,35 +43,41 @@ export default function EmployeePicker({
     }
 
     void fetchEmployees();
-  }, [updateErrorMessage]);
+  }, [updateEmployeeId, updateErrorMessage]);
 
   return isLoadingEmployees ? (
-    <LoadingSpinner />
+    <div className="flex px-6 py-12 md:px-16 lg:px-24">
+      <LoadingSpinner /> <p className="ml-2">Loading employees...</p>
+    </div>
   ) : (
-    <>
-      <Form.Label className="mt-3 fade-in">Select employee:</Form.Label>
-      <Row xs={1} md={2} lg={4} className="g-4 fade-in">
-        {employees.map(employee => (
-          <Col key={employee.id}>
+    employees.length > 0 && (
+      <div className="my-4">
+        <label id="employee-picker-label" className="block text-gray-700">
+          Select employee:
+        </label>
+        <div
+          role="group"
+          aria-labelledby="employee-picker-label"
+          className="mt-1 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
+        >
+          {employees.map(employee => (
             <Card
-              onClick={() => onCardClick(employee.id)}
-              className="clickable"
-              style={{
-                width: '100%',
-                backgroundColor:
-                  chosenEmployeeId === employee.id
-                    ? 'var(--main-color)'
-                    : 'white',
-              }}
+              key={employee.id}
+              onClick={() => updateEmployeeId(employee.id)}
+              className={`flex cursor-pointer flex-col justify-between ${
+                selectedEmployeeId === employee.id ? 'bg-pink-100' : 'bg-white'
+              }`}
             >
-              <Card.Body>
-                <Card.Title>{employee.fullName}</Card.Title>
-                <Card.Text>{employee.description}</Card.Text>
-              </Card.Body>
+              <h2 className="text-xl font-semibold">{employee.fullName}</h2>
+              <p className="mb-2 text-gray-600">{employee.description}</p>
+              <div className="flex gap-3">
+                <FacebookIcon />
+                <InstagramIcon />
+              </div>
             </Card>
-          </Col>
-        ))}
-      </Row>
-    </>
+          ))}
+        </div>
+      </div>
+    )
   );
 }

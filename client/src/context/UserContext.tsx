@@ -1,32 +1,25 @@
-import { ReactNode, createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import {
   getUserIdFromToken,
   getUserRoleFromToken,
   getUserToken,
   removeUserToken,
-} from '../utils/auth';
+} from '@/utils/auth';
 
 export interface UserContextType {
   userId: number | null;
+  isAdmin: boolean;
+  loading: boolean;
   saveUser: (userId: number) => void;
   removeUser: () => void;
-  isAdmin: boolean;
 }
 
-export const UserContext = createContext<UserContextType>({
-  userId: null,
-  saveUser: () => {},
-  removeUser: () => {},
-  isAdmin: false,
-});
+export const UserContext = createContext<UserContextType | null>(null);
 
-interface UserProviderProps {
-  children: ReactNode;
-}
-
-export function UserProvider({ children }: UserProviderProps) {
-  const [userId, setUserId] = useState<UserContextType['userId']>(null);
-  const [isAdmin, setIsAdmin] = useState<UserContextType['isAdmin']>(false);
+export function UserProvider({ children }: { children: React.ReactNode }) {
+  const [userId, setUserId] = useState<number | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = getUserToken();
@@ -46,6 +39,8 @@ export function UserProvider({ children }: UserProviderProps) {
       removeUserToken();
       setIsAdmin(false);
     }
+
+    setLoading(false);
   }, [userId]);
 
   function saveUser(userId: number) {
@@ -57,7 +52,9 @@ export function UserProvider({ children }: UserProviderProps) {
   }
 
   return (
-    <UserContext.Provider value={{ userId, isAdmin, saveUser, removeUser }}>
+    <UserContext.Provider
+      value={{ userId, isAdmin, loading, saveUser, removeUser }}
+    >
       {children}
     </UserContext.Provider>
   );

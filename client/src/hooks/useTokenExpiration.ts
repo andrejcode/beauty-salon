@@ -1,10 +1,10 @@
-import { useCallback, useContext } from 'react';
-import { UserContext } from '../store/UserContext';
-import { removeUserToken } from '../utils/auth';
+import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { removeUserToken } from '@/utils/auth';
+import useUserContext from './useUserContext';
 
 export default function useTokenExpiration() {
-  const { removeUser } = useContext(UserContext);
+  const { removeUser } = useUserContext();
   const navigate = useNavigate();
 
   const handleTokenExpiration = useCallback(() => {

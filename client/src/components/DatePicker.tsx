@@ -1,13 +1,11 @@
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import useFetchBusinessTimes from '../hooks/useFetchBusinessTimes';
-import LoadingSpinner from './LoadingSpinner';
 import ReactDatePicker from 'react-datepicker';
+import LoadingSpinner from './ui/LoadingSpinner';
+import useFetchBusinessTimes from '@/hooks/useFetchBusinessTimes';
 import 'react-datepicker/dist/react-datepicker.css';
 
 interface DatePickerProps {
-  selectedDate: Date | null;
-  onDateChange: (date: Date | null) => void;
+  selectedDate: Date;
+  onDateChange: (date: Date) => void;
 }
 
 export default function DatePicker({
@@ -16,31 +14,43 @@ export default function DatePicker({
 }: DatePickerProps) {
   const { times, isLoadingTimes } = useFetchBusinessTimes();
 
-  function isOffDay(date: Date) {
+  const isOffDay = (date: Date) => {
     const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
     return times?.offDays.includes(dayName);
-  }
+  };
 
-  function filterOffDays(date: Date) {
+  const filterOffDays = (date: Date) => {
     return !isOffDay(date);
-  }
+  };
+
+  const calculateOneYearFromNow = () => {
+    const currentDate = new Date();
+    const oneYearFromNow = new Date();
+    oneYearFromNow.setFullYear(currentDate.getFullYear() + 1);
+    return oneYearFromNow;
+  };
 
   return isLoadingTimes ? (
-    <LoadingSpinner />
+    <div className="flex px-6 py-12 md:px-16 lg:px-24">
+      <LoadingSpinner /> <p className="ml-2">Loading available dates...</p>
+    </div>
   ) : (
-    <Form.Group>
-      <Row>
-        <Form.Label>Select date:</Form.Label>
-      </Row>
+    <div className="date-picker-container my-4">
+      <label htmlFor="date" className="block text-gray-700">
+        Select a date:
+      </label>
       <ReactDatePicker
-        showIcon
+        id="date"
         selected={selectedDate}
         onChange={onDateChange}
         minDate={new Date()}
+        maxDate={calculateOneYearFromNow()}
         dateFormat="yyyy-MM-dd"
-        placeholderText="yyyy-MM-dd"
         filterDate={filterOffDays}
+        className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-pink-100 focus:outline-none focus:ring-pink-100"
+        placeholderText="YYYY-MM-DD"
+        aria-required="true"
       />
-    </Form.Group>
+    </div>
   );
 }

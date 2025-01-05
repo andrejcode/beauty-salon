@@ -1,36 +1,30 @@
 import { useEffect, useState } from 'react';
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import DropdownButton from 'react-bootstrap/DropdownButton';
-import Dropdown from 'react-bootstrap/Dropdown';
-import LoadingSpinner from './LoadingSpinner';
-import { formatDate } from '../utils/time';
-import { getUserToken } from '../utils/auth';
-import useTokenExpiration from '../hooks/useTokenExpiration';
+import LoadingSpinner from './ui/LoadingSpinner';
+import useTokenExpiration from '@/hooks/useTokenExpiration';
+import { formatDate } from '@/utils/time';
+import { getUserToken } from '@/utils/auth';
 
 interface TimePickerProps {
-  chosenTime: string | null;
-  onSelectTime: (time: string) => void;
+  selectedTime: string | null;
+  updateSelectedTime: (time: string) => void;
   calculateAppointmentDuration: () => number;
   selectedDate: Date | null;
-  chosenEmployeeId: number;
+  selectedEmployeeId: number | null;
   updateErrorMessage: (errorMessage: string) => void;
-  resetChosenTime: () => void;
 }
 
 export default function TimePicker({
-  chosenTime,
-  onSelectTime,
+  selectedTime,
+  updateSelectedTime,
   calculateAppointmentDuration,
   selectedDate,
-  chosenEmployeeId,
+  selectedEmployeeId,
   updateErrorMessage,
-  resetChosenTime,
 }: TimePickerProps) {
   const [availableTimes, setAvailableTimes] = useState<string[]>([]);
   const [isLoadingAvailableTimes, setIsLoadingAvailableTimes] =
     useState<boolean>(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 
   const { handleFetchResponse } = useTokenExpiration();
 
@@ -44,7 +38,7 @@ export default function TimePicker({
         const formattedDate = formatDate(selectedDate!);
 
         const response = await fetch(
-          `/api/appointments/available?employeeId=${chosenEmployeeId}&date=${formattedDate}&duration=${appointmentDuration}`,
+          `/api/appointments/available?employeeId=${selectedEmployeeId}&date=${formattedDate}&duration=${appointmentDuration}`,
           {
             method: 'GET',
             headers: {
@@ -57,12 +51,12 @@ export default function TimePicker({
         if (response.ok) {
           const times = (await response.json()) as string[];
           setAvailableTimes(times);
-          resetChosenTime();
+          updateSelectedTime(times[0]);
         } else {
           await handleFetchResponse(response);
           updateErrorMessage('Unable to get available times.');
         }
-      } catch (e) {
+      } catch {
         updateErrorMessage('An unknown error occurred.');
       } finally {
         setIsLoadingAvailableTimes(false);
@@ -71,42 +65,58 @@ export default function TimePicker({
 
     void fetchAvailableTimes();
   }, [
-    calculateAppointmentDuration,
-    chosenEmployeeId,
-    handleFetchResponse,
-    resetChosenTime,
-    selectedDate,
     updateErrorMessage,
+    selectedDate,
+    selectedEmployeeId,
+    calculateAppointmentDuration,
+    updateSelectedTime,
+    handleFetchResponse,
   ]);
 
+  const toggleDropdown = () => {
+    setIsDropdownOpen(prev => !prev);
+  };
+
+  const selectTime = (time: string) => {
+    updateSelectedTime(time);
+    setIsDropdownOpen(false);
+  };
+
   return isLoadingAvailableTimes ? (
-    <div className="mt-3">
-      <LoadingSpinner />
+    <div className="flex px-6 py-12 md:px-16 lg:px-24">
+      <LoadingSpinner /> <p className="ml-2">Looking for available times...</p>
     </div>
   ) : (
-    <>
-      <Form.Label className="fade-in mt-2">Select time:</Form.Label>
+    <div className="my-4">
+      <label id="time-picker-label" className="mb-1 block text-gray-700">
+        Select time:
+      </label>
       {availableTimes.length > 0 ? (
-        <Row className="fade-in">
-          <Col xs={12} sm={6} md={4}>
-            <DropdownButton
-              id="times-dropdown"
-              title={chosenTime || 'Select Time'}
-              drop="up"
-            >
+        <div className="relative inline-block w-full">
+          <button
+            className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-left shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-100"
+            type="button"
+            onClick={toggleDropdown}
+          >
+            {selectedTime || 'Select time'}
+          </button>
+          {isDropdownOpen && (
+            <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-lg border border-gray-300 bg-white shadow-lg">
               {availableTimes.map((time, index) => (
-                <Dropdown.Item key={index} onClick={() => onSelectTime(time)}>
+                <li
+                  key={index}
+                  onClick={() => selectTime(time)}
+                  className="cursor-pointer px-4 py-2 hover:bg-pink-100"
+                >
                   {time}
-                </Dropdown.Item>
+                </li>
               ))}
-            </DropdownButton>
-          </Col>
-        </Row>
+            </ul>
+          )}
+        </div>
       ) : (
-        <p className="fade-in">
-          There are no available times. Please choose another date.
-        </p>
+        <p className="mt-1 text-gray-600">There are no available times.</p>
       )}
-    </>
+    </div>
   );
 }
