@@ -13,6 +13,7 @@ export default function useAuth() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
   const from = location?.state?.from?.pathname || '/';
 
   const authenticate = async (url: string, formData: LoginFormData | SignupFormData) => {
@@ -35,6 +36,7 @@ export default function useAuth() {
         const userId = getUserIdFromToken(token);
         saveUser(userId);
 
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         navigate(from, { replace: true });
       } else {
         const errorMessage = await response.text();
