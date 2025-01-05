@@ -6,10 +6,7 @@ import LoadingSpinner from './ui/LoadingSpinner';
 
 interface ServicesPickerProps {
   checkedServices: SalonServiceDto[];
-  onCheckboxChange: (
-    event: React.ChangeEvent<HTMLInputElement>,
-    service: SalonServiceDto,
-  ) => void;
+  onCheckboxChange: (event: React.ChangeEvent<HTMLInputElement>, service: SalonServiceDto) => void;
   updateErrorMessage: (errorMessage: string) => void;
 }
 
@@ -25,9 +22,7 @@ export default function ServicesPicker({
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    const uniqueCategoriesSet = new Set(
-      services.map(service => service.category),
-    );
+    const uniqueCategoriesSet = new Set(services.map(service => service.category));
     const uniqueCategoriesArray = Array.from(uniqueCategoriesSet);
     setCategories(uniqueCategoriesArray);
   }, [services]);
@@ -54,12 +49,12 @@ export default function ServicesPicker({
     void fetchServices();
   }, [updateErrorMessage]);
 
-  const activeCategory =
-    searchParams.get(CATEGORY_QUERY_PARAM) || categories[0];
+  const activeCategory = searchParams.get(CATEGORY_QUERY_PARAM) || categories[0];
 
   const changeParam = (param: string, value: string) => {
-    searchParams.set(param, value);
-    setSearchParams(searchParams);
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set(param, value);
+    setSearchParams(newSearchParams, { replace: true });
   };
 
   return isLoading ? (
@@ -71,11 +66,10 @@ export default function ServicesPicker({
       <div className="mb-4 flex border-b border-gray-200">
         {categories.map(category => (
           <button
+            type="button"
             key={category}
             className={`px-4 py-2 text-gray-600 focus:outline-none ${
-              activeCategory === category
-                ? 'border-b-2 border-pink-500 text-pink-500'
-                : ''
+              activeCategory === category ? 'border-b-2 border-pink-500 text-pink-500' : ''
             }`}
             onClick={() => changeParam(CATEGORY_QUERY_PARAM, category)}
           >
@@ -98,18 +92,12 @@ export default function ServicesPicker({
               />
               <label
                 htmlFor={`checkbox-${service.id}`}
-                className="block flex-1 space-y-1"
+                className="block flex-1 cursor-pointer space-y-1"
               >
-                <span className="text-lg font-medium text-pink-500">
-                  {service.name}
-                </span>
+                <span className="text-lg font-medium text-pink-500">{service.name}</span>
                 <p className="text-gray-600">{service.description}</p>
-                <p className="text-gray-600">
-                  {service.durationInMinutes} minutes
-                </p>
-                <p className="text-gray-600">
-                  {(service.costInCents / 100).toFixed(2)}&euro;
-                </p>
+                <p className="text-gray-600">{service.durationInMinutes} minutes</p>
+                <p className="text-gray-600">{(service.costInCents / 100).toFixed(2)}&euro;</p>
               </label>
             </div>
           ))}

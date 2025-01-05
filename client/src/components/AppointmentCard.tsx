@@ -1,15 +1,12 @@
-import Card from 'react-bootstrap/Card';
-import CardBody from 'react-bootstrap/CardBody';
-import CardText from 'react-bootstrap/CardText';
-import CardTitle from 'react-bootstrap/CardTitle';
-import { FaTrash } from 'react-icons/fa';
+import Card from '../components/ui/Card';
+import { X } from 'lucide-react';
 
 interface AppointmentCardProps {
   date: string;
   durationInMinutes: number;
   price: string;
-  handleDeleteClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
-  showIcon?: boolean;
+  handleCancelClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
+  showCancelIcon: boolean;
   user?: string;
   employee?: string;
   services?: string;
@@ -19,33 +16,32 @@ export default function AppointmentCard({
   date,
   durationInMinutes,
   price,
-  showIcon = true,
-  handleDeleteClick,
+  showCancelIcon,
+  handleCancelClick,
   user,
   employee,
   services,
 }: AppointmentCardProps) {
   return (
-    <Card className="appointment-card">
-      <CardBody>
-        <CardTitle>
-          Appointment on <br />
-          {date}
-        </CardTitle>
-        <CardText>{durationInMinutes} minutes</CardText>
-        <CardText style={{ fontSize: '1.1em' }}>{price}&euro;</CardText>
-        {user && <CardText>User: {user}</CardText>}
-        {employee && <CardText>Employee: {employee}</CardText>}
-        {services && <CardText>Services: {services}</CardText>}
-      </CardBody>
-      {showIcon && (
-        <button
-          className="appointment-delete-button clickable"
-          onClick={handleDeleteClick}
-        >
-          <FaTrash size="2em" />
-        </button>
-      )}
+    <Card className="space-y-4 rounded-lg bg-white p-4 shadow-md">
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-bold">
+            <span>Appointment on</span>
+            <span className="block text-gray-600">{date}</span>
+          </h2>
+          {showCancelIcon && (
+            <button onClick={handleCancelClick}>
+              <X size={24} />
+            </button>
+          )}
+        </div>
+        <p className="text-gray-800">{durationInMinutes} minutes</p>
+        <p className="text-lg font-semibold text-gray-800">{price}&euro;</p>
+        {user && <p className="text-gray-700">User: {user}</p>}
+        {employee && <p className="text-gray-700">Employee: {employee}</p>}
+        {services && <p className="text-gray-700">Services: {services}</p>}
+      </div>
     </Card>
   );
 }

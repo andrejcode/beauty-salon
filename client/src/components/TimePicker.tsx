@@ -22,8 +22,7 @@ export default function TimePicker({
   updateErrorMessage,
 }: TimePickerProps) {
   const [availableTimes, setAvailableTimes] = useState<string[]>([]);
-  const [isLoadingAvailableTimes, setIsLoadingAvailableTimes] =
-    useState<boolean>(false);
+  const [isLoadingAvailableTimes, setIsLoadingAvailableTimes] = useState<boolean>(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 
   const { handleFetchResponse } = useTokenExpiration();
@@ -88,12 +87,13 @@ export default function TimePicker({
     </div>
   ) : (
     <div className="my-4">
-      <label id="time-picker-label" className="mb-1 block text-gray-700">
+      <label htmlFor="time-picker-button" className="mb-1 block cursor-pointer text-gray-700">
         Select time:
       </label>
       {availableTimes.length > 0 ? (
         <div className="relative inline-block w-full">
           <button
+            id="time-picker-button"
             className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-left shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-100"
             type="button"
             onClick={toggleDropdown}

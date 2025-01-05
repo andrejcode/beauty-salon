@@ -42,8 +42,6 @@ describe('OpeningHours Component', () => {
 
     render(<OpeningHours />);
 
-    expect(
-      screen.getByText('Opening hours are not available at the moment.'),
-    ).toBeInTheDocument();
+    expect(screen.getByText('Opening hours are not available at the moment.')).toBeInTheDocument();
   });
 });

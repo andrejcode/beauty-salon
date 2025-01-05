@@ -6,16 +6,12 @@ describe('ReviewsCarousel Component', () => {
   it('renders the correct review', () => {
     render(<ReviewsCarousel />);
 
-    expect(
-      screen.getByText(/The facial treatment was amazing!/i),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/The facial treatment was amazing!/i)).toBeInTheDocument();
   });
 
   it('moves to the next review when next button is clicked', () => {
     render(<ReviewsCarousel />);
-    expect(
-      screen.getByText(/The facial treatment was amazing!/i),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/The facial treatment was amazing!/i)).toBeInTheDocument();
 
     fireEvent.click(screen.getByLabelText('Next review'));
     expect(screen.getByText(/I had a great experience/i)).toBeInTheDocument();
@@ -23,9 +19,7 @@ describe('ReviewsCarousel Component', () => {
 
   it('moves to the previous review when previous button is clicked', () => {
     render(<ReviewsCarousel />);
-    expect(
-      screen.getByText(/The facial treatment was amazing!/i),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/The facial treatment was amazing!/i)).toBeInTheDocument();
 
     fireEvent.click(screen.getByLabelText('Previous review'));
     expect(screen.getByText(/I love the atmosphere here/i)).toBeInTheDocument();
@@ -35,9 +29,7 @@ describe('ReviewsCarousel Component', () => {
     vi.useFakeTimers();
 
     render(<ReviewsCarousel />);
-    expect(
-      screen.getByText(/The facial treatment was amazing!/i),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/The facial treatment was amazing!/i)).toBeInTheDocument();
 
     act(() => {
       vi.advanceTimersByTime(5000);

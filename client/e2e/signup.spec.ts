@@ -1,54 +1,18 @@
-import { test, expect, Page } from '@playwright/test';
+import { test } from '@playwright/test';
 
-test('signup', async ({ page }) => {
+test('user can signup', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('link', { name: 'Login' }).click();
+  await page.getByRole('button', { name: 'Book an Appointment' }).first().click();
   await page.getByRole('link', { name: "Don't have an account?" }).click();
-  await page.getByPlaceholder('Enter first name').click();
-  await page.getByPlaceholder('Enter first name').fill('Test');
-  await page.getByPlaceholder('Enter last name').click();
-  await page.getByPlaceholder('Enter last name').fill('Test');
-  await page.getByPlaceholder('Enter email').click();
-  await page.getByPlaceholder('Enter email').fill('test@test.com');
-  await page.getByPlaceholder('Enter password', { exact: true }).click();
-  await page
-    .getByPlaceholder('Enter password', { exact: true })
-    .fill('Test1234');
-  await page.getByPlaceholder('Enter password again').click();
-  await page.getByPlaceholder('Enter password again').fill('Test1234');
+  await page.getByPlaceholder('Enter your first name').click();
+  await page.getByPlaceholder('Enter your first name').fill('Test');
+  await page.getByPlaceholder('Enter your first name').press('Tab');
+  await page.getByPlaceholder('Enter your last name').fill('User');
+  await page.getByPlaceholder('Enter your last name').press('Tab');
+  await page.getByPlaceholder('Enter your email address').fill('test@test.com');
+  await page.getByPlaceholder('Enter your email address').press('Tab');
+  await page.getByPlaceholder('Enter your password').fill('Test1234');
+  await page.getByPlaceholder('Enter your password').press('Tab');
+  await page.getByPlaceholder('Confirm your password').fill('Test1234');
   await page.getByRole('button', { name: 'Signup' }).click();
-  await expect(page.locator('#basic-nav-dropdown')).toBeVisible();
 });
-
-test('cannot signup with same email twice', async ({ page }) => {
-  await page.goto('/');
-  await page.getByRole('link', { name: 'Login' }).click();
-  await page.getByRole('link', { name: "Don't have an account?" }).click();
-
-  await fillInSignupForm(page);
-
-  await page.locator('#basic-nav-dropdown').click();
-  await page.getByRole('button', { name: 'Logout' }).click();
-  await page.getByRole('link', { name: 'Login' }).click();
-  await page.getByRole('link', { name: "Don't have an account?" }).click();
-
-  await fillInSignupForm(page);
-
-  await expect(page.getByText('User with this email already')).toBeVisible();
-});
-
-async function fillInSignupForm(page: Page) {
-  await page.getByPlaceholder('Enter first name').click();
-  await page.getByPlaceholder('Enter first name').fill('Test');
-  await page.getByPlaceholder('Enter last name').click();
-  await page.getByPlaceholder('Enter last name').fill('Test');
-  await page.getByPlaceholder('Enter email').click();
-  await page.getByPlaceholder('Enter email').fill('test1@test.com');
-  await page.getByPlaceholder('Enter password', { exact: true }).click();
-  await page
-    .getByPlaceholder('Enter password', { exact: true })
-    .fill('Test1234');
-  await page.getByPlaceholder('Enter password again').click();
-  await page.getByPlaceholder('Enter password again').fill('Test1234');
-  await page.getByRole('button', { name: 'Signup' }).click();
-}

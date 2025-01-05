@@ -4,9 +4,5 @@ import Button from './Button';
 export default function BookButton() {
   const navigate = useNavigate();
 
-  return (
-    <Button onClick={() => navigate('/book-appointment')}>
-      Book an Appointment
-    </Button>
-  );
+  return <Button onClick={() => navigate('/book-appointment')}>Book an Appointment</Button>;
 }

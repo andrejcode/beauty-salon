@@ -18,9 +18,7 @@ export default function BookAppointment() {
 
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [checkedServices, setCheckedServices] = useState<SalonServiceDto[]>([]);
-  const [selectedEmployeeId, setSelectedEmployeeId] = useState<number | null>(
-    null,
-  );
+  const [selectedEmployeeId, setSelectedEmployeeId] = useState<number | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
@@ -38,9 +36,7 @@ export default function BookAppointment() {
       setCheckedServices([...checkedServices, service]);
     } else {
       setCheckedServices(
-        checkedServices.filter(
-          checkedService => checkedService.id !== service.id,
-        ),
+        checkedServices.filter(checkedService => checkedService.id !== service.id),
       );
     }
   };
@@ -58,12 +54,9 @@ export default function BookAppointment() {
   }, []);
 
   const calculateAppointmentDuration = useCallback(() => {
-    const appointmentDuration = checkedServices.reduce(
-      (total, checkedService) => {
-        return total + (checkedService ? checkedService.durationInMinutes : 0);
-      },
-      0,
-    );
+    const appointmentDuration = checkedServices.reduce((total, checkedService) => {
+      return total + (checkedService ? checkedService.durationInMinutes : 0);
+    }, 0);
 
     return appointmentDuration;
   }, [checkedServices]);
@@ -113,13 +106,15 @@ export default function BookAppointment() {
 
   return (
     <div className="p-6 md:px-16 lg:px-24">
-      {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
+      {errorMessage && (
+        <div className="mb-4">
+          <Alert variant="danger">{errorMessage}</Alert>
+        </div>
+      )}
+
       <h1 className="mb-4 text-3xl">Book an appointment</h1>
       <form onSubmit={event => void handleSubmit(event)}>
-        <DatePicker
-          selectedDate={selectedDate}
-          onDateChange={handleDateChange}
-        />
+        <DatePicker selectedDate={selectedDate} onDateChange={handleDateChange} />
 
         <ServicesPicker
           checkedServices={checkedServices}

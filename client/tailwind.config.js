@@ -6,7 +6,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Philosopher', 'sans-serif'],
+        sans: ['Trirong', 'serif'],
         sacramento: ['Sacramento', 'cursive'],
       },
     },

@@ -7,11 +7,7 @@ interface ReviewsCardProps {
   currentSlide: number;
 }
 
-export default function ReviewCard({
-  review,
-  index,
-  currentSlide,
-}: ReviewsCardProps) {
+export default function ReviewCard({ review, index, currentSlide }: ReviewsCardProps) {
   return (
     <div
       className={`absolute inset-0 flex items-center justify-center transition-all duration-700 ease-in-out ${
@@ -26,9 +22,7 @@ export default function ReviewCard({
         <div className="mb-6 flex items-center">
           <User size={56} className="mr-6 text-gray-800" />
           <div>
-            <h4 className="text-xl font-semibold text-gray-800">
-              {review.name}
-            </h4>
+            <h4 className="text-xl font-semibold text-gray-800">{review.name}</h4>
             <p className="text-gray-500">Customer</p>
           </div>
         </div>

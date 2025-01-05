@@ -14,7 +14,5 @@ export default function Alert({ children, variant }: AlertProps) {
     }
   };
 
-  return (
-    <div className={`${variantClass()} rounded border p-3`}>{children}</div>
-  );
+  return <div className={`${variantClass()} rounded border p-3`}>{children}</div>;
 }

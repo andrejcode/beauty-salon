@@ -1,84 +1,143 @@
 # Beauty Salon
 
-Welcome to the Beauty Salon! This project is a monorepo containing both the client and server components of a web application for a beauty salon. Users can book appointments, view their appointment history, leave reviews, and access specific functionalities depending on their role (user or admin).
+Welcome to the Beauty Salon! This project is a monorepo containing both the client and server components of a web application for a beauty salon. Users can book appointments, view their appointment history, and access specific functionalities depending on their role (user or admin).
+
+---
+
+## Table of Contents
+
+1. [Features](#features)
+2. [Future Features](#future-features)
+3. [Technologies](#technologies)
+   - [Server](#server)
+   - [Client](#client)
+4. [Getting Started](#getting-started)
+   - [Prerequisites](#prerequisites)
+   - [Instructions](#instructions)
+5. [Docker](#docker)
+6. [Inspiration](#inspiration)
+
+---
 
 ## Features
 
-- **User:**
+- Create an account for authentication.
+- Book appointments for various services.
+- View upcoming and past appointments.
+- Cancel appointments.
+- Admin can view all upcoming appointments.
 
-  - Create an account for authentication
-  - Book appointments for various services
-  - View upcoming and past appointments
-  - Delete appointments
-  - Submit a single review
-  - View reviews from other users
+---
 
-- **Admin:**
-  - View all upcoming appointments (current functionality)
-  - Future functionalities:
-    - Update employee information
-    - Update salon services
-    - Update business hours (start/end times, off days)
+## Future Features
+
+- **Payments:**
+
+  - Enable users to pay for appointments in advance to reduce cancellations.
+
+- **Admin Enhancements:**
+
+  - Update salon services, employee and other database tables.
+  - View insights on revenue and employee performance.
+
+- **Employee Improvements:**
+  - We currently assume that all employees can perform all services. To enhance this functionality, we need to assign specific service categories to employees. This will ensure that only employees qualified to perform a particular service are displayed during the booking process.
+
+---
 
 ## Technologies
 
-- **Server:**
+### Server:
 
-  - Programming language: TypeScript
-  - Framework: Express.js
-  - Database: PostgreSQL with TypeORM
-  - Testing: Vitest
-  - Linting/formatting: ESLint, Prettier
+| **Technology**   | **Purpose**                 |
+| ---------------- | --------------------------- |
+| TypeScript       | Programming Language        |
+| Express.js       | Backend Framework           |
+| PostgreSQL       | Database                    |
+| TypeORM          | Object Relational Mapper    |
+| Vitest           | Testing Framework           |
+| ESLint, Prettier | Linting and Code Formatting |
 
-- **Client**:
-  - Programming language: TypeScript
-  - Framework: React
-  - Build tool: Vite
-  - Testing: Playwright
-  - Linting/formatting: ESLint, Prettier
+### Client:
+
+| **Technology**     | **Purpose**                 |
+| ------------------ | --------------------------- |
+| TypeScript         | Programming Language        |
+| React              | Frontend Framework          |
+| Vite               | Build Tool                  |
+| Playwright, Vitest | Testing Frameworks          |
+| ESLint, Prettier   | Linting and Code Formatting |
+
+---
 
 ## Getting Started
 
 ### Prerequisites:
 
-- Node.js and npm installed
-- If you want to use Docker you must also install it
+- Node.js and npm installed.
+- Docker (optional but recommended).
 
 ### Instructions:
 
 1. Clone the repository.
 2. Navigate to the project directory: `cd beauty-salon`
-3. `npm install` to install the dependencies.
-4. Create PostreSQL database.
-5. Setup `.env` file in `server` based on `.env.example` file.
+3. Install dependencies: `npm install`
+4. Create a PostgreSQL database.
+5. Setup `.env` file in `server` based on `.env.example`.
 
-- **Server:**
+#### Server:
 
-  - `cd server` - navigate to server folder
-  - `npm run seed` - seed the database
-  - `npm run dev` - run the development server
+- Navigate to the server folder: `cd server`.
+- Seed the database: `npm run seed`.
+- Run the development server: `npm run dev`.
 
-- **Client**:
-  - `cd client` - navigate to client folder
-  - `npm run dev` - run the development server
+#### Client:
+
+- Navigate to the client folder: `cd client`.
+- Run the development server: `npm run dev`.
+
+---
 
 ## Docker
 
-To start the application run:
+To start the application with Docker:
 
-`docker compose up`
+1. Start the application:
 
-Make sure to seed the database:
+   ```bash
+   docker compose up
+   ```
 
-`docker compose exec api npm run seed`
+2. Seed the database:
 
-If something goes wrong, you can rebuild the images with `docker compose build` and try `docker compose up` again. You can also perform both operations with `docker compose up --build`.
+   ```bash
+   docker compose exec api npm run seed
+   ```
 
-Visit http://localhost:3001 in your browser.
+3. If issues arise, rebuild the images:
+
+   ```bash
+   docker compose build
+   docker compose up
+   ```
+
+4. Perform both operations together:
+
+   ```bash
+   docker compose up --build
+   ```
+
+Visit the app at [http://localhost:3001](http://localhost:3001).
+
+---
 
 ## Inspiration
 
-The web app is inspired by the features and design elements found in the following two websites:
+The web app is inspired by the features and design elements found in the following websites:
 
 1. [Palast of Beauty](https://palast-of-beauty.de/)
 2. [Salonized Booking Widget](https://salonized.com/en/features/booking-widget)
+
+---
+
+We hope you enjoy using the Beauty Salon application!

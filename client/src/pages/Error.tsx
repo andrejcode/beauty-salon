@@ -1,9 +1,5 @@
 import Button from '@/components/ui/Button';
-import {
-  useRouteError,
-  isRouteErrorResponse,
-  useNavigate,
-} from 'react-router-dom';
+import { useRouteError, isRouteErrorResponse, useNavigate } from 'react-router-dom';
 
 export default function Error() {
   const error = useRouteError();
@@ -14,9 +10,7 @@ export default function Error() {
       <h1 className="mb-1 text-4xl">Oops!</h1>
       <p className="text-lg">Sorry, an unexpected error has occurred.</p>
       <p className="mb-4">
-        <i>
-          {isRouteErrorResponse(error) ? error.statusText : 'Unknown error'}
-        </i>
+        <i>{isRouteErrorResponse(error) ? error.statusText : 'Unknown error'}</i>
       </p>
       <Button onClick={() => navigate('/')}>Go to homepage</Button>
     </div>

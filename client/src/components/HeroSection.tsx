@@ -11,12 +11,10 @@ export default function HeroSection() {
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${beautyFace})`,
         }}
       >
-        <h1 className="mt-44 text-3xl md:text-5xl">
-          Welcome to the Beauty Salon
-        </h1>
+        <h1 className="mt-44 text-3xl md:text-5xl">Welcome to the Beauty Salon</h1>
         <p className="mb-4 mt-2 text-lg">
-          Since 1999 in the heart of Duisburg, we have been offering our
-          customers first-class treatments in various areas.
+          Since 1999 in the heart of Duisburg, we have been offering our customers first-class
+          treatments in various areas.
         </p>
         <BookButton />
       </div>

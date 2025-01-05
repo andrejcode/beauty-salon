@@ -13,7 +13,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json', './tsconfig.e2e.json'],
+    project: ['./tsconfig.json', './tsconfig.node.json'],
     tsconfigRootDir: __dirname,
   },
   ignorePatterns: ['dist', '.eslintrc.cjs'],
@@ -39,7 +39,7 @@ module.exports = {
               'middleware',
               'modules',
               'utils',
-            ].flatMap((path) => [`@server/${path}`]),
+            ].flatMap(path => [`@server/${path}`]),
             message: 'Please only import from @server/shared.',
           },
         ],

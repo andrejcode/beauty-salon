@@ -40,19 +40,12 @@ export default function ReviewsCarousel() {
     <section className="px-6 py-12 md:px-16 lg:px-24">
       <div className="text-center">
         <h2 className="text-3xl font-bold">What Our Customers Say</h2>
-        <p className="mt-2 text-gray-600">
-          Real reviews from our satisfied clients
-        </p>
+        <p className="mt-2 text-gray-600">Real reviews from our satisfied clients</p>
       </div>
 
       <div className="relative mx-auto h-64 max-w-3xl overflow-hidden">
         {reviews.map((review, index) => (
-          <ReviewCard
-            key={index}
-            review={review}
-            index={index}
-            currentSlide={currentSlide}
-          />
+          <ReviewCard key={index} review={review} index={index} currentSlide={currentSlide} />
         ))}
       </div>
 

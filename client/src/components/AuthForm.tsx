@@ -8,24 +8,15 @@ import useAuthForm from '@/hooks/useAuthForm';
 import { type SignupFormData } from '@/types';
 
 export default function AuthForm({ isLogin }: { isLogin: boolean }) {
-  const {
-    isLoading,
-    errorMessage,
-    formData,
-    formErrors,
-    handleChange,
-    handleBlur,
-    handleSubmit,
-  } = useAuthForm(isLogin);
+  const { isLoading, errorMessage, formData, formErrors, handleChange, handleBlur, handleSubmit } =
+    useAuthForm(isLogin);
 
   return (
     <div className="flex min-h-screen items-center justify-center">
       <div className="w-full max-w-lg px-6">
         <Logo />
         <form onSubmit={event => void handleSubmit(event)} className="my-6">
-          <h1 className="mb-2 text-2xl font-semibold">
-            {isLogin ? 'Login' : 'Signup'}
-          </h1>
+          <h1 className="mb-2 text-2xl font-semibold">{isLogin ? 'Login' : 'Signup'}</h1>
           {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
 
           {!isLogin && (
@@ -90,13 +81,7 @@ export default function AuthForm({ isLogin }: { isLogin: boolean }) {
           )}
 
           <Button type="submit" disabled={isLoading}>
-            {isLoading ? (
-              <LoadingSpinner size={24} />
-            ) : isLogin ? (
-              'Login'
-            ) : (
-              'Signup'
-            )}
+            {isLoading ? <LoadingSpinner size={24} /> : isLogin ? 'Login' : 'Signup'}
           </Button>
         </form>
 

@@ -14,22 +14,19 @@ export interface Service {
 const services: Service[] = [
   {
     title: 'Facial',
-    description:
-      'Face care, anti-aging treatments, and more to rejuvenate your skin.',
+    description: 'Face care, anti-aging treatments, and more to rejuvenate your skin.',
     image: facial,
     alt: 'Facial service',
   },
   {
     title: 'Beauty',
-    description:
-      'Makeup, eyelash extensions, and more to enhance your natural beauty.',
+    description: 'Makeup, eyelash extensions, and more to enhance your natural beauty.',
     image: beauty,
     alt: 'Beauty service',
   },
   {
     title: 'Nails',
-    description:
-      'Manicures, pedicures, and nail art for perfectly polished nails.',
+    description: 'Manicures, pedicures, and nail art for perfectly polished nails.',
     image: nails,
     alt: 'Nails service',
   },

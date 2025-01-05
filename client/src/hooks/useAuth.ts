@@ -15,10 +15,7 @@ export default function useAuth() {
 
   const from = location?.state?.from?.pathname || '/';
 
-  const authenticate = async (
-    url: string,
-    formData: LoginFormData | SignupFormData,
-  ) => {
+  const authenticate = async (url: string, formData: LoginFormData | SignupFormData) => {
     try {
       setIsLoading(true);
 

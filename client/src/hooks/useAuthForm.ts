@@ -1,12 +1,7 @@
 import { ChangeEvent, FormEvent, FocusEvent, useState } from 'react';
 import useAuth from '@/hooks/useAuth';
 import { validateAuthFormField } from '@/utils/auth';
-import type {
-  LoginFormData,
-  SignupFormData,
-  FormData,
-  FormErrors,
-} from '@/types';
+import type { LoginFormData, SignupFormData, FormData, FormErrors } from '@/types';
 
 const initialLoginFormData: LoginFormData = {
   email: '',
@@ -51,12 +46,7 @@ export default function useAuthForm(isLogin: boolean) {
 
     const errors: FormErrors = {};
     (Object.keys(formData) as (keyof FormData)[]).forEach(fieldName => {
-      const error = validateAuthFormField(
-        fieldName,
-        formData[fieldName],
-        formData,
-        isLogin,
-      );
+      const error = validateAuthFormField(fieldName, formData[fieldName], formData, isLogin);
       if (error) {
         errors[fieldName] = error;
       }

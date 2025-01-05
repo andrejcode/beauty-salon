@@ -8,10 +8,7 @@ interface DatePickerProps {
   onDateChange: (date: Date) => void;
 }
 
-export default function DatePicker({
-  selectedDate,
-  onDateChange,
-}: DatePickerProps) {
+export default function DatePicker({ selectedDate, onDateChange }: DatePickerProps) {
   const { times, isLoadingTimes } = useFetchBusinessTimes();
 
   const isOffDay = (date: Date) => {

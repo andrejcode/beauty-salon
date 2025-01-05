@@ -1,16 +1,11 @@
 import { useEffect, useState } from 'react';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
-import Alert from 'react-bootstrap/Alert';
-import { FaRegUserCircle } from 'react-icons/fa';
-import LoadingSpinner from '../components/ui/LoadingSpinner';
+import Alert from './ui/Alert';
+import LoadingSpinner from './ui/LoadingSpinner';
 import useTokenExpiration from '../hooks/useTokenExpiration';
 import { getUserToken } from '../utils/auth';
-import { formatDateGerman } from '../utils/time';
 import { type UserDto } from '@server/shared/dtos';
 
-export default function Profile() {
+export default function UserInfo() {
   const { handleFetchResponse } = useTokenExpiration();
 
   const [userInfo, setUserInfo] = useState<UserDto | null>(null);
@@ -46,7 +41,7 @@ export default function Profile() {
   }, [handleFetchResponse]);
 
   return (
-    <Container className="initial-height my-4">
+    <>
       {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
 
       {isLoading && (
@@ -54,26 +49,10 @@ export default function Profile() {
           <LoadingSpinner />
         </div>
       )}
-      {userInfo && (
-        <>
-          <h2>My Profile</h2>
-          <Row className="my-3">
-            <Col>
-              <FaRegUserCircle size={'10em'} />
-            </Col>
-            <Col xs={10} style={{ lineHeight: '1.1' }} className="mt-3">
-              <p style={{ fontSize: '1.2em', fontWeight: 'bold' }}>
-                {userInfo.fullName}
-              </p>
-              <p>{userInfo.email}</p>
-              <p>
-                Account created on{' '}
-                {formatDateGerman(userInfo.memberSince.toString())}
-              </p>
-            </Col>
-          </Row>
-        </>
-      )}
-    </Container>
+
+      <h1 className="mb-4 text-2xl font-bold">
+        {userInfo?.firstName ? `${userInfo.firstName}'s appointments` : 'My appointments'}
+      </h1>
+    </>
   );
 }

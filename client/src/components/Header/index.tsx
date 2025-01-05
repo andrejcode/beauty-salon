@@ -15,11 +15,7 @@ export default function Header() {
           <Nav />
         </div>
 
-        <button
-          className="md:hidden"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label="Open Menu"
-        >
+        <button className="md:hidden" onClick={() => setIsOpen(!isOpen)} aria-label="Open Menu">
           <Menu size={32} />
         </button>
       </header>

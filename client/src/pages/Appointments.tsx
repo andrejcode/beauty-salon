@@ -1,28 +1,22 @@
 import { useEffect, useState } from 'react';
-import Alert from 'react-bootstrap/Alert';
-import Container from 'react-bootstrap/Container';
+import Alert from '../components/ui/Alert';
 import AppointmentList from '../components/AppointmentList';
-import BookButton from '../components/BookButton';
+import BookButton from '../components/ui/BookButton';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import ModalComponent from '../components/ModalComponent';
+import UserInfo from '@/components/UserInfo';
 import useTokenExpiration from '../hooks/useTokenExpiration';
 import { getUserToken } from '../utils/auth';
 import { AppointmentDto } from '@server/shared/dtos';
 
 export default function Appointments() {
-  const [upcomingAppointments, setUpcomingAppointments] = useState<
-    AppointmentDto[]
-  >([]);
-  const [pastAppointments, setPastAppointments] = useState<AppointmentDto[]>(
-    [],
-  );
+  const [upcomingAppointments, setUpcomingAppointments] = useState<AppointmentDto[]>([]);
+  const [pastAppointments, setPastAppointments] = useState<AppointmentDto[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [successMessage, setSuccessMessage] = useState<string>('');
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [selectedAppointmentId, setSelectedAppointmentId] = useState<
-    number | null
-  >(null);
+  const [selectedAppointmentId, setSelectedAppointmentId] = useState<number | null>(null);
 
   const { handleFetchResponse } = useTokenExpiration();
 
@@ -48,9 +42,7 @@ export default function Appointments() {
           const past: AppointmentDto[] = [];
 
           appointmentsDto.forEach(appointment => {
-            const appointmentDate = new Date(
-              `${appointment.date}T${appointment.time}`,
-            );
+            const appointmentDate = new Date(`${appointment.date}T${appointment.time}`);
 
             if (appointmentDate >= today) {
               upcoming.push(appointment);
@@ -82,28 +74,20 @@ export default function Appointments() {
     }
 
     try {
-      const response = await fetch(
-        `/api/appointments${'/' + selectedAppointmentId}`,
-        {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${getUserToken()}`,
-          },
+      const response = await fetch(`/api/appointments${'/' + selectedAppointmentId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getUserToken()}`,
         },
-      );
+      });
 
       if (response.ok) {
-        // Remove the deleted appointment from the state
         setUpcomingAppointments(prevAppointments =>
-          prevAppointments.filter(
-            appointment => appointment.id !== selectedAppointmentId,
-          ),
+          prevAppointments.filter(appointment => appointment.id !== selectedAppointmentId),
         );
         setPastAppointments(prevAppointments =>
-          prevAppointments.filter(
-            appointment => appointment.id !== selectedAppointmentId,
-          ),
+          prevAppointments.filter(appointment => appointment.id !== selectedAppointmentId),
         );
 
         setSuccessMessage('Appointment successfully deleted.');
@@ -117,7 +101,7 @@ export default function Appointments() {
     }
   }
 
-  function handleDeleteClick(appointmentId: number) {
+  function handleCancelClick(appointmentId: number) {
     setSelectedAppointmentId(appointmentId);
     setShowModal(true);
   }
@@ -131,18 +115,27 @@ export default function Appointments() {
           setShowModal(false);
         }}
         actionButtonTitle="Yes"
-        modalTitle="Delete appointment"
-        modalBody="Are you sure you want to delete the appointment?"
+        modalTitle="Cancel appointment"
+        modalBody="Are you sure you want to cancel the appointment?"
         onAction={() => void handleDelete()}
       />
 
-      <Container className="initial-height my-4">
-        {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
-        {successMessage && <Alert variant="success">{successMessage}</Alert>}
-        <h1>My appointments</h1>
+      <div className="min-h-screen px-6 py-4 md:px-16 lg:px-24">
+        {errorMessage && (
+          <div className="mb-4">
+            <Alert variant="danger">{errorMessage}</Alert>
+          </div>
+        )}
+        {successMessage && (
+          <div className="mb-4">
+            <Alert variant="success">{successMessage}</Alert>
+          </div>
+        )}
+
+        <UserInfo />
 
         {isLoading ? (
-          <div className="d-flex justify-content-start align-items-center my-4">
+          <div className="my-4 flex items-center justify-start">
             <LoadingSpinner />
           </div>
         ) : (
@@ -150,24 +143,25 @@ export default function Appointments() {
             <AppointmentList
               title="Upcoming appointments"
               appointments={upcomingAppointments}
-              handleDeleteClick={handleDeleteClick}
+              handleCancelClick={handleCancelClick}
+              canCancelAppointment={true}
             />
             {upcomingAppointments.length <= 0 && (
-              <p className="my-3">There are no upcoming appointments.</p>
+              <p className="my-3 text-gray-600">There are no upcoming appointments.</p>
             )}
 
             {pastAppointments.length > 0 && (
               <AppointmentList
                 title="Past appointments"
                 appointments={pastAppointments}
-                handleDeleteClick={handleDeleteClick}
+                canCancelAppointment={false}
               />
             )}
           </>
         )}
 
         <BookButton />
-      </Container>
+      </div>
     </>
   );
 }

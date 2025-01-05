@@ -1,10 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import {
-  RouterProvider,
-  createBrowserRouter,
-  redirect,
-} from 'react-router-dom';
+import { RouterProvider, createBrowserRouter, redirect } from 'react-router-dom';
 import { getUserRoleFromToken, getUserToken } from '../src/utils/auth.ts';
 import { UserProvider } from './context/UserContext.tsx';
 import Root from './pages/Root.tsx';
@@ -14,6 +10,8 @@ import Signup from './pages/Signup.tsx';
 import Login from './pages/Login.tsx';
 import ProtectedRoute from './components/ProtectedRoute.tsx';
 import BookAppointment from './pages/BookAppointment.tsx';
+import Appointments from './pages/Appointments.tsx';
+import Admin from './pages/Admin.tsx';
 import './index.css';
 
 function authLoader() {
@@ -47,22 +45,14 @@ const router = createBrowserRouter([
     errorElement: <Error />,
     children: [
       { index: true, element: <Home /> },
-      // {
-      //   path: '/profile',
-      //   element: (
-      //     <ProtectedRoute>
-      //       <Profile />
-      //     </ProtectedRoute>
-      //   ),
-      // },
-      // {
-      //   path: '/appointments',
-      //   element: (
-      //     <ProtectedRoute>
-      //       <Appointments />
-      //     </ProtectedRoute>
-      //   ),
-      // },
+      {
+        path: '/appointments',
+        element: (
+          <ProtectedRoute>
+            <Appointments />
+          </ProtectedRoute>
+        ),
+      },
       {
         path: '/book-appointment',
         element: (
@@ -71,11 +61,11 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
-      // {
-      //   path: '/admin',
-      //   element: <Admin />,
-      //   loader: adminLoader,
-      // },
+      {
+        path: '/admin',
+        element: <Admin />,
+        loader: adminLoader,
+      },
     ],
   },
   { path: '/signup', element: <Signup />, loader: authLoader },

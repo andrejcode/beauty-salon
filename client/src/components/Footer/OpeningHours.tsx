@@ -18,9 +18,7 @@ export default function OpeningHours() {
           <p className="text-gray-600">Closed on: {times.offDays.join(', ')}</p>
         </>
       ) : (
-        <p className="text-gray-600">
-          Opening hours are not available at the moment.
-        </p>
+        <p className="text-gray-600">Opening hours are not available at the moment.</p>
       )}
     </div>
   );
