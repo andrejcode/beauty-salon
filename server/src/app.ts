@@ -1,8 +1,8 @@
 import express, { type Request, type Response } from 'express';
 import cors from 'cors';
 import { type Database } from './database';
-import usersRoute from './modules/users/usersRoutes';
-import servicesRoute from './modules/salonServices/salonServicesRoutes';
+import usersRoutes from './modules/users/usersRoutes';
+import servicesRoutes from './modules/salonServices/salonServicesRoutes';
 import employeesRoutes from './modules/employees/employeesRoutes';
 import appointmentsRoutes from './modules/appointments/appointmentsRoutes';
 import businessTimesRoutes from './modules/businessTimes/businessTimesRoutes';
@@ -17,8 +17,8 @@ export default function createApp(db: Database) {
     res.sendStatus(200);
   });
 
-  app.use('/users', usersRoute(db));
-  app.use('/services', servicesRoute(db));
+  app.use('/users', usersRoutes(db));
+  app.use('/services', servicesRoutes(db));
   app.use('/employees', employeesRoutes(db));
   app.use('/appointments', appointmentsRoutes(db));
   app.use('/business-times', businessTimesRoutes(db));
