@@ -41,7 +41,11 @@ Welcome to the Beauty Salon! This project is a monorepo containing both the clie
   - View insights on revenue and employee performance.
 
 - **Employee Improvements:**
+
   - We currently assume that all employees can perform all services. To enhance this functionality, we need to assign specific service categories to employees. This will ensure that only employees qualified to perform a particular service are displayed during the booking process.
+
+- **Time Zones:**
+  - Currently, our system does not handle multiple time zones. All appointment times are managed in a single time zone, which will correspond to the server's time zone upon deployment. This could pose challenges if the server is located in a different time zone from the users, as our static operating hours (9:30 AM to 6:00 PM) are not dynamically adjusted. A future enhancement could involve implementing time zone management to ensure times are accurately represented for users in different locations.
 
 ---
 
